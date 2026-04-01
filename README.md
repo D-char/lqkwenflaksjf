@@ -1,2 +1,21 @@
-# lqkwenflaksjf
-a;lksdfa;ldkjf 练手小项目
+# 项目说明
+
+
+
+[TOC]
+
+
+
+
+
+
+
+## 1.使用说明
+
+
+
+## 2.其他
+
+### 	a.`AI_Temp/`存放AI创建的临时文件
+
+​			
