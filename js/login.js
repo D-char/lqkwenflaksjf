@@ -5,9 +5,9 @@
 
 // ============ 顽鹿登录配置 ============
 const ONELAP_CONFIG = {
-  appid: 'YOUR_APP_ID',      // 替换为你的 appid
-  secret: 'YOUR_SECRET',     // 替换为你的 secret
-  baseUrl: 'https://www.onelap.cn'
+  appid: 'wlai_69c0f71a877a0',      // 替换为你的 appid
+  secret: '59461a7550832e4d375d47a66c4865c5',     // 替换为你的 secret
+  baseUrl: ''  // 使用相对路径，通过nginx代理访问API
 };
 
 // ============ 登录与 Token 管理 ============
@@ -76,6 +76,24 @@ function showLoginScreen() {
 function showMainScreen() {
   document.getElementById('screen-login').classList.remove('active');
   document.getElementById('screen-main').classList.add('active');
+}
+
+/**
+ * 检查是否为token过期错误
+ * @param {number} code - 错误码
+ * @returns {boolean}
+ */
+function isTokenExpired(code) {
+  return code === 401 || code === 1001;
+}
+
+/**
+ * 处理token过期
+ */
+function handleTokenExpired() {
+  alert('登录已过期，请重新登录');
+  logout();
+  redirectToLogin();
 }
 
 // ============ 工具函数 ============
@@ -153,6 +171,12 @@ async function getCyclingRecords(options = {}) {
   
   const result = await response.json();
   
+  // 检查token是否过期
+  if (isTokenExpired(result.code)) {
+    handleTokenExpired();
+    throw new Error('token已过期');
+  }
+  
   if (result.code !== 200) {
     throw new Error(result.message || `API 返回错误: ${result.code}`);
   }
@@ -200,6 +224,12 @@ async function getUserInfo() {
   
   const result = await response.json();
   
+  // 检查token是否过期
+  if (isTokenExpired(result.code)) {
+    handleTokenExpired();
+    throw new Error('token已过期');
+  }
+  
   if (result.code !== 200) {
     throw new Error(result.message || `API 返回错误: ${result.code}`);
   }
@@ -211,22 +241,8 @@ async function getUserInfo() {
 
 /**
  * 初始化应用
- * 注意：登录功能已隐藏，直接显示主界面
  */
 async function initApp() {
-  // 直接显示主界面（登录功能已隐藏）
-  showMainScreen();
-  
-  // 隐藏用户信息卡片
-  document.getElementById('user-info-card').style.display = 'none';
-  
-  // 初始化地图
-  if (typeof initMap === 'function') {
-    initMap();
-  }
-  
-  // 以下代码保留，待启用登录功能时使用
-  /*
   // 检查登录状态
   if (!isLoggedIn()) {
     showLoginScreen();
@@ -249,6 +265,11 @@ async function initApp() {
       document.getElementById('user-info-card').style.display = 'flex';
     }
     
+    // 初始化地图
+    if (typeof initMap === 'function') {
+      initMap();
+    }
+    
     // 获取骑行记录
     const records = await getCyclingRecords();
     console.log('骑行记录:', records);
@@ -257,12 +278,8 @@ async function initApp() {
     
   } catch (error) {
     console.error('获取数据失败:', error);
-    // 如果 token 过期，重新登录
-    if (error.message.includes('token') || error.message.includes('401')) {
-      logout();
-    }
+    // token过期已在API函数内部处理，此处处理其他错误
   }
-  */
 }
 
 // 页面加载完成后初始化
