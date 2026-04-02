@@ -3,117 +3,150 @@
  * 处理地图初始化、路线绘制等功能
  */
 
-// ============ 地图相关代码 ============
-
-// 北京热门骑行路线数据
-const routes = {
-  // 已点亮路线 - 戒台寺到潭王路
-  lit1: {
-    coords: [
-      [39.875, 116.085],
-      [39.880, 116.090],
-      [39.885, 116.095],
-      [39.890, 116.100],
-      [39.895, 116.105],
-      [39.900, 116.110]
-    ],
-    lit: true
-  },
-  // 已点亮路线 - 妙峰山
-  lit2: {
-    coords: [
-      [39.970, 116.020],
-      [39.975, 116.025],
-      [39.980, 116.030],
-      [39.985, 116.035],
-      [39.990, 116.040]
-    ],
-    lit: true
-  },
-  // 未点亮路线 - 十三陵水库
-  unlit1: {
-    coords: [
-      [40.250, 116.220],
-      [40.255, 116.230],
-      [40.260, 116.240],
-      [40.265, 116.250]
-    ],
-    lit: false
-  },
-  // 未点亮路线 - 白虎涧
-  unlit2: {
-    coords: [
-      [40.080, 116.100],
-      [40.085, 116.110],
-      [40.090, 116.120]
-    ],
-    lit: false
-  }
-};
+const routes = {};
 
 /**
- * 初始化地图
+ * 根据经纬度获取城市/地区名称（使用高德地图逆地理编码API）
+ * 注意：需要申请高德地图API Key，访问 https://lbs.amap.com/
+ */
+async function getRegionName(lat, lng) {
+  // 高德地图API Key - 请替换为你自己的Key
+  // 申请地址: https://console.amap.com/dev/key/app
+  const AMAP_KEY = 'ab2d12c583618aa0959c3dcbd7709f1d'; // ← 替换为你的高德API Key
+  
+  if (AMAP_KEY === 'YOUR_AMAP_KEY_HERE') {
+    console.warn('⚠️ 请先配置高德地图API Key！访问 https://console.amap.com/dev/key/app 申请');
+    return null;
+  }
+  
+  try {
+    console.log(`正在调用高德逆地理编码API: lat=${lat}, lng=${lng}`);
+    
+    // 高德API坐标格式：lng,lat（经度在前，纬度在后）
+    const location = `${lng},${lat}`;
+    
+    const url = `https://restapi.amap.com/v3/geocode/regeo?key=${AMAP_KEY}&location=${location}&output=json&radius=1000&extensions=base`;
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP错误: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    console.log('高德API返回完整数据:', JSON.stringify(data, null, 2));
+    
+    if (data.status !== '1') {
+      throw new Error(`API返回错误: ${data.info}`);
+    }
+    
+    const addressComponent = data.regeocode?.addressComponent;
+    
+    if (!addressComponent) {
+      console.warn('API返回数据缺少addressComponent字段');
+      return null;
+    }
+    
+    console.log('地址组件详情:', JSON.stringify(addressComponent, null, 2));
+    
+    // 高德地图地址组件提取优先级：city → province（直辖市无city字段）
+    let regionName = null;
+    
+    // 直辖市（北京、上海、天津、重庆）的city字段为空，需使用province
+    if (addressComponent.city && addressComponent.city.length > 0) {
+      regionName = addressComponent.city;
+    } else if (addressComponent.province) {
+      regionName = addressComponent.province;
+    }
+    
+    if (regionName) {
+      console.log(`✅ 成功提取城市名称: ${regionName}`);
+      return regionName;
+    } else {
+      console.warn('❌ 无法从addressComponent中提取城市名称');
+      return null;
+    }
+  } catch (error) {
+    console.error(`逆地理编码失败: ${error.message}`, error);
+    return null;
+  }
+}
+
+/**
+ * 更新页面上的地区名称显示
+ */
+function updateRegionDisplay(regionName) {
+  const regionElement = document.getElementById('region-name');
+  if (regionElement) {
+    const displayText = regionName || '定位失败';
+    regionElement.textContent = displayText;
+    console.log(`页面显示更新为: ${displayText}`);
+  } else {
+    console.warn('未找到region-name元素');
+  }
+}
+
+/**
+ * 初始化地图，自动定位到用户当前位置
  */
 function initMap() {
-  // 初始化地图
+  // 默认位置：济南（定位失败时的备选）
+  const DEFAULT_LAT = 36.65;
+  const DEFAULT_LNG = 117.12;
+  const DEFAULT_ZOOM = 11;
+  const DEFAULT_REGION = '济南';
+  
   const map = L.map('map', {
     zoomControl: false,
-    attributionControl: false
-  }).setView([39.920, 116.100], 11);
+    attributionControl: false,
+    center: [DEFAULT_LAT, DEFAULT_LNG],
+    zoom: DEFAULT_ZOOM
+  });
   
-  // 使用深色地图底图
+  window.map = map;
+  
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 18
   }).addTo(map);
   
-  // 绘制已点亮路线（金黄色+发光效果）
-  Object.values(routes).forEach(route => {
-    if (route.lit) {
-      // 发光底层
-      L.polyline(route.coords, {
-        color: '#FFD93D',
-        weight: 12,
-        opacity: 0.3
-      }).addTo(map);
-      
-      // 主路线
-      L.polyline(route.coords, {
-        color: '#FFD93D',
-        weight: 5,
-        opacity: 0.9
-      }).addTo(map);
-      
-      // 起点标记
-      L.circleMarker(route.coords[0], {
-        radius: 8,
-        fillColor: '#FFD93D',
-        fillOpacity: 1,
-        color: '#fff',
-        weight: 2
-      }).addTo(map);
-      
-      // 终点标记
-      L.circleMarker(route.coords[route.coords.length - 1], {
-        radius: 6,
-        fillColor: '#FF6B35',
-        fillOpacity: 1,
-        color: '#fff',
-        weight: 2
-      }).addTo(map);
-    } else {
-      // 未点亮路线（灰色虚线）
-      L.polyline(route.coords, {
-        color: '#666',
-        weight: 4,
-        opacity: 0.6,
-        dashArray: '10, 10'
-      }).addTo(map);
-    }
-  });
+  updateRegionDisplay(DEFAULT_REGION);
+  
+  if (navigator.geolocation) {
+    console.log('开始浏览器定位...');
+    
+    navigator.geolocation.getCurrentPosition(
+      async function(position) {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        
+        console.log(`✅ 浏览器定位成功: [${userLat}, ${userLng}]`);
+        map.setView([userLat, userLng], DEFAULT_ZOOM);
+        
+        console.log('开始逆地理编码...');
+        const regionName = await getRegionName(userLat, userLng);
+        updateRegionDisplay(regionName);
+        
+        // 可选：在用户位置添加标记
+        // L.marker([userLat, userLng]).addTo(map).bindPopup('当前位置');
+      },
+      function(error) {
+        console.error(`❌ 浏览器定位失败: ${error.message} (错误码: ${error.code})`);
+        console.warn('使用默认位置: 济南');
+        updateRegionDisplay(DEFAULT_REGION);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  } else {
+    console.warn('浏览器不支持定位功能');
+    updateRegionDisplay(DEFAULT_REGION);
+  }
   
   return map;
 }
 
-// 导出函数供其他模块使用
 window.initMap = initMap;
-window.routes = routes;
