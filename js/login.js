@@ -275,7 +275,78 @@ async function initApp() {
     const records = await getCyclingRecords();
     console.log('骑行记录:', records);
     
-    // 这里可以添加更多逻辑，比如更新地图上的路线等
+    // 批量处理骑行记录中的FIT文件URL，点亮路线
+    console.log('检查骑行记录数据结构:', {
+      recordsType: typeof records,
+      recordsDataType: typeof records.data,
+      recordsDataIsArray: Array.isArray(records.data),
+      recordsDataLength: records.data ? records.data.length : 'undefined'
+    });
+    
+    // 尝试获取骑行记录数组（支持多种数据结构）
+    let recordsArray = null;
+    if (Array.isArray(records.data)) {
+      recordsArray = records.data;
+    } else if (records.data && Array.isArray(records.data.list)) {
+      recordsArray = records.data.list;
+    } else if (records.data && Array.isArray(records.data.records)) {
+      recordsArray = records.data.records;
+    } else if (records.data && Array.isArray(records.data.activities)) {
+      recordsArray = records.data.activities;
+    } else if (Array.isArray(records)) {
+      recordsArray = records;
+    }
+    
+    if (recordsArray && recordsArray.length > 0) {
+      console.log(`找到 ${recordsArray.length} 条骑行记录`);
+      console.log('第一条记录示例:', JSON.stringify(recordsArray[0], null, 2));
+      
+      // 提取FIT文件URL（尝试多种可能的字段名）
+      const fitUrls = recordsArray
+        .map(record => record.fit_url || record.file_url || record.download_url || record.activity_file || record.fit_file)
+        .filter(url => url && typeof url === 'string' && url.trim() !== '');
+      
+      console.log(`提取到 ${fitUrls.length} 个FIT文件URL`);
+      
+      if (fitUrls.length > 0) {
+        console.log(`开始批量导入 ${fitUrls.length} 个FIT文件...`);
+        console.log('URL列表:', fitUrls.slice(0, 3)); // 只显示前3个
+        
+        // 检查uploadFitFilesFromUrls函数是否可用
+        if (typeof uploadFitFilesFromUrls === 'function') {
+          try {
+            const results = await uploadFitFilesFromUrls(fitUrls);
+            console.log('批量导入完成:', results);
+          } catch (error) {
+            console.error('批量导入过程中出错:', error);
+            // 如果批量导入失败，尝试逐个导入
+            console.log('尝试逐个导入...');
+            let successCount = 0;
+            for (const url of fitUrls) {
+              try {
+                if (typeof uploadFitFileFromUrl === 'function') {
+                  await uploadFitFileFromUrl(url);
+                  successCount++;
+                }
+              } catch (err) {
+                console.warn(`导入失败: ${url}`, err.message);
+              }
+            }
+            console.log(`逐个导入完成，成功 ${successCount}/${fitUrls.length} 个`);
+          }
+        } else {
+          console.error('uploadFitFilesFromUrls函数未加载');
+        }
+      } else {
+        console.log('未找到FIT文件URL，检查骑行记录中的可用字段:');
+        const sampleRecord = recordsArray[0];
+        console.log('可用字段:', Object.keys(sampleRecord));
+        console.log('完整记录:', sampleRecord);
+      }
+    } else {
+      console.log('暂无骑行记录或数据结构不正确');
+      console.log('完整返回数据:', records);
+    }
     
   } catch (error) {
     console.error('获取数据失败:', error);
