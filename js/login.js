@@ -7,7 +7,8 @@
 const ONELAP_CONFIG = {
   appid: 'wlai_69c0f71a877a0',      // 替换为你的 appid
   secret: '59461a7550832e4d375d47a66c4865c5',     // 替换为你的 secret
-  baseUrl: ''  // 使用相对路径，通过nginx代理访问API
+  loginBaseUrl: 'https://www.onelap.cn',  // 顽鹿官方登录页面
+  apiBaseUrl: ''  // API请求通过nginx代理
 };
 
 // ============ 登录与 Token 管理 ============
@@ -18,7 +19,7 @@ const ONELAP_CONFIG = {
 function redirectToLogin() {
   const currentUrl = window.location.href;
   const encodedUrl = btoa(currentUrl);
-  const loginUrl = `${ONELAP_CONFIG.baseUrl}/login.html?url=${encodedUrl}&token=1`;
+  const loginUrl = `${ONELAP_CONFIG.loginBaseUrl}/login.html?url=${encodedUrl}&token=1`;
   window.location.href = loginUrl;
 }
 
@@ -147,12 +148,12 @@ async function getCyclingRecords(options = {}) {
   const queryParams = {
     appid: ONELAP_CONFIG.appid,
     page: options.page || 1,
-    page_size: options.page_size || 20
+    page_size: options.page_size || 200
   };
   const queryString = new URLSearchParams(queryParams).toString();
   
   const response = await fetch(
-    `${ONELAP_CONFIG.baseUrl}${uri}?${queryString}`,
+    `${ONELAP_CONFIG.apiBaseUrl}${uri}?${queryString}`,
     {
       method: 'GET',
       headers: {
@@ -205,7 +206,7 @@ async function getUserInfo() {
   const queryString = new URLSearchParams(queryParams).toString();
   
   const response = await fetch(
-    `${ONELAP_CONFIG.baseUrl}${uri}?${queryString}`,
+    `${ONELAP_CONFIG.apiBaseUrl}${uri}?${queryString}`,
     {
       method: 'GET',
       headers: {
