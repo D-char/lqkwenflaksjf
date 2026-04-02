@@ -30,8 +30,8 @@
   <div class="phone-frame">
     <div class="notch"></div>
     
-    <!-- Login Screen (已隐藏) -->
-    <div id="screen-login" class="screen login-screen">
+    <!-- Login Screen -->
+    <div id="screen-login" class="screen login-screen active">
       <div class="login-container">
         <div class="login-logo"></div>
         <div class="login-title">顽鹿骑行路线点亮</div>
@@ -72,7 +72,7 @@
     </div>
     
     <!-- Main Screen with Real Map -->
-    <div id="screen-main" class="screen main-screen active">
+    <div id="screen-main" class="screen main-screen">
       <div class="user-info-card" id="user-info-card" style="display: none;">
         <div class="user-avatar" id="user-avatar"></div>
         <div class="user-details">
@@ -149,6 +149,7 @@
             <span>上传FIT文件点亮路线</span>
           </div>
           <button class="btn-share" onclick="enterShowcaseMode()">📤 炫耀一下</button>
+          <button class="btn-import" onclick="window.location.href='records.html'">📥 导入骑行记录</button>
         </div>
       </div>
       

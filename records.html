@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>骑行记录 - 顽鹿骑行路线点亮</title>
+  
+  <!-- 项目样式 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="prototype-label">交互原型</div>
+  
+  <h2 style="font-size: 24px; font-weight: bold; margin: 20px 0 10px; color: var(--primary);">我的骑行记录</h2>
+  <p style="max-width: 600px; margin: 10px auto; text-align: center; color: var(--text-secondary);">
+    从顽鹿平台导入的骑行数据
+  </p>
+  
+  <div class="phone-frame">
+    <div class="notch"></div>
+    
+    <!-- Records Screen -->
+    <div id="screen-records" class="screen records-screen active">
+      <div class="header">
+        <span class="header-title">骑行记录</span>
+        <div class="header-btn" onclick="window.location.href='index.html'">←</div>
+      </div>
+      
+      <div class="records-container">
+        <!-- 用户信息卡片 -->
+        <div class="user-info-card" id="user-info-card">
+          <div class="user-avatar" id="user-avatar"></div>
+          <div class="user-details">
+            <div class="user-name" id="user-name">加载中...</div>
+            <div class="user-status">已连接顽鹿</div>
+          </div>
+        </div>
+        
+        <!-- 统计卡片 -->
+        <div class="stats-card">
+          <div class="card-header">
+            <span class="card-title">骑行统计</span>
+            <span class="card-badge" id="record-count">加载中...</span>
+          </div>
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-value" id="total-distance">--</div>
+              <div class="stat-label">总里程 (km)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="total-time">--</div>
+              <div class="stat-label">总时长 (小时)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="total-calories">--</div>
+              <div class="stat-label">消耗卡路里</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 骑行记录列表 -->
+        <div class="records-list-container">
+          <div class="card-header">
+            <span class="card-title">最近骑行</span>
+            <button class="refresh-btn" onclick="loadRecords()">🔄 刷新</button>
+          </div>
+          <div id="records-list" class="records-list">
+            <div class="loading">加载中...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 项目脚本 -->
+  <script src="js/login.js"></script>
+  <script src="js/records.js"></script>
+</body>
+</html>
