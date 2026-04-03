@@ -118,7 +118,7 @@ body {
 
 .achievement-card {
   position: absolute;
-  bottom: 80px;
+  bottom: 16px;
   left: 16px;
   right: 16px;
   background: rgba(37, 37, 66, 0.95);
@@ -160,7 +160,7 @@ body {
 }
 
 .stat-value {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
   color: var(--highlight);
 }

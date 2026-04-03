@@ -79,7 +79,7 @@ async function getRegionName(lat, lng) {
 function updateRegionDisplay(regionName) {
   const regionElement = document.getElementById('region-name');
   if (regionElement) {
-    const displayText = regionName || '定位失败';
+    const displayText = regionName || '未定位';
     regionElement.textContent = displayText;
     console.log(`页面显示更新为: ${displayText}`);
   } else {
@@ -91,11 +91,11 @@ function updateRegionDisplay(regionName) {
  * 初始化地图，自动定位到用户当前位置
  */
 function initMap() {
-  // 默认位置：济南（定位失败时的备选）
-  const DEFAULT_LAT = 36.65;
-  const DEFAULT_LNG = 117.12;
+  // 默认位置：北京（未定位时的初始地图中心）
+  const DEFAULT_LAT = 39.9042;
+  const DEFAULT_LNG = 116.4074;
   const DEFAULT_ZOOM = 11;
-  const DEFAULT_REGION = '济南';
+  const DEFAULT_REGION_DISPLAY = '未定位';
   
   const map = L.map('map', {
     zoomControl: false,
@@ -110,7 +110,8 @@ function initMap() {
     maxZoom: 18
   }).addTo(map);
   
-  updateRegionDisplay(DEFAULT_REGION);
+  // 初始显示"未定位"，等待定位成功后更新
+  updateRegionDisplay(DEFAULT_REGION_DISPLAY);
   
   if (navigator.geolocation) {
     console.log('开始浏览器定位...');
@@ -132,8 +133,8 @@ function initMap() {
       },
       function(error) {
         console.error(`❌ 浏览器定位失败: ${error.message} (错误码: ${error.code})`);
-        console.warn('使用默认位置: 济南');
-        updateRegionDisplay(DEFAULT_REGION);
+        console.warn('定位失败，保持显示"未定位"');
+        updateRegionDisplay(null); // 显示"未定位"
       },
       {
         enableHighAccuracy: true,

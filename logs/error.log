@@ -2,3 +2,4 @@
 2026/04/01 18:03:07 [notice] 36300#6460: signal process started
 2026/04/01 19:10:09 [notice] 16972#31932: signal process started
 2026/04/01 19:21:15 [notice] 7568#43916: signal process started
+2026/04/03 16:27:53 [emerg] 4164#7364: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)

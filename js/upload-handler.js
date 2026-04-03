@@ -70,14 +70,14 @@ function renderTrackOnMap(trackData) {
 
   L.polyline(coords, {
     color: '#FFD93D',
-    weight: 12,
-    opacity: 0.3
+    weight: 3,
+    opacity: 0.4
   }).addTo(window.map);
 
   L.polyline(coords, {
     color: '#FFD93D',
-    weight: 5,
-    opacity: 0.9
+    weight: 2,
+    opacity: 0.8
   }).addTo(window.map);
 
   window.map.fitBounds(coords, { padding: [50, 50] });
