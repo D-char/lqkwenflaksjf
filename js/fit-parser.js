@@ -89,14 +89,6 @@ async function parseFitFile(fitBuffer) {
     const deviceInfo = fitData.device_infos?.[0] || {};
     const records = fitData.records || [];
     
-    console.log('解析结果:', {
-      记录数: records.length,
-      session原始: session,
-      session_total_distance: session.total_distance,
-      session_total_distance_type: typeof session.total_distance,
-      第一条记录: records[0]
-    });
-    
     const points = records
       .filter(record => record.position_lat && record.position_long)
       .map(record => ({
@@ -140,18 +132,9 @@ async function parseFitFile(fitBuffer) {
       points: validPoints
     };
 
-    console.log('✅ 轨迹数据:', {
-      设备: trackData.device,
-      里程: trackData.total_distance_km.toFixed(2) + 'km',
-      点数: trackData.points_count,
-      起点坐标: validPoints[0],
-      终点坐标: validPoints[validPoints.length - 1]
-    });
-
     return trackData;
 
   } catch (error) {
-    console.error('FIT文件解析失败:', error);
     throw new Error(`FIT文件解析失败: ${error.message}`);
   }
 }

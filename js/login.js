@@ -310,32 +310,17 @@ async function initApp() {
       
       if (fitUrls.length > 0) {
         console.log(`开始批量导入 ${fitUrls.length} 个FIT文件...`);
-        console.log('URL列表:', fitUrls.slice(0, 3)); // 只显示前3个
+        console.log('URL列表:', fitUrls.slice(0, 3));
         
-        // 检查uploadFitFilesFromUrls函数是否可用
-        if (typeof uploadFitFilesFromUrls === 'function') {
+        if (typeof uploadFitFilesFromUrlsBatch === 'function') {
           try {
-            const results = await uploadFitFilesFromUrls(fitUrls);
+            const results = await uploadFitFilesFromUrlsBatch(fitUrls);
             console.log('批量导入完成:', results);
           } catch (error) {
             console.error('批量导入过程中出错:', error);
-            // 如果批量导入失败，尝试逐个导入
-            console.log('尝试逐个导入...');
-            let successCount = 0;
-            for (const url of fitUrls) {
-              try {
-                if (typeof uploadFitFileFromUrl === 'function') {
-                  await uploadFitFileFromUrl(url);
-                  successCount++;
-                }
-              } catch (err) {
-                console.warn(`导入失败: ${url}`, err.message);
-              }
-            }
-            console.log(`逐个导入完成，成功 ${successCount}/${fitUrls.length} 个`);
           }
         } else {
-          console.error('uploadFitFilesFromUrls函数未加载');
+          console.error('uploadFitFilesFromUrlsBatch函数未加载');
         }
       } else {
         console.log('未找到FIT文件URL，检查骑行记录中的可用字段:');

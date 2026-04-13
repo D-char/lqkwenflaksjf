@@ -5,6 +5,55 @@
 
 const routes = {};
 
+// ============ 坐标转换工具（WGS-84 转 GCJ-02）===========
+
+/**
+ * WGS-84 转 GCJ-02（火星坐标系）
+ * 高德地图使用GCJ-02坐标系，GPS数据是WGS-84，需要转换
+ */
+const PI = 3.14159265358979324;
+const A = 6378245.0;
+const EE = 0.00669342162296594323;
+
+function outOfChina(lat, lon) {
+  if (lon < 72.004 || lon > 137.8347) return true;
+  if (lat < 0.8293 || lat > 55.8271) return true;
+  return false;
+}
+
+function transformLat(x, y) {
+  let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+  ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0;
+  ret += (20.0 * Math.sin(y * PI) + 40.0 * Math.sin(y / 3.0 * PI)) * 2.0 / 3.0;
+  ret += (160.0 * Math.sin(y / 12.0 * PI) + 320 * Math.sin(y * PI / 30.0)) * 2.0 / 3.0;
+  return ret;
+}
+
+function transformLon(x, y) {
+  let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+  ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0;
+  ret += (20.0 * Math.sin(x * PI) + 40.0 * Math.sin(x / 3.0 * PI)) * 2.0 / 3.0;
+  ret += (150.0 * Math.sin(x / 12.0 * PI) + 300.0 * Math.sin(x / 30.0 * PI)) * 2.0 / 3.0;
+  return ret;
+}
+
+function wgs84ToGcj02(lat, lon) {
+  if (outOfChina(lat, lon)) {
+    return [lat, lon];
+  }
+  let dLat = transformLat(lon - 105.0, lat - 35.0);
+  let dLon = transformLon(lon - 105.0, lat - 35.0);
+  const radLat = lat / 180.0 * PI;
+  let magic = Math.sin(radLat);
+  magic = 1 - EE * magic * magic;
+  const sqrtMagic = Math.sqrt(magic);
+  dLat = (dLat * 180.0) / ((A * (1 - EE)) / (magic * sqrtMagic) * PI);
+  dLon = (dLon * 180.0) / (A / sqrtMagic * Math.cos(radLat) * PI);
+  const mgLat = lat + dLat;
+  const mgLon = lon + dLon;
+  return [mgLat, mgLon];
+}
+
 /**
  * 根据经纬度获取城市/地区名称（使用高德地图逆地理编码API）
  * 注意：需要申请高德地图API Key，访问 https://lbs.amap.com/
@@ -91,50 +140,48 @@ function updateRegionDisplay(regionName) {
  * 初始化地图，自动定位到用户当前位置
  */
 function initMap() {
-  // 默认位置：北京（未定位时的初始地图中心）
   const DEFAULT_LAT = 39.9042;
   const DEFAULT_LNG = 116.4074;
   const DEFAULT_ZOOM = 11;
   const DEFAULT_REGION_DISPLAY = '未定位';
   
-  const map = L.map('map', {
-    zoomControl: false,
-    attributionControl: false,
-    center: [DEFAULT_LAT, DEFAULT_LNG],
-    zoom: DEFAULT_ZOOM
+  const map = new AMap.Map('map', {
+    resizeEnable: true,
+    zoom: DEFAULT_ZOOM,
+    center: [DEFAULT_LNG, DEFAULT_LAT],
+    viewMode: '2D',
+    mapStyle: 'amap://styles/normal'
   });
   
   window.map = map;
   
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 18
-  }).addTo(map);
-  
-  // 初始显示"未定位"，等待定位成功后更新
   updateRegionDisplay(DEFAULT_REGION_DISPLAY);
   
   if (navigator.geolocation) {
-    console.log('开始浏览器定位...');
-    
     navigator.geolocation.getCurrentPosition(
       async function(position) {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
         
-        console.log(`✅ 浏览器定位成功: [${userLat}, ${userLng}]`);
-        map.setView([userLat, userLng], DEFAULT_ZOOM);
+        const [gcjLat, gcjLng] = wgs84ToGcj02(userLat, userLng);
+        map.setCenter([gcjLng, gcjLat]);
+        map.setZoom(DEFAULT_ZOOM);
         
-        console.log('开始逆地理编码...');
-        const regionName = await getRegionName(userLat, userLng);
+        const regionName = await getRegionName(gcjLat, gcjLng);
         updateRegionDisplay(regionName);
         
-        // 可选：在用户位置添加标记
-        // L.marker([userLat, userLng]).addTo(map).bindPopup('当前位置');
+        if (regionName && window.roadDataApi) {
+          const roadData = await window.roadDataApi.getCityRoadLength(regionName);
+          if (roadData) {
+            const totalRoadEl = document.querySelector('.achievement-card .stat-item:nth-child(3) .stat-value');
+            if (totalRoadEl) {
+              totalRoadEl.textContent = `${roadData.length_km}km`;
+            }
+          }
+        }
       },
       function(error) {
-        console.error(`❌ 浏览器定位失败: ${error.message} (错误码: ${error.code})`);
-        console.warn('定位失败，保持显示"未定位"');
-        updateRegionDisplay(null); // 显示"未定位"
+        updateRegionDisplay(null);
       },
       {
         enableHighAccuracy: true,
@@ -144,10 +191,38 @@ function initMap() {
     );
   } else {
     console.warn('浏览器不支持定位功能');
-    updateRegionDisplay(DEFAULT_REGION);
+    updateRegionDisplay(DEFAULT_REGION_DISPLAY);
   }
   
   return map;
 }
 
 window.initMap = initMap;
+window.wgs84ToGcj02 = wgs84ToGcj02;
+
+let currentMapStyle = 'normal';
+
+function toggleStylePanel() {
+  const panel = document.getElementById('style-panel');
+  if (panel) {
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function switchMapStyle(styleName) {
+  if (!window.map) return;
+  
+  const styleUrl = `amap://styles/${styleName}`;
+  window.map.setMapStyle(styleUrl);
+  currentMapStyle = styleName;
+  
+  document.querySelectorAll('.style-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.style === styleName);
+  });
+  
+  const panel = document.getElementById('style-panel');
+  if (panel) panel.style.display = 'none';
+}
+
+window.toggleStylePanel = toggleStylePanel;
+window.switchMapStyle = switchMapStyle;

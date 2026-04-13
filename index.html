@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>骑行路线点亮 - 真实地图原型</title>
   
-  <!-- 外部库 -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- 高德地图 JS API 1.4 -->
+  <script src="https://webapi.amap.com/maps?v=1.4.15&key=ab2d12c583618aa0959c3dcbd7709f1d"></script>
   <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
   <script type="module">
     import FitParser from 'https://cdn.jsdelivr.net/npm/fit-file-parser@2.3.3/+esm';
@@ -79,7 +78,16 @@
         <span class="header-title">我的点亮</span>
         <div class="header-actions">
           <div class="header-btn upload-btn" onclick="triggerUpload()">📤</div>
+          <div class="header-btn style-btn" onclick="toggleStylePanel()">🎨</div>
           <div class="header-btn" onclick="logout()">⚙️</div>
+        </div>
+      </div>
+      
+      <div id="style-panel" class="style-panel" style="display: none;">
+        <div class="style-panel-title">地图样式</div>
+        <div class="style-options">
+          <div class="style-option active" data-style="normal" onclick="switchMapStyle('normal')">标准</div>
+          <div class="style-option" data-style="whitesmoke" onclick="switchMapStyle('whitesmoke')">远山</div>
         </div>
       </div>
       
@@ -159,6 +167,7 @@
   
   <!-- 项目脚本 -->
   <script src="js/app.js"></script>
+  <script src="js/road-data-api.js"></script>
   
   <script type="module">
     import FitParser from 'https://cdn.jsdelivr.net/npm/fit-file-parser@2.3.3/+esm';

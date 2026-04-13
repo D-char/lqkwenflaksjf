@@ -7,30 +7,43 @@
 
 let roadData = null;
 let currentRegion = '青岛市';
+let onlineRoadData = null;
 
-/**
- * 加载道路数据
- */
 async function loadRoadData() {
+  if (roadData) return roadData;
+  
   try {
     const response = await fetch('data/road-data.json');
     roadData = await response.json();
-    console.log('道路数据已加载:', roadData);
-    return roadData;
-  } catch (error) {
-    console.error('道路数据加载失败:', error);
-    // 使用默认数据
+  } catch (e) {
     roadData = {
       regions: {
-        '青岛市': {
-          total_road_km: 18500,
-          bounds: { min_lat: 35.5, max_lat: 37.5, min_lon: 119.5, max_lon: 121.5 }
-        }
+        '青岛市': { total_road_km: 4500, bounds: { min_lat: 35.5, max_lat: 37.5, min_lon: 119.5, max_lon: 121.5 } }
       },
       default_region: '青岛市'
     };
-    return roadData;
   }
+  return roadData;
+}
+
+async function getRegionTotalRoadDistance(regionName) {
+  if (regionName === '其他地区') return 10000;
+  
+  if (onlineRoadData && onlineRoadData[regionName]) {
+    return onlineRoadData[regionName].length_km;
+  }
+  
+  if (window.roadDataApi && window.roadDataApi.getCityRoadLength) {
+    const data = await window.roadDataApi.getCityRoadLength(regionName);
+    if (data && data.length_km) {
+      if (!onlineRoadData) onlineRoadData = {};
+      onlineRoadData[regionName] = data;
+      return data.length_km;
+    }
+  }
+  
+  if (!roadData || !roadData.regions[regionName]) return 10000;
+  return roadData.regions[regionName].total_road_km;
 }
 
 // ============ 区域判断逻辑 ============
@@ -48,8 +61,9 @@ function isPointInRegion(lat, lon, regionName) {
   }
   
   const bounds = roadData.regions[regionName].bounds;
-  return lat >= bounds.min_lat && lat <= bounds.max_lat &&
-         lon >= bounds.min_lon && lon <= bounds.max_lon;
+  const inRegion = lat >= bounds.min_lat && lat <= bounds.max_lat &&
+                   lon >= bounds.min_lon && lon <= bounds.max_lon;
+  return inRegion;
 }
 
 /**
@@ -60,19 +74,30 @@ function isPointInRegion(lat, lon, regionName) {
  */
 function detectRegion(lat, lon) {
   if (!roadData || !roadData.regions) {
+    console.log(`未加载道路数据，使用默认区域: ${currentRegion}`);
     return currentRegion;
   }
   
-  for (const [regionName, regionData] of Object.entries(roadData.regions)) {
-    if (isPointInRegion(lat, lon, regionName)) {
-      return regionName;
-    }
+for (const [regionName, regionData] of Object.entries(roadData.regions)) {
+    if (isPointInRegion(lat, lon, regionName)) return regionName;
   }
   
-  return currentRegion;
+  return '其他地区';
 }
 
 // ============ GPS坐标点去重算法 ============
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = x => x * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
 /**
  * GPS坐标点去重
@@ -113,7 +138,6 @@ function uniquePointsToArray(uniquePointsSet) {
  * @returns {number} 去重后的距离（km）
  */
 function calculateUniqueDistance(tracks, regionName) {
-  // 1. 提取区域内所有GPS点
   const regionPoints = [];
   
   for (const track of tracks) {
@@ -134,23 +158,16 @@ function calculateUniqueDistance(tracks, regionName) {
     return 0;
   }
   
-  // 2. 坐标点去重
   const uniquePointsSet = deduplicatePoints(regionPoints);
   const uniquePoints = uniquePointsToArray(uniquePointsSet);
   
-  // 3. 按时间排序（如果有的话）
-  // 注意：去重后无法保留原始顺序，这里简单按坐标排序
   uniquePoints.sort((a, b) => {
     if (a.lat !== b.lat) return a.lat - b.lat;
     return a.lon - b.lon;
   });
   
-  // 4. 计算相邻点之间的距离总和
-  // 注意：这不是最优路径，只是一个估算
-  // 更精确的方法是使用原始轨迹顺序去重
   let totalDistance = 0;
   
-  // 使用Haversine公式计算距离
   for (let i = 0; i < uniquePoints.length - 1; i++) {
     const dist = haversineDistance(
       uniquePoints[i].lat,
@@ -161,7 +178,6 @@ function calculateUniqueDistance(tracks, regionName) {
     totalDistance += dist;
   }
   
-  // 返回公里数
   return totalDistance / 1000;
 }
 
@@ -181,34 +197,26 @@ function calculateUniqueDistanceByOrder(tracks, regionName) {
     let prevPoint = null;
     
     for (const point of track.points) {
-      // 只计算区域内的点
-      if (!isPointInRegion(point.lat, point.lon, regionName)) {
-        prevPoint = null; // 离开区域，重置前一个点
+      const inRegion = isPointInRegion(point.lat, point.lon, regionName);
+      
+      if (!inRegion) {
+        prevPoint = null;
         continue;
       }
       
-      // 去重：检查当前点是否已访问过
       const normalizedLat = Math.round(point.lat * 100000) / 100000;
       const normalizedLon = Math.round(point.lon * 100000) / 100000;
       const pointKey = `${normalizedLat},${normalizedLon}`;
       
       if (visitedPoints.has(pointKey)) {
-        // 已访问过，跳过
         prevPoint = null;
         continue;
       }
       
-      // 新点，标记为已访问
       visitedPoints.add(pointKey);
       
-      // 计算与前一个未访问点的距离
       if (prevPoint) {
-        const dist = haversineDistance(
-          prevPoint.lat,
-          prevPoint.lon,
-          point.lat,
-          point.lon
-        );
+        const dist = haversineDistance(prevPoint.lat, prevPoint.lon, point.lat, point.lon);
         totalDistance += dist;
       }
       
@@ -268,26 +276,8 @@ function calculateThisWeekDistance(tracks) {
 
 // ============ 点亮率计算 ============
 
-/**
- * 获取区域道路总距离
- * @param {string} regionName - 区域名称
- * @returns {number} 道路总距离（km）
- */
-function getRegionTotalRoadDistance(regionName) {
-  if (!roadData || !roadData.regions[regionName]) {
-    return 0;
-  }
-  return roadData.regions[regionName].total_road_km;
-}
-
-/**
- * 计算点亮率
- * @param {number} uniqueDistance - 去重后的骑行距离（km）
- * @param {string} regionName - 区域名称
- * @returns {number} 点亮率百分比
- */
-function calculateLightingRate(uniqueDistance, regionName) {
-  const totalRoadDistance = getRegionTotalRoadDistance(regionName);
+async function calculateLightingRate(uniqueDistance, regionName) {
+  const totalRoadDistance = await getRegionTotalRoadDistance(regionName);
   
   if (totalRoadDistance === 0) {
     return 0;
@@ -298,44 +288,33 @@ function calculateLightingRate(uniqueDistance, regionName) {
 
 // ============ 综合统计函数 ============
 
-/**
- * 计算所有统计数据
- * @param {Array} tracks - 所有轨迹数据
- * @returns {Object} 统计结果
- */
-function calculateAllStats(tracks) {
-  // 确保道路数据已加载
-  if (!roadData) {
-    loadRoadData();
-  }
+async function calculateAllStats(tracks) {
+  if (!roadData) await loadRoadData();
   
-  // 确定当前区域（根据轨迹第一个点判断，或使用默认）
   if (tracks.length > 0 && tracks[0].points && tracks[0].points.length > 0) {
     const firstPoint = tracks[0].points[0];
     currentRegion = detectRegion(firstPoint.lat, firstPoint.lon);
   }
   
-  // 计算去重距离
-  const uniqueDistance = calculateUniqueDistanceByOrder(tracks, currentRegion);
+  let uniqueDistance = calculateUniqueDistanceByOrder(tracks, currentRegion);
   
-  // 获取道路总距离
-  const totalRoadDistance = getRegionTotalRoadDistance(currentRegion);
+  if (uniqueDistance === 0 && tracks.length > 0) {
+    uniqueDistance = tracks.reduce((sum, track) => sum + (track.total_distance_km || 0), 0);
+  }
   
-  // 计算点亮率
-  const lightingRate = calculateLightingRate(uniqueDistance, currentRegion);
-  
-  // 统计本周数据
+  const totalRoadDistance = await getRegionTotalRoadDistance(currentRegion);
+  const lightingRate = await calculateLightingRate(uniqueDistance, currentRegion);
   const thisWeekUploads = countThisWeekUploads(tracks);
   const thisWeekDistance = calculateThisWeekDistance(tracks);
   
   return {
     region: currentRegion,
-    unique_distance_km: uniqueDistance,          // 已点亮：去重距离
-    total_road_km: totalRoadDistance,           // 总路线：道路总距离
-    lighting_rate: lightingRate,                 // 点亮率
-    this_week_uploads: thisWeekUploads,          // 本周上传数
-    this_week_km: thisWeekDistance,              // 本周新增距离
-    total_tracks: tracks.length                  // 总轨迹数
+    unique_distance_km: uniqueDistance,
+    total_road_km: totalRoadDistance,
+    lighting_rate: lightingRate,
+    this_week_uploads: thisWeekUploads,
+    this_week_km: thisWeekDistance,
+    total_tracks: tracks.length
   };
 }
 

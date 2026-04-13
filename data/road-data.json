@@ -4,12 +4,15 @@
       "region_id": "qd_001",
       "province": "山东省",
       "city": "青岛市",
-      "total_road_km": 18500,
+      "total_road_km": 4500,
+      "data_source": "估算值（基于建成区面积和道路密度推算）",
+      "data_year": "2020",
+      "note": "青岛市建成区面积约730平方公里，道路密度约6公里/平方公里",
       "road_types": {
-        "primary": 3500,
-        "secondary": 5500,
-        "tertiary": 6500,
-        "cycleway": 3000
+        "primary": 800,
+        "secondary": 1200,
+        "tertiary": 1500,
+        "cycleway": 1000
       },
       "bounds": {
         "min_lat": 35.5,
@@ -17,18 +20,21 @@
         "min_lon": 119.5,
         "max_lon": 121.5
       },
-      "update_time": "2026-04-01"
+      "update_time": "2026-04-03"
     },
     "北京市": {
       "region_id": "bj_001",
       "province": "北京市",
       "city": "北京市",
-      "total_road_km": 22000,
+      "total_road_km": 6200,
+      "data_source": "住房和城乡建设部统计年鉴",
+      "data_year": "2020",
+      "note": "北京市建成区道路长度约6200公里",
       "road_types": {
-        "primary": 5000,
-        "secondary": 8000,
-        "tertiary": 7000,
-        "cycleway": 2000
+        "primary": 1200,
+        "secondary": 2000,
+        "tertiary": 2500,
+        "cycleway": 500
       },
       "bounds": {
         "min_lat": 39.4,
@@ -36,18 +42,21 @@
         "min_lon": 115.4,
         "max_lon": 117.5
       },
-      "update_time": "2026-04-01"
+      "update_time": "2026-04-03"
     },
     "上海市": {
       "region_id": "sh_001",
       "province": "上海市",
       "city": "上海市",
-      "total_road_km": 18000,
+      "total_road_km": 5536,
+      "data_source": "住房和城乡建设部统计年鉴（确认数据）",
+      "data_year": "2020",
+      "note": "上海市市辖区建成区道路长度5536公里（2020年统计数据）",
       "road_types": {
-        "primary": 4000,
-        "secondary": 6000,
-        "tertiary": 6000,
-        "cycleway": 2000
+        "primary": 1100,
+        "secondary": 1800,
+        "tertiary": 2000,
+        "cycleway": 636
       },
       "bounds": {
         "min_lat": 30.6,
@@ -55,18 +64,21 @@
         "min_lon": 120.9,
         "max_lon": 122.2
       },
-      "update_time": "2026-04-01"
+      "update_time": "2026-04-03"
     },
     "深圳市": {
       "region_id": "sz_001",
       "province": "广东省",
       "city": "深圳市",
-      "total_road_km": 12000,
+      "total_road_km": 3800,
+      "data_source": "估算值（基于建成区面积和道路密度推算）",
+      "data_year": "2020",
+      "note": "深圳市建成区面积约900平方公里，道路密度约4.2公里/平方公里",
       "road_types": {
-        "primary": 2500,
-        "secondary": 4000,
-        "tertiary": 4000,
-        "cycleway": 1500
+        "primary": 700,
+        "secondary": 1100,
+        "tertiary": 1400,
+        "cycleway": 600
       },
       "bounds": {
         "min_lat": 22.4,
@@ -74,8 +86,58 @@
         "min_lon": 113.7,
         "max_lon": 114.6
       },
-      "update_time": "2026-04-01"
+      "update_time": "2026-04-03"
+    },
+    "广州市": {
+      "region_id": "gz_001",
+      "province": "广东省",
+      "city": "广州市",
+      "total_road_km": 5800,
+      "data_source": "估算值（基于建成区面积和道路密度推算）",
+      "data_year": "2020",
+      "note": "广州市建成区面积约1300平方公里，道路密度约4.5公里/平方公里",
+      "road_types": {
+        "primary": 1100,
+        "secondary": 1700,
+        "tertiary": 2200,
+        "cycleway": 800
+      },
+      "bounds": {
+        "min_lat": 22.5,
+        "max_lat": 23.5,
+        "min_lon": 112.9,
+        "max_lon": 114.0
+      },
+      "update_time": "2026-04-03"
+    },
+    "杭州市": {
+      "region_id": "hz_001",
+      "province": "浙江省",
+      "city": "杭州市",
+      "total_road_km": 4200,
+      "data_source": "估算值（基于建成区面积和道路密度推算）",
+      "data_year": "2020",
+      "road_types": {
+        "primary": 800,
+        "secondary": 1300,
+        "tertiary": 1600,
+        "cycleway": 500
+      },
+      "bounds": {
+        "min_lat": 29.8,
+        "max_lat": 30.9,
+        "min_lon": 119.6,
+        "max_lon": 121.0
+      },
+      "update_time": "2026-04-03"
     }
   },
-  "default_region": "青岛市"
+  "default_region": "青岛市",
+  "data_notes": {
+    "definition": "建成区道路长度：城市建成区内铺设路面的道路总长度",
+    "source_primary": "住房和城乡建设部《中国城乡建设统计年鉴》",
+    "source_secondary": "各城市统计局统计年鉴",
+    "limitation": "部分城市数据为估算值，实际道路长度可能因统计口径不同而有差异",
+    "suggestion": "建议使用OpenStreetMap提取更精确的道路网络长度数据"
+  }
 }

@@ -61,32 +61,35 @@ function renderTrackOnMap(trackData) {
     return;
   }
 
-  const coords = trackData.points.map(p => [p.lat, p.lon]);
+  const coords = trackData.points.map(p => {
+    if (typeof wgs84ToGcj02 === 'function') {
+      const [gcjLat, gcjLon] = wgs84ToGcj02(p.lat, p.lon);
+      return [gcjLon, gcjLat];
+    }
+    return [p.lon, p.lat];
+  });
 
   if (coords.length < 2) {
     console.warn('轨迹点数不足');
     return;
   }
 
-  L.polyline(coords, {
-    color: '#FFD93D',
-    weight: 3,
-    opacity: 0.4
-  }).addTo(window.map);
+  new AMap.Polyline({
+    path: coords,
+    strokeColor: '#FFD93D',
+    strokeWeight: 2,
+    strokeOpacity: 0.85,
+    lineJoin: 'round',
+    lineCap: 'round'
+  }).setMap(window.map);
 
-  L.polyline(coords, {
-    color: '#FFD93D',
-    weight: 2,
-    opacity: 0.8
-  }).addTo(window.map);
-
-  window.map.fitBounds(coords, { padding: [50, 50] });
+  window.map.setFitView(null, false, [50, 50, 50, 50]);
 }
 
 async function updateStats() {
   await loadRoadData();
   
-  const stats = calculateAllStats(uploadedTracks);
+  const stats = await calculateAllStats(uploadedTracks);
   
   const lightingRateEl = document.querySelector('.achievement-card .stat-item:nth-child(1) .stat-value');
   const litDistanceEl = document.querySelector('.achievement-card .stat-item:nth-child(2) .stat-value');
@@ -118,8 +121,6 @@ async function updateStats() {
   if (progressBarEl) {
     progressBarEl.style.width = `${Math.min(stats.lighting_rate, 100)}%`;
   }
-  
-  console.log('统计数据已更新:', stats);
 }
 
 /**
@@ -158,12 +159,6 @@ async function uploadFitFileFromUrl(url) {
     renderTrackOnMap(trackData);
     updateStats();
 
-    console.log('✅ 从URL上传成功:', {
-      url: url,
-      track_id: trackData.track_id,
-      distance_km: trackData.total_distance_km
-    });
-
     return trackData;
 
   } catch (error) {
@@ -185,7 +180,7 @@ async function uploadFitFileFromUrl(url) {
 }
 
 /**
- * 批量从URL上传FIT文件
+ * 批量从URL上传FIT文件（单个加载，逐个渲染）
  * @param {Array<string>} urls - FIT文件URL数组
  * @returns {Promise<Array<Object>>} 所有解析后的轨迹数据
  */
@@ -217,7 +212,78 @@ async function uploadFitFilesFromUrls(urls) {
 
   if (errors.length > 0) {
     showToast(`成功 ${results.length} 个，失败 ${errors.length} 个`, results.length > 0 ? 'success' : 'error');
-    console.warn('上传失败的文件:', errors);
+  } else {
+    showToast(`成功导入 ${results.length} 个轨迹`);
+  }
+
+  return { success: results, failed: errors };
+}
+
+/**
+ * 批量从URL上传FIT文件（全部加载完毕后统一展示）
+ * 加载过程中隐藏统计卡片和地图路线，显示转圈加载动画
+ * @param {Array<string>} urls - FIT文件URL数组
+ * @returns {Promise<Array<Object>>} 所有解析后的轨迹数据
+ */
+async function uploadFitFilesFromUrlsBatch(urls) {
+  if (!Array.isArray(urls) || urls.length === 0) {
+    throw new Error('请提供FIT文件URL数组');
+  }
+
+  // 隐藏统计卡片，显示加载动画
+  const achievementCard = document.querySelector('.achievement-card');
+  if (achievementCard) {
+    achievementCard.style.display = 'none';
+  }
+  
+  showUploadProgress();
+  const progressText = document.getElementById('progress-text');
+  
+  const results = [];
+  const errors = [];
+
+  // 批量下载和解析，但不渲染
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    progressText.textContent = `正在加载第 ${i + 1}/${urls.length} 个文件...`;
+
+    try {
+      // 直接下载和解析，不调用uploadFitFileFromUrl（避免逐个渲染）
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`下载失败: HTTP ${response.status}`);
+      }
+      const buffer = await response.arrayBuffer();
+      const trackData = await parseFitFile(buffer);
+      trackData.fit_file_name = url.split('/').pop() || 'remote.fit';
+      trackData.fit_url = url;
+      
+      uploadedTracks.push(trackData);
+      results.push(trackData);
+    } catch (error) {
+      errors.push({ url, error: error.message });
+      console.warn(`文件加载失败: ${url}`, error);
+    }
+  }
+
+  // 全部加载完成后，统一渲染
+  hideUploadProgress();
+  
+  // 批量渲染所有路线
+  for (const trackData of results) {
+    renderTrackOnMap(trackData);
+  }
+  
+  // 更新统计数据
+  await updateStats();
+  
+  // 显示统计卡片
+  if (achievementCard) {
+    achievementCard.style.display = 'block';
+  }
+
+  if (errors.length > 0) {
+    showToast(`成功 ${results.length} 个，失败 ${errors.length} 个`, results.length > 0 ? 'success' : 'error');
   } else {
     showToast(`成功导入 ${results.length} 个轨迹`);
   }
@@ -231,6 +297,7 @@ window.triggerUpload = triggerUpload;
 window.handleFileUpload = handleFileUpload;
 window.uploadFitFileFromUrl = uploadFitFileFromUrl;
 window.uploadFitFilesFromUrls = uploadFitFilesFromUrls;
+window.uploadFitFilesFromUrlsBatch = uploadFitFilesFromUrlsBatch;
 window.uploadedTracks = uploadedTracks;
 
 window.uploadHandlerReady = true;
