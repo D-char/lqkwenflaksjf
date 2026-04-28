@@ -226,3 +226,86 @@ function switchMapStyle(styleName) {
 
 window.toggleStylePanel = toggleStylePanel;
 window.switchMapStyle = switchMapStyle;
+
+function toggleCachePanel() {
+  const panel = document.getElementById('cache-panel');
+  const stylePanel = document.getElementById('style-panel');
+  
+  if (stylePanel) {
+    stylePanel.style.display = 'none';
+  }
+  
+  if (panel) {
+    const isVisible = panel.style.display === 'block';
+    panel.style.display = isVisible ? 'none' : 'block';
+    
+    if (!isVisible) {
+      refreshCacheStats();
+    }
+  }
+}
+
+async function refreshCacheStats() {
+  const countEl = document.getElementById('cache-count');
+  const distanceEl = document.getElementById('cache-distance');
+  
+  if (!countEl || !distanceEl) return;
+  
+  countEl.textContent = '加载中...';
+  distanceEl.textContent = '加载中...';
+  
+  try {
+    if (window.trackStorage) {
+      const stats = await trackStorage.getCacheStats();
+      
+      countEl.textContent = `${stats.count} 条`;
+      distanceEl.textContent = `${stats.totalDistanceKm} km`;
+    } else {
+      countEl.textContent = '未就绪';
+      distanceEl.textContent = '-';
+    }
+  } catch (error) {
+    console.error('获取缓存统计失败:', error);
+    countEl.textContent = '错误';
+    distanceEl.textContent = '-';
+  }
+}
+
+async function clearAllCache() {
+  if (!confirm('确定要清除所有缓存轨迹吗？\n清除后需要重新下载 FIT 文件。')) {
+    return;
+  }
+  
+  try {
+    if (window.trackStorage) {
+      await trackStorage.clearCache();
+      
+      if (window.uploadedTracks) {
+        window.uploadedTracks.length = 0;
+      }
+      
+      if (window.map) {
+        const overlays = window.map.getOverlays();
+        overlays.clearOverlays();
+      }
+      
+      if (typeof window.updateStats === 'function') {
+        await window.updateStats();
+      }
+      
+      if (typeof window.showToast === 'function') {
+        window.showToast('已清除缓存');
+      }
+      refreshCacheStats();
+    }
+  } catch (error) {
+    console.error('清除缓存失败:', error);
+    if (typeof window.showToast === 'function') {
+      window.showToast('清除缓存失败', 'error');
+    }
+  }
+}
+
+window.toggleCachePanel = toggleCachePanel;
+window.refreshCacheStats = refreshCacheStats;
+window.clearAllCache = clearAllCache;

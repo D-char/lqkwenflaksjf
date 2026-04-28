@@ -1,5 +1,4 @@
-2026/04/01 18:02:51 [notice] 16968#22180: signal process started
-2026/04/01 18:03:07 [notice] 36300#6460: signal process started
-2026/04/01 19:10:09 [notice] 16972#31932: signal process started
-2026/04/01 19:21:15 [notice] 7568#43916: signal process started
-2026/04/03 16:27:53 [emerg] 4164#7364: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
+2026/04/28 16:39:49 [emerg] 35992#45836: host not found in upstream "rfs-web.rfsvr.net" in D:\onelapMap/nginx.conf:26
+2026/04/28 16:43:24 [emerg] 45240#44748: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
+2026/04/28 16:50:39 [emerg] 44904#44620: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
+2026/04/28 16:56:06 [emerg] 42812#45604: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)

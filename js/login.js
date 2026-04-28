@@ -3,19 +3,13 @@
  * 处理用户登录、token管理和API调用
  */
 
-// ============ 顽鹿登录配置 ============
 const ONELAP_CONFIG = {
-  appid: 'wlai_69c0f71a877a0',      // 替换为你的 appid
-  secret: '59461a7550832e4d375d47a66c4865c5',     // 替换为你的 secret
-  loginBaseUrl: 'https://www.onelap.cn',  // 顽鹿官方登录页面
-  apiBaseUrl: ''  // API请求通过nginx代理
+  appid: 'wlai_69c0f71a877a0',
+  secret: '59461a7550832e4d375d47a66c4865c5',
+  loginBaseUrl: 'https://www.onelap.cn',
+  apiBaseUrl: ''
 };
 
-// ============ 登录与 Token 管理 ============
-
-/**
- * 跳转到顽鹿登录页面
- */
 function redirectToLogin() {
   const currentUrl = window.location.href;
   const encodedUrl = btoa(currentUrl);
@@ -23,87 +17,49 @@ function redirectToLogin() {
   window.location.href = loginUrl;
 }
 
-/**
- * 从 URL 参数或 localStorage 获取 token
- * @returns {string|null}
- */
 function getToken() {
-  // 1. 优先从 URL 参数获取（登录成功后的回调）
   const urlParams = new URLSearchParams(window.location.search);
   let token = urlParams.get('tk');
   
   if (token) {
-    // 保存到 localStorage
     localStorage.setItem('onelap_token', token);
-    // 清除 URL 参数
     window.history.replaceState({}, '', window.location.pathname);
     return token;
   }
   
-  // 2. 从 localStorage 获取
   token = localStorage.getItem('onelap_token');
   return token;
 }
 
-/**
- * 检查是否已登录
- * @returns {boolean}
- */
 function isLoggedIn() {
   return !!getToken();
 }
 
-/**
- * 清除登录状态
- */
 function logout() {
   localStorage.removeItem('onelap_token');
   showLoginScreen();
 }
 
-// ============ 界面控制 ============
-
-/**
- * 显示登录界面
- */
 function showLoginScreen() {
   document.getElementById('screen-login').classList.add('active');
   document.getElementById('screen-main').classList.remove('active');
 }
 
-/**
- * 显示主界面
- */
 function showMainScreen() {
   document.getElementById('screen-login').classList.remove('active');
   document.getElementById('screen-main').classList.add('active');
 }
 
-/**
- * 检查是否为token过期错误
- * @param {number} code - 错误码
- * @returns {boolean}
- */
 function isTokenExpired(code) {
   return code === 401 || code === 1001;
 }
 
-/**
- * 处理token过期
- */
 function handleTokenExpired() {
   alert('登录已过期，请重新登录');
   logout();
   redirectToLogin();
 }
 
-// ============ 工具函数 ============
-
-/**
- * 生成随机字符串（nonce）
- * @param {number} len - 长度，默认 10
- * @returns {string}
- */
 function generateNonce(len = 10) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -113,15 +69,6 @@ function generateNonce(len = 10) {
   return result;
 }
 
-/**
- * 生成接口签名
- * @param {string} nonce - 随机字符串
- * @param {string} timestamp - 时间戳（毫秒）
- * @param {string} uri - 接口路径
- * @param {string} appid - 应用 ID
- * @param {string} secret - 应用密钥
- * @returns {string} 签名字符串
- */
 function generateSign(nonce, timestamp, uri, appid, secret) {
   const params = { nonce, timestamp, uri, appid };
   const sortedKeys = Object.keys(params).sort();
@@ -129,11 +76,6 @@ function generateSign(nonce, timestamp, uri, appid, secret) {
   return md5(paramStr + '&secret=' + secret);
 }
 
-/**
- * 获取用户骑行记录
- * @param {Object} options - 查询参数
- * @returns {Promise<Object>}
- */
 async function getCyclingRecords(options = {}) {
   const token = getToken();
   if (!token) {
@@ -172,7 +114,6 @@ async function getCyclingRecords(options = {}) {
   
   const result = await response.json();
   
-  // 检查token是否过期
   if (isTokenExpired(result.code)) {
     handleTokenExpired();
     throw new Error('token已过期');
@@ -185,10 +126,6 @@ async function getCyclingRecords(options = {}) {
   return result;
 }
 
-/**
- * 获取用户信息
- * @returns {Promise<Object>}
- */
 async function getUserInfo() {
   const token = getToken();
   if (!token) {
@@ -225,7 +162,6 @@ async function getUserInfo() {
   
   const result = await response.json();
   
-  // 检查token是否过期
   if (isTokenExpired(result.code)) {
     handleTokenExpired();
     throw new Error('token已过期');
@@ -238,52 +174,71 @@ async function getUserInfo() {
   return result;
 }
 
-// ============ 初始化 ============
-
-/**
- * 初始化应用
- */
 async function initApp() {
-  // 检查登录状态
   if (!isLoggedIn()) {
     showLoginScreen();
     return;
   }
   
-  // 已登录，显示主界面
   showMainScreen();
   
   try {
-    // 获取用户信息
-    const userInfo = await getUserInfo();
-    console.log('用户信息:', userInfo);
-    
-    // 更新用户信息卡片
-    if (userInfo.data) {
-      const user = userInfo.data;
-      document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
-      document.getElementById('user-avatar').textContent = user.nickname ? user.nickname.charAt(0) : '';
-      document.getElementById('user-info-card').style.display = 'flex';
-    }
-    
-    // 初始化地图
     if (typeof initMap === 'function') {
       initMap();
     }
+
+    const userInfoPromise = getUserInfo();
     
-    // 获取骑行记录
-    const records = await getCyclingRecords();
-    console.log('骑行记录:', records);
+    window.uploadedTracks = window.uploadedTracks || [];
     
-    // 批量处理骑行记录中的FIT文件URL，点亮路线
-    console.log('检查骑行记录数据结构:', {
-      recordsType: typeof records,
-      recordsDataType: typeof records.data,
-      recordsDataIsArray: Array.isArray(records.data),
-      recordsDataLength: records.data ? records.data.length : 'undefined'
-    });
+    if (window.trackStorage) {
+      try {
+        const cachedTracks = await trackStorage.getAllTracks();
+        
+        if (cachedTracks && cachedTracks.length > 0) {
+          console.log(`从缓存加载 ${cachedTracks.length} 条轨迹`);
+          
+          window.uploadedTracks.length = 0;
+          
+          for (const track of cachedTracks) {
+            window.uploadedTracks.push(track);
+            if (typeof renderTrackOnMap === 'function') {
+              renderTrackOnMap(track);
+            }
+          }
+          
+          if (typeof updateStats === 'function') {
+            await updateStats();
+          }
+        }
+      } catch (e) {
+        console.warn('缓存加载失败:', e);
+      }
+    }
+
+    try {
+      const userInfo = await userInfoPromise;
+      console.log('用户信息:', userInfo);
+      
+      if (userInfo.data) {
+        const user = userInfo.data;
+        document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
+        document.getElementById('user-avatar').textContent = user.nickname ? user.nickname.charAt(0) : '';
+        document.getElementById('user-info-card').style.display = 'flex';
+        
+        const settingsBtn = document.getElementById('settings-btn');
+        if (settingsBtn) {
+          settingsBtn.style.display = 'none';
+        }
+      }
+    } catch (userInfoError) {
+      console.warn('获取用户信息失败:', userInfoError);
+    }
+
+    try {
+      const records = await getCyclingRecords();
+      console.log('骑行记录:', records);
     
-    // 尝试获取骑行记录数组（支持多种数据结构）
     let recordsArray = null;
     if (Array.isArray(records.data)) {
       recordsArray = records.data;
@@ -298,46 +253,35 @@ async function initApp() {
     }
     
     if (recordsArray && recordsArray.length > 0) {
-      console.log(`找到 ${recordsArray.length} 条骑行记录`);
-      console.log('第一条记录示例:', JSON.stringify(recordsArray[0], null, 2));
+      console.log(`API 返回 ${recordsArray.length} 条记录`);
       
-      // 提取FIT文件URL（尝试多种可能的字段名）
       const fitUrls = recordsArray
         .map(record => record.fit_url || record.file_url || record.download_url || record.activity_file || record.fit_file)
         .filter(url => url && typeof url === 'string' && url.trim() !== '');
       
       console.log(`提取到 ${fitUrls.length} 个FIT文件URL`);
       
-      if (fitUrls.length > 0) {
-        console.log(`开始批量导入 ${fitUrls.length} 个FIT文件...`);
-        console.log('URL列表:', fitUrls.slice(0, 3));
-        
-        if (typeof uploadFitFilesFromUrlsBatch === 'function') {
-          try {
-            const results = await uploadFitFilesFromUrlsBatch(fitUrls);
-            console.log('批量导入完成:', results);
-          } catch (error) {
-            console.error('批量导入过程中出错:', error);
-          }
-        } else {
-          console.error('uploadFitFilesFromUrlsBatch函数未加载');
-        }
-      } else {
-        console.log('未找到FIT文件URL，检查骑行记录中的可用字段:');
-        const sampleRecord = recordsArray[0];
-        console.log('可用字段:', Object.keys(sampleRecord));
-        console.log('完整记录:', sampleRecord);
+      if (fitUrls.length > 0 && typeof uploadFitFilesFromUrlsBatch === 'function') {
+        await uploadFitFilesFromUrlsBatch(fitUrls);
       }
-    } else {
-      console.log('暂无骑行记录或数据结构不正确');
-      console.log('完整返回数据:', records);
+    }
+    } catch (recordsError) {
+      console.warn('获取骑行记录失败:', recordsError);
     }
     
   } catch (error) {
-    console.error('获取数据失败:', error);
-    // token过期已在API函数内部处理，此处处理其他错误
+    console.error('初始化失败:', error);
   }
 }
 
-// 页面加载完成后初始化
+window.redirectToLogin = redirectToLogin;
+window.logout = logout;
+window.showLoginScreen = showLoginScreen;
+window.showMainScreen = showMainScreen;
+window.getToken = getToken;
+window.isLoggedIn = isLoggedIn;
+window.getCyclingRecords = getCyclingRecords;
+window.getUserInfo = getUserInfo;
+window.initApp = initApp;
+
 document.addEventListener('DOMContentLoaded', initApp);

@@ -1,143 +1,4772 @@
 {
   "regions": {
-    "青岛市": {
-      "region_id": "qd_001",
-      "province": "山东省",
-      "city": "青岛市",
-      "total_road_km": 4500,
-      "data_source": "估算值（基于建成区面积和道路密度推算）",
-      "data_year": "2020",
-      "note": "青岛市建成区面积约730平方公里，道路密度约6公里/平方公里",
-      "road_types": {
-        "primary": 800,
-        "secondary": 1200,
-        "tertiary": 1500,
-        "cycleway": 1000
-      },
-      "bounds": {
-        "min_lat": 35.5,
-        "max_lat": 37.5,
-        "min_lon": 119.5,
-        "max_lon": 121.5
-      },
-      "update_time": "2026-04-03"
-    },
-    "北京市": {
-      "region_id": "bj_001",
+    "北京": {
+      "region_id": "bj_北京",
       "province": "北京市",
-      "city": "北京市",
-      "total_road_km": 6200,
-      "data_source": "住房和城乡建设部统计年鉴",
-      "data_year": "2020",
-      "note": "北京市建成区道路长度约6200公里",
-      "road_types": {
-        "primary": 1200,
-        "secondary": 2000,
-        "tertiary": 2500,
-        "cycleway": 500
-      },
+      "city": "北京",
+      "total_road_km": 22363,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "北京路网总长度",
+      "road_types": {},
       "bounds": {
-        "min_lat": 39.4,
-        "max_lat": 41.0,
-        "min_lon": 115.4,
-        "max_lon": 117.5
+        "min_lat": 39.44,
+        "max_lat": 41.06,
+        "min_lon": 115.42,
+        "max_lon": 117.51
       },
-      "update_time": "2026-04-03"
+      "update_time": "2026-04-27"
     },
-    "上海市": {
-      "region_id": "sh_001",
-      "province": "上海市",
-      "city": "上海市",
-      "total_road_km": 5536,
-      "data_source": "住房和城乡建设部统计年鉴（确认数据）",
-      "data_year": "2020",
-      "note": "上海市市辖区建成区道路长度5536公里（2020年统计数据）",
-      "road_types": {
-        "primary": 1100,
-        "secondary": 1800,
-        "tertiary": 2000,
-        "cycleway": 636
-      },
+    "天津": {
+      "region_id": "tj_天津",
+      "province": "天津市",
+      "city": "天津",
+      "total_road_km": 15230,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "天津路网总长度",
+      "road_types": {},
       "bounds": {
-        "min_lat": 30.6,
-        "max_lat": 31.9,
-        "min_lon": 120.9,
+        "min_lat": 38.56,
+        "max_lat": 40.25,
+        "min_lon": 116.7,
+        "max_lon": 118.07
+      },
+      "update_time": "2026-04-27"
+    },
+    "石家庄": {
+      "region_id": "he_石家",
+      "province": "河北省",
+      "city": "石家庄",
+      "total_road_km": 21146,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "石家庄路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.49,
+        "max_lat": 38.88,
+        "min_lon": 113.48,
+        "max_lon": 115.23
+      },
+      "update_time": "2026-04-27"
+    },
+    "唐山": {
+      "region_id": "he_唐山",
+      "province": "河北省",
+      "city": "唐山",
+      "total_road_km": 20200,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "唐山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.03,
+        "max_lat": 40.23,
+        "min_lon": 117.63,
+        "max_lon": 119.25
+      },
+      "update_time": "2026-04-27"
+    },
+    "秦皇岛": {
+      "region_id": "he_秦皇",
+      "province": "河北省",
+      "city": "秦皇岛",
+      "total_road_km": 8908,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "秦皇岛路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.48,
+        "max_lat": 40.62,
+        "min_lon": 118.62,
+        "max_lon": 119.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "邯郸": {
+      "region_id": "he_邯郸",
+      "province": "河北省",
+      "city": "邯郸",
+      "total_road_km": 20200,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "邯郸路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.04,
+        "max_lat": 37.01,
+        "min_lon": 113.45,
+        "max_lon": 115.52
+      },
+      "update_time": "2026-04-27"
+    },
+    "邢台": {
+      "region_id": "he_邢台",
+      "province": "河北省",
+      "city": "邢台",
+      "total_road_km": 21571,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "邢台路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.75,
+        "max_lat": 37.81,
+        "min_lon": 113.52,
+        "max_lon": 115.68
+      },
+      "update_time": "2026-04-27"
+    },
+    "保定": {
+      "region_id": "he_保定",
+      "province": "河北省",
+      "city": "保定",
+      "total_road_km": 23710,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "保定路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 38.1,
+        "max_lat": 39.95,
+        "min_lon": 113.4,
+        "max_lon": 116.2
+      },
+      "update_time": "2026-04-27"
+    },
+    "张家口": {
+      "region_id": "he_张家",
+      "province": "河北省",
+      "city": "张家口",
+      "total_road_km": 23589,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "张家口路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.55,
+        "max_lat": 41.95,
+        "min_lon": 113.8,
+        "max_lon": 116.3
+      },
+      "update_time": "2026-04-27"
+    },
+    "承德": {
+      "region_id": "he_承德",
+      "province": "河北省",
+      "city": "承德",
+      "total_road_km": 24804,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "承德路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.12,
+        "max_lat": 42.62,
+        "min_lon": 115.78,
+        "max_lon": 119.15
+      },
+      "update_time": "2026-04-27"
+    },
+    "沧州": {
+      "region_id": "he_沧州",
+      "province": "河北省",
+      "city": "沧州",
+      "total_road_km": 19573,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "沧州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.5,
+        "max_lat": 38.95,
+        "min_lon": 115.7,
+        "max_lon": 117.85
+      },
+      "update_time": "2026-04-27"
+    },
+    "廊坊": {
+      "region_id": "he_廊坊",
+      "province": "河北省",
+      "city": "廊坊",
+      "total_road_km": 11549,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "廊坊路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 38.7,
+        "max_lat": 39.8,
+        "min_lon": 116.05,
+        "max_lon": 117.45
+      },
+      "update_time": "2026-04-27"
+    },
+    "衡水": {
+      "region_id": "he_衡水",
+      "province": "河北省",
+      "city": "衡水",
+      "total_road_km": 13968,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "衡水路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.03,
+        "max_lat": 38.25,
+        "min_lon": 115.1,
+        "max_lon": 116.35
+      },
+      "update_time": "2026-04-27"
+    },
+    "太原": {
+      "region_id": "sx_太原",
+      "province": "山西省",
+      "city": "太原",
+      "total_road_km": 6730,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "太原路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.27,
+        "max_lat": 38.25,
+        "min_lon": 111.5,
+        "max_lon": 113.09
+      },
+      "update_time": "2026-04-27"
+    },
+    "大同": {
+      "region_id": "sx_大同",
+      "province": "山西省",
+      "city": "大同",
+      "total_road_km": 12744,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "大同路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.03,
+        "max_lat": 40.44,
+        "min_lon": 112.06,
+        "max_lon": 114.33
+      },
+      "update_time": "2026-04-27"
+    },
+    "阳泉": {
+      "region_id": "sx_阳泉",
+      "province": "山西省",
+      "city": "阳泉",
+      "total_road_km": 5734,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "阳泉路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.57,
+        "max_lat": 38.19,
+        "min_lon": 113.08,
+        "max_lon": 114.07
+      },
+      "update_time": "2026-04-27"
+    },
+    "长治": {
+      "region_id": "sx_长治",
+      "province": "山西省",
+      "city": "长治",
+      "total_road_km": 12509,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "长治路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.49,
+        "max_lat": 37.08,
+        "min_lon": 111.58,
+        "max_lon": 113.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "晋城": {
+      "region_id": "sx_晋城",
+      "province": "山西省",
+      "city": "晋城",
+      "total_road_km": 9835,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "晋城路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.12,
+        "max_lat": 36.05,
+        "min_lon": 111.93,
+        "max_lon": 113.15
+      },
+      "update_time": "2026-04-27"
+    },
+    "朔州": {
+      "region_id": "sx_朔州",
+      "province": "山西省",
+      "city": "朔州",
+      "total_road_km": 10278,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "朔州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.05,
+        "max_lat": 40.22,
+        "min_lon": 111.53,
+        "max_lon": 113.32
+      },
+      "update_time": "2026-04-27"
+    },
+    "晋中": {
+      "region_id": "sx_晋中",
+      "province": "山西省",
+      "city": "晋中",
+      "total_road_km": 16246,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "晋中路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.65,
+        "max_lat": 38.06,
+        "min_lon": 111.23,
+        "max_lon": 114.05
+      },
+      "update_time": "2026-04-27"
+    },
+    "运城": {
+      "region_id": "sx_运城",
+      "province": "山西省",
+      "city": "运城",
+      "total_road_km": 16453,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "运城路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.53,
+        "max_lat": 35.85,
+        "min_lon": 110.15,
+        "max_lon": 112.04
+      },
+      "update_time": "2026-04-27"
+    },
+    "忻州": {
+      "region_id": "sx_忻州",
+      "province": "山西省",
+      "city": "忻州",
+      "total_road_km": 17486,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "忻州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 38.15,
+        "max_lat": 39.4,
+        "min_lon": 111.0,
+        "max_lon": 113.58
+      },
+      "update_time": "2026-04-27"
+    },
+    "临汾": {
+      "region_id": "sx_临汾",
+      "province": "山西省",
+      "city": "临汾",
+      "total_road_km": 19576,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "临汾路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.23,
+        "max_lat": 36.93,
+        "min_lon": 110.22,
+        "max_lon": 112.28
+      },
+      "update_time": "2026-04-27"
+    },
+    "吕梁": {
+      "region_id": "sx_吕梁",
+      "province": "山西省",
+      "city": "吕梁",
+      "total_road_km": 17880,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "吕梁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.5,
+        "max_lat": 38.84,
+        "min_lon": 110.22,
+        "max_lon": 112.19
+      },
+      "update_time": "2026-04-27"
+    },
+    "呼和浩特": {
+      "region_id": "nm_呼和",
+      "province": "内蒙古自治区",
+      "city": "呼和浩特",
+      "total_road_km": 8219,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "呼和浩特路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.58,
+        "max_lat": 41.4,
+        "min_lon": 110.46,
+        "max_lon": 112.89
+      },
+      "update_time": "2026-04-27"
+    },
+    "包头": {
+      "region_id": "nm_包头",
+      "province": "内蒙古自治区",
+      "city": "包头",
+      "total_road_km": 9497,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "包头路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.2,
+        "max_lat": 42.73,
+        "min_lon": 109.15,
+        "max_lon": 111.27
+      },
+      "update_time": "2026-04-27"
+    },
+    "乌海": {
+      "region_id": "nm_乌海",
+      "province": "内蒙古自治区",
+      "city": "乌海",
+      "total_road_km": 1073,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "乌海路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.15,
+        "max_lat": 39.75,
+        "min_lon": 106.36,
+        "max_lon": 107.08
+      },
+      "update_time": "2026-04-27"
+    },
+    "赤峰": {
+      "region_id": "nm_赤峰",
+      "province": "内蒙古自治区",
+      "city": "赤峰",
+      "total_road_km": 29542,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "赤峰路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 41.17,
+        "max_lat": 44.48,
+        "min_lon": 116.21,
+        "max_lon": 120.58
+      },
+      "update_time": "2026-04-27"
+    },
+    "通辽": {
+      "region_id": "nm_通辽",
+      "province": "内蒙古自治区",
+      "city": "通辽",
+      "total_road_km": 22987,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "通辽路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 42.15,
+        "max_lat": 45.59,
+        "min_lon": 119.14,
+        "max_lon": 123.43
+      },
+      "update_time": "2026-04-27"
+    },
+    "鄂尔多斯": {
+      "region_id": "nm_鄂尔",
+      "province": "内蒙古自治区",
+      "city": "鄂尔多斯",
+      "total_road_km": 25505,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鄂尔多斯路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.35,
+        "max_lat": 40.51,
+        "min_lon": 106.42,
+        "max_lon": 111.27
+      },
+      "update_time": "2026-04-27"
+    },
+    "呼伦贝尔": {
+      "region_id": "nm_呼伦",
+      "province": "内蒙古自治区",
+      "city": "呼伦贝尔",
+      "total_road_km": 29415,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "呼伦贝尔路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 47.05,
+        "max_lat": 53.33,
+        "min_lon": 115.31,
+        "max_lon": 126.04
+      },
+      "update_time": "2026-04-27"
+    },
+    "巴彦淖尔": {
+      "region_id": "nm_巴彦",
+      "province": "内蒙古自治区",
+      "city": "巴彦淖尔",
+      "total_road_km": 23988,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "巴彦淖尔路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.52,
+        "max_lat": 42.28,
+        "min_lon": 105.12,
+        "max_lon": 109.53
+      },
+      "update_time": "2026-04-27"
+    },
+    "乌兰察布": {
+      "region_id": "nm_乌兰",
+      "province": "内蒙古自治区",
+      "city": "乌兰察布",
+      "total_road_km": 17747,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "乌兰察布路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.2,
+        "max_lat": 43.28,
+        "min_lon": 110.26,
+        "max_lon": 114.49
+      },
+      "update_time": "2026-04-27"
+    },
+    "沈阳": {
+      "region_id": "ln_沈阳",
+      "province": "辽宁省",
+      "city": "沈阳",
+      "total_road_km": 13328,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "沈阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 41.12,
+        "max_lat": 43.02,
+        "min_lon": 122.25,
+        "max_lon": 123.79
+      },
+      "update_time": "2026-04-27"
+    },
+    "大连": {
+      "region_id": "ln_大连",
+      "province": "辽宁省",
+      "city": "大连",
+      "total_road_km": 13401,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "大连路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 38.43,
+        "max_lat": 40.12,
+        "min_lon": 120.58,
+        "max_lon": 123.31
+      },
+      "update_time": "2026-04-27"
+    },
+    "鞍山": {
+      "region_id": "ln_鞍山",
+      "province": "辽宁省",
+      "city": "鞍山",
+      "total_road_km": 7745,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鞍山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.27,
+        "max_lat": 41.34,
+        "min_lon": 122.1,
+        "max_lon": 123.64
+      },
+      "update_time": "2026-04-27"
+    },
+    "抚顺": {
+      "region_id": "ln_抚顺",
+      "province": "辽宁省",
+      "city": "抚顺",
+      "total_road_km": 6660,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "抚顺路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 41.14,
+        "max_lat": 42.46,
+        "min_lon": 123.39,
+        "max_lon": 125.28
+      },
+      "update_time": "2026-04-27"
+    },
+    "本溪": {
+      "region_id": "ln_本溪",
+      "province": "辽宁省",
+      "city": "本溪",
+      "total_road_km": 4728,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "本溪路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.83,
+        "max_lat": 41.6,
+        "min_lon": 123.34,
+        "max_lon": 125.46
+      },
+      "update_time": "2026-04-27"
+    },
+    "丹东": {
+      "region_id": "ln_丹东",
+      "province": "辽宁省",
+      "city": "丹东",
+      "total_road_km": 10280,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "丹东路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.68,
+        "max_lat": 41.1,
+        "min_lon": 123.22,
+        "max_lon": 125.42
+      },
+      "update_time": "2026-04-27"
+    },
+    "锦州": {
+      "region_id": "ln_锦州",
+      "province": "辽宁省",
+      "city": "锦州",
+      "total_road_km": 10358,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "锦州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.48,
+        "max_lat": 42.02,
+        "min_lon": 120.43,
+        "max_lon": 122.19
+      },
+      "update_time": "2026-04-27"
+    },
+    "营口": {
+      "region_id": "ln_营口",
+      "province": "辽宁省",
+      "city": "营口",
+      "total_road_km": 4668,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "营口路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.89,
+        "max_lat": 40.96,
+        "min_lon": 121.73,
+        "max_lon": 122.8
+      },
+      "update_time": "2026-04-27"
+    },
+    "阜新": {
+      "region_id": "ln_阜新",
+      "province": "辽宁省",
+      "city": "阜新",
+      "total_road_km": 9253,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "阜新路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 41.38,
+        "max_lat": 42.51,
+        "min_lon": 121.01,
+        "max_lon": 122.56
+      },
+      "update_time": "2026-04-27"
+    },
+    "辽阳": {
+      "region_id": "ln_辽阳",
+      "province": "辽宁省",
+      "city": "辽阳",
+      "total_road_km": 4104,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "辽阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.72,
+        "max_lat": 41.53,
+        "min_lon": 122.64,
+        "max_lon": 123.62
+      },
+      "update_time": "2026-04-27"
+    },
+    "盘锦": {
+      "region_id": "ln_盘锦",
+      "province": "辽宁省",
+      "city": "盘锦",
+      "total_road_km": 4091,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "盘锦路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.69,
+        "max_lat": 41.33,
+        "min_lon": 121.25,
+        "max_lon": 122.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "铁岭": {
+      "region_id": "ln_铁岭",
+      "province": "辽宁省",
+      "city": "铁岭",
+      "total_road_km": 11997,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "铁岭路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 41.59,
+        "max_lat": 43.41,
+        "min_lon": 123.14,
+        "max_lon": 125.37
+      },
+      "update_time": "2026-04-27"
+    },
+    "朝阳": {
+      "region_id": "ln_朝阳",
+      "province": "辽宁省",
+      "city": "朝阳",
+      "total_road_km": 18581,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "朝阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.55,
+        "max_lat": 42.38,
+        "min_lon": 118.5,
+        "max_lon": 121.17
+      },
+      "update_time": "2026-04-27"
+    },
+    "葫芦岛": {
+      "region_id": "ln_葫芦",
+      "province": "辽宁省",
+      "city": "葫芦岛",
+      "total_road_km": 10237,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "葫芦岛路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.98,
+        "max_lat": 41.12,
+        "min_lon": 119.13,
+        "max_lon": 121.02
+      },
+      "update_time": "2026-04-27"
+    },
+    "长春": {
+      "region_id": "jl_长春",
+      "province": "吉林省",
+      "city": "长春",
+      "total_road_km": 28238,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "长春路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 43.05,
+        "max_lat": 45.25,
+        "min_lon": 124.18,
+        "max_lon": 127.02
+      },
+      "update_time": "2026-04-27"
+    },
+    "吉林": {
+      "region_id": "jl_吉林",
+      "province": "吉林省",
+      "city": "吉林",
+      "total_road_km": 15415,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "吉林路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 42.31,
+        "max_lat": 44.51,
+        "min_lon": 125.4,
+        "max_lon": 127.56
+      },
+      "update_time": "2026-04-27"
+    },
+    "四平": {
+      "region_id": "jl_四平",
+      "province": "吉林省",
+      "city": "四平",
+      "total_road_km": 8024,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "四平路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 42.49,
+        "max_lat": 44.09,
+        "min_lon": 123.54,
+        "max_lon": 125.29
+      },
+      "update_time": "2026-04-27"
+    },
+    "辽源": {
+      "region_id": "jl_辽源",
+      "province": "吉林省",
+      "city": "辽源",
+      "total_road_km": 5259,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "辽源路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 42.25,
+        "max_lat": 43.22,
+        "min_lon": 124.77,
+        "max_lon": 125.74
+      },
+      "update_time": "2026-04-27"
+    },
+    "通化": {
+      "region_id": "jl_通化",
+      "province": "吉林省",
+      "city": "通化",
+      "total_road_km": 7754,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "通化路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 40.85,
+        "max_lat": 42.54,
+        "min_lon": 125.1,
+        "max_lon": 126.82
+      },
+      "update_time": "2026-04-27"
+    },
+    "白山": {
+      "region_id": "jl_白山",
+      "province": "吉林省",
+      "city": "白山",
+      "total_road_km": 6824,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "白山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 41.21,
+        "max_lat": 42.5,
+        "min_lon": 126.07,
+        "max_lon": 128.18
+      },
+      "update_time": "2026-04-27"
+    },
+    "松原": {
+      "region_id": "jl_松原",
+      "province": "吉林省",
+      "city": "松原",
+      "total_road_km": 13894,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "松原路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 43.59,
+        "max_lat": 45.82,
+        "min_lon": 123.56,
+        "max_lon": 126.11
+      },
+      "update_time": "2026-04-27"
+    },
+    "白城": {
+      "region_id": "jl_白城",
+      "province": "吉林省",
+      "city": "白城",
+      "total_road_km": 13416,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "白城路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 44.13,
+        "max_lat": 46.18,
+        "min_lon": 121.38,
+        "max_lon": 124.22
+      },
+      "update_time": "2026-04-27"
+    },
+    "哈尔滨": {
+      "region_id": "hl_哈尔",
+      "province": "黑龙江省",
+      "city": "哈尔滨",
+      "total_road_km": 24973,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "哈尔滨路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 44.04,
+        "max_lat": 46.4,
+        "min_lon": 125.42,
+        "max_lon": 130.1
+      },
+      "update_time": "2026-04-27"
+    },
+    "齐齐哈尔": {
+      "region_id": "hl_齐齐",
+      "province": "黑龙江省",
+      "city": "齐齐哈尔",
+      "total_road_km": 24822,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "齐齐哈尔路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 45.43,
+        "max_lat": 48.73,
+        "min_lon": 122.4,
+        "max_lon": 126.68
+      },
+      "update_time": "2026-04-27"
+    },
+    "鸡西": {
+      "region_id": "hl_鸡西",
+      "province": "黑龙江省",
+      "city": "鸡西",
+      "total_road_km": 9240,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鸡西路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 44.51,
+        "max_lat": 46.36,
+        "min_lon": 130.24,
+        "max_lon": 133.56
+      },
+      "update_time": "2026-04-27"
+    },
+    "鹤岗": {
+      "region_id": "hl_鹤岗",
+      "province": "黑龙江省",
+      "city": "鹤岗",
+      "total_road_km": 3033,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鹤岗路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 46.66,
+        "max_lat": 48.39,
+        "min_lon": 129.4,
+        "max_lon": 132.31
+      },
+      "update_time": "2026-04-27"
+    },
+    "双鸭山": {
+      "region_id": "hl_双鸭",
+      "province": "黑龙江省",
+      "city": "双鸭山",
+      "total_road_km": 4355,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "双鸭山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 45.73,
+        "max_lat": 47.69,
+        "min_lon": 130.24,
+        "max_lon": 133.33
+      },
+      "update_time": "2026-04-27"
+    },
+    "大庆": {
+      "region_id": "hl_大庆",
+      "province": "黑龙江省",
+      "city": "大庆",
+      "total_road_km": 7605,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "大庆路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 45.46,
+        "max_lat": 47.47,
+        "min_lon": 123.79,
+        "max_lon": 126.11
+      },
+      "update_time": "2026-04-27"
+    },
+    "伊春": {
+      "region_id": "hl_伊春",
+      "province": "黑龙江省",
+      "city": "伊春",
+      "total_road_km": 7619,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "伊春路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 46.28,
+        "max_lat": 49.25,
+        "min_lon": 127.42,
+        "max_lon": 130.67
+      },
+      "update_time": "2026-04-27"
+    },
+    "佳木斯": {
+      "region_id": "hl_佳木",
+      "province": "黑龙江省",
+      "city": "佳木斯",
+      "total_road_km": 10879,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "佳木斯路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 45.56,
+        "max_lat": 48.27,
+        "min_lon": 129.3,
+        "max_lon": 135.07
+      },
+      "update_time": "2026-04-27"
+    },
+    "七台河": {
+      "region_id": "hl_七台",
+      "province": "黑龙江省",
+      "city": "七台河",
+      "total_road_km": 1834,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "七台河路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 45.18,
+        "max_lat": 46.28,
+        "min_lon": 130.2,
+        "max_lon": 131.67
+      },
+      "update_time": "2026-04-27"
+    },
+    "牡丹江": {
+      "region_id": "hl_牡丹",
+      "province": "黑龙江省",
+      "city": "牡丹江",
+      "total_road_km": 12531,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "牡丹江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 43.27,
+        "max_lat": 45.75,
+        "min_lon": 128.02,
+        "max_lon": 131.52
+      },
+      "update_time": "2026-04-27"
+    },
+    "黑河": {
+      "region_id": "hl_黑河",
+      "province": "黑龙江省",
+      "city": "黑河",
+      "total_road_km": 16600,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "黑河路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 47.42,
+        "max_lat": 51.03,
+        "min_lon": 124.45,
+        "max_lon": 129.18
+      },
+      "update_time": "2026-04-27"
+    },
+    "上海": {
+      "region_id": "sh_上海",
+      "province": "上海市",
+      "city": "上海",
+      "total_road_km": 13005,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "上海路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.68,
+        "max_lat": 31.88,
+        "min_lon": 120.85,
         "max_lon": 122.2
       },
-      "update_time": "2026-04-03"
+      "update_time": "2026-04-27"
     },
-    "深圳市": {
-      "region_id": "sz_001",
-      "province": "广东省",
-      "city": "深圳市",
-      "total_road_km": 3800,
-      "data_source": "估算值（基于建成区面积和道路密度推算）",
-      "data_year": "2020",
-      "note": "深圳市建成区面积约900平方公里，道路密度约4.2公里/平方公里",
-      "road_types": {
-        "primary": 700,
-        "secondary": 1100,
-        "tertiary": 1400,
-        "cycleway": 600
-      },
+    "南京": {
+      "region_id": "js_南京",
+      "province": "江苏省",
+      "city": "南京",
+      "total_road_km": 9846,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南京路网总长度",
+      "road_types": {},
       "bounds": {
-        "min_lat": 22.4,
-        "max_lat": 22.9,
-        "min_lon": 113.7,
-        "max_lon": 114.6
+        "min_lat": 31.14,
+        "max_lat": 32.62,
+        "min_lon": 118.22,
+        "max_lon": 119.24
       },
-      "update_time": "2026-04-03"
+      "update_time": "2026-04-27"
     },
-    "广州市": {
-      "region_id": "gz_001",
-      "province": "广东省",
-      "city": "广州市",
-      "total_road_km": 5800,
-      "data_source": "估算值（基于建成区面积和道路密度推算）",
-      "data_year": "2020",
-      "note": "广州市建成区面积约1300平方公里，道路密度约4.5公里/平方公里",
-      "road_types": {
-        "primary": 1100,
-        "secondary": 1700,
-        "tertiary": 2200,
-        "cycleway": 800
-      },
+    "无锡": {
+      "region_id": "js_无锡",
+      "province": "江苏省",
+      "city": "无锡",
+      "total_road_km": 7603,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "无锡路网总长度",
+      "road_types": {},
       "bounds": {
-        "min_lat": 22.5,
-        "max_lat": 23.5,
-        "min_lon": 112.9,
-        "max_lon": 114.0
+        "min_lat": 31.07,
+        "max_lat": 31.86,
+        "min_lon": 119.33,
+        "max_lon": 120.77
       },
-      "update_time": "2026-04-03"
+      "update_time": "2026-04-27"
     },
-    "杭州市": {
-      "region_id": "hz_001",
+    "徐州": {
+      "region_id": "js_徐州",
+      "province": "江苏省",
+      "city": "徐州",
+      "total_road_km": 15907,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "徐州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.72,
+        "max_lat": 34.81,
+        "min_lon": 116.22,
+        "max_lon": 118.28
+      },
+      "update_time": "2026-04-27"
+    },
+    "常州": {
+      "region_id": "js_常州",
+      "province": "江苏省",
+      "city": "常州",
+      "total_road_km": 8512,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "常州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.09,
+        "max_lat": 32.04,
+        "min_lon": 119.08,
+        "max_lon": 120.12
+      },
+      "update_time": "2026-04-27"
+    },
+    "苏州": {
+      "region_id": "js_苏州",
+      "province": "江苏省",
+      "city": "苏州",
+      "total_road_km": 11472,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "苏州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.76,
+        "max_lat": 31.87,
+        "min_lon": 119.89,
+        "max_lon": 121.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "南通": {
+      "region_id": "js_南通",
+      "province": "江苏省",
+      "city": "南通",
+      "total_road_km": 17506,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南通路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.41,
+        "max_lat": 32.69,
+        "min_lon": 120.12,
+        "max_lon": 121.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "连云港": {
+      "region_id": "js_连云",
+      "province": "江苏省",
+      "city": "连云港",
+      "total_road_km": 12210,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "连云港路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.97,
+        "max_lat": 35.07,
+        "min_lon": 118.24,
+        "max_lon": 119.73
+      },
+      "update_time": "2026-04-27"
+    },
+    "淮安": {
+      "region_id": "js_淮安",
+      "province": "江苏省",
+      "city": "淮安",
+      "total_road_km": 13706,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "淮安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.43,
+        "max_lat": 34.06,
+        "min_lon": 118.12,
+        "max_lon": 119.54
+      },
+      "update_time": "2026-04-27"
+    },
+    "盐城": {
+      "region_id": "js_盐城",
+      "province": "江苏省",
+      "city": "盐城",
+      "total_road_km": 22131,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "盐城路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.85,
+        "max_lat": 34.28,
+        "min_lon": 119.27,
+        "max_lon": 120.95
+      },
+      "update_time": "2026-04-27"
+    },
+    "扬州": {
+      "region_id": "js_扬州",
+      "province": "江苏省",
+      "city": "扬州",
+      "total_road_km": 9604,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "扬州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.15,
+        "max_lat": 33.25,
+        "min_lon": 119.01,
+        "max_lon": 119.98
+      },
+      "update_time": "2026-04-27"
+    },
+    "镇江": {
+      "region_id": "js_镇江",
+      "province": "江苏省",
+      "city": "镇江",
+      "total_road_km": 6895,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "镇江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.56,
+        "max_lat": 32.29,
+        "min_lon": 118.73,
+        "max_lon": 119.75
+      },
+      "update_time": "2026-04-27"
+    },
+    "泰州": {
+      "region_id": "js_泰州",
+      "province": "江苏省",
+      "city": "泰州",
+      "total_road_km": 10101,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "泰州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.05,
+        "max_lat": 33.0,
+        "min_lon": 119.38,
+        "max_lon": 120.56
+      },
+      "update_time": "2026-04-27"
+    },
+    "宿迁": {
+      "region_id": "js_宿迁",
+      "province": "江苏省",
+      "city": "宿迁",
+      "total_road_km": 12506,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宿迁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.25,
+        "max_lat": 34.25,
+        "min_lon": 117.56,
+        "max_lon": 119.1
+      },
+      "update_time": "2026-04-27"
+    },
+    "杭州": {
+      "region_id": "zj_杭州",
       "province": "浙江省",
-      "city": "杭州市",
-      "total_road_km": 4200,
-      "data_source": "估算值（基于建成区面积和道路密度推算）",
-      "data_year": "2020",
-      "road_types": {
-        "primary": 800,
-        "secondary": 1300,
-        "tertiary": 1600,
-        "cycleway": 500
-      },
+      "city": "杭州",
+      "total_road_km": 16632,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "杭州路网总长度",
+      "road_types": {},
       "bounds": {
-        "min_lat": 29.8,
-        "max_lat": 30.9,
-        "min_lon": 119.6,
-        "max_lon": 121.0
+        "min_lat": 29.18,
+        "max_lat": 30.56,
+        "min_lon": 118.34,
+        "max_lon": 120.72
       },
-      "update_time": "2026-04-03"
+      "update_time": "2026-04-27"
+    },
+    "宁波": {
+      "region_id": "zj_宁波",
+      "province": "浙江省",
+      "city": "宁波",
+      "total_road_km": 11470,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宁波路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.85,
+        "max_lat": 30.33,
+        "min_lon": 120.55,
+        "max_lon": 122.16
+      },
+      "update_time": "2026-04-27"
+    },
+    "温州": {
+      "region_id": "zj_温州",
+      "province": "浙江省",
+      "city": "温州",
+      "total_road_km": 15533,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "温州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.03,
+        "max_lat": 28.55,
+        "min_lon": 119.37,
+        "max_lon": 121.55
+      },
+      "update_time": "2026-04-27"
+    },
+    "嘉兴": {
+      "region_id": "zj_嘉兴",
+      "province": "浙江省",
+      "city": "嘉兴",
+      "total_road_km": 8246,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "嘉兴路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.21,
+        "max_lat": 31.03,
+        "min_lon": 120.18,
+        "max_lon": 121.41
+      },
+      "update_time": "2026-04-27"
+    },
+    "湖州": {
+      "region_id": "zj_湖州",
+      "province": "浙江省",
+      "city": "湖州",
+      "total_road_km": 8222,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "湖州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.22,
+        "max_lat": 31.17,
+        "min_lon": 119.14,
+        "max_lon": 120.57
+      },
+      "update_time": "2026-04-27"
+    },
+    "绍兴": {
+      "region_id": "zj_绍兴",
+      "province": "浙江省",
+      "city": "绍兴",
+      "total_road_km": 10480,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "绍兴路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.22,
+        "max_lat": 30.19,
+        "min_lon": 119.78,
+        "max_lon": 121.13
+      },
+      "update_time": "2026-04-27"
+    },
+    "金华": {
+      "region_id": "zj_金华",
+      "province": "浙江省",
+      "city": "金华",
+      "total_road_km": 13232,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "金华路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.32,
+        "max_lat": 29.72,
+        "min_lon": 119.14,
+        "max_lon": 120.72
+      },
+      "update_time": "2026-04-27"
+    },
+    "衢州": {
+      "region_id": "zj_衢州",
+      "province": "浙江省",
+      "city": "衢州",
+      "total_road_km": 8735,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "衢州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.14,
+        "max_lat": 29.35,
+        "min_lon": 118.01,
+        "max_lon": 119.25
+      },
+      "update_time": "2026-04-27"
+    },
+    "舟山": {
+      "region_id": "zj_舟山",
+      "province": "浙江省",
+      "city": "舟山",
+      "total_road_km": 1935,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "舟山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.32,
+        "max_lat": 30.86,
+        "min_lon": 121.56,
+        "max_lon": 123.25
+      },
+      "update_time": "2026-04-27"
+    },
+    "台州": {
+      "region_id": "zj_台州",
+      "province": "浙江省",
+      "city": "台州",
+      "total_road_km": 13298,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "台州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.85,
+        "max_lat": 29.2,
+        "min_lon": 120.17,
+        "max_lon": 121.86
+      },
+      "update_time": "2026-04-27"
+    },
+    "丽水": {
+      "region_id": "zj_丽水",
+      "province": "浙江省",
+      "city": "丽水",
+      "total_road_km": 15135,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "丽水路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.25,
+        "max_lat": 28.83,
+        "min_lon": 118.41,
+        "max_lon": 120.26
+      },
+      "update_time": "2026-04-27"
+    },
+    "合肥": {
+      "region_id": "ah_合肥",
+      "province": "安徽省",
+      "city": "合肥",
+      "total_road_km": 20154,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "合肥路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.94,
+        "max_lat": 32.63,
+        "min_lon": 116.41,
+        "max_lon": 117.98
+      },
+      "update_time": "2026-04-27"
+    },
+    "芜湖": {
+      "region_id": "ah_芜湖",
+      "province": "安徽省",
+      "city": "芜湖",
+      "total_road_km": 11317,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "芜湖路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.38,
+        "max_lat": 31.53,
+        "min_lon": 117.41,
+        "max_lon": 118.89
+      },
+      "update_time": "2026-04-27"
+    },
+    "蚌埠": {
+      "region_id": "ah_蚌埠",
+      "province": "安徽省",
+      "city": "蚌埠",
+      "total_road_km": 11085,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "蚌埠路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.42,
+        "max_lat": 33.54,
+        "min_lon": 116.67,
+        "max_lon": 117.78
+      },
+      "update_time": "2026-04-27"
+    },
+    "淮南": {
+      "region_id": "ah_淮南",
+      "province": "安徽省",
+      "city": "淮南",
+      "total_road_km": 9521,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "淮南路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.94,
+        "max_lat": 33.0,
+        "min_lon": 116.21,
+        "max_lon": 117.38
+      },
+      "update_time": "2026-04-27"
+    },
+    "马鞍山": {
+      "region_id": "ah_马鞍",
+      "province": "安徽省",
+      "city": "马鞍山",
+      "total_road_km": 7789,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "马鞍山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.13,
+        "max_lat": 31.87,
+        "min_lon": 117.92,
+        "max_lon": 118.89
+      },
+      "update_time": "2026-04-27"
+    },
+    "淮北": {
+      "region_id": "ah_淮北",
+      "province": "安徽省",
+      "city": "淮北",
+      "total_road_km": 5371,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "淮北路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.16,
+        "max_lat": 34.14,
+        "min_lon": 116.23,
+        "max_lon": 117.14
+      },
+      "update_time": "2026-04-27"
+    },
+    "铜陵": {
+      "region_id": "ah_铜陵",
+      "province": "安徽省",
+      "city": "铜陵",
+      "total_road_km": 5785,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "铜陵路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.45,
+        "max_lat": 31.09,
+        "min_lon": 117.35,
+        "max_lon": 118.09
+      },
+      "update_time": "2026-04-27"
+    },
+    "安庆": {
+      "region_id": "ah_安庆",
+      "province": "安徽省",
+      "city": "安庆",
+      "total_road_km": 26341,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "安庆路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.73,
+        "max_lat": 31.17,
+        "min_lon": 115.46,
+        "max_lon": 117.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "黄山": {
+      "region_id": "ah_黄山",
+      "province": "安徽省",
+      "city": "黄山",
+      "total_road_km": 7760,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "黄山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.24,
+        "max_lat": 30.52,
+        "min_lon": 117.12,
+        "max_lon": 118.89
+      },
+      "update_time": "2026-04-27"
+    },
+    "滁州": {
+      "region_id": "ah_滁州",
+      "province": "安徽省",
+      "city": "滁州",
+      "total_road_km": 20598,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "滁州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.66,
+        "max_lat": 33.22,
+        "min_lon": 117.19,
+        "max_lon": 119.13
+      },
+      "update_time": "2026-04-27"
+    },
+    "阜阳": {
+      "region_id": "ah_阜阳",
+      "province": "安徽省",
+      "city": "阜阳",
+      "total_road_km": 21309,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "阜阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.25,
+        "max_lat": 33.47,
+        "min_lon": 114.82,
+        "max_lon": 116.49
+      },
+      "update_time": "2026-04-27"
+    },
+    "宿州": {
+      "region_id": "ah_宿州",
+      "province": "安徽省",
+      "city": "宿州",
+      "total_road_km": 21251,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宿州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.18,
+        "max_lat": 34.38,
+        "min_lon": 116.09,
+        "max_lon": 118.1
+      },
+      "update_time": "2026-04-27"
+    },
+    "六安": {
+      "region_id": "ah_六安",
+      "province": "安徽省",
+      "city": "六安",
+      "total_road_km": 25307,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "六安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.98,
+        "max_lat": 32.35,
+        "min_lon": 115.3,
+        "max_lon": 117.27
+      },
+      "update_time": "2026-04-27"
+    },
+    "亳州": {
+      "region_id": "ah_亳州",
+      "province": "安徽省",
+      "city": "亳州",
+      "total_road_km": 18254,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "亳州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.87,
+        "max_lat": 34.05,
+        "min_lon": 115.53,
+        "max_lon": 116.49
+      },
+      "update_time": "2026-04-27"
+    },
+    "池州": {
+      "region_id": "ah_池州",
+      "province": "安徽省",
+      "city": "池州",
+      "total_road_km": 9560,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "池州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.33,
+        "max_lat": 30.85,
+        "min_lon": 116.38,
+        "max_lon": 118.07
+      },
+      "update_time": "2026-04-27"
+    },
+    "宣城": {
+      "region_id": "ah_宣城",
+      "province": "安徽省",
+      "city": "宣城",
+      "total_road_km": 16587,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宣城路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.57,
+        "max_lat": 31.19,
+        "min_lon": 117.59,
+        "max_lon": 119.4
+      },
+      "update_time": "2026-04-27"
+    },
+    "福州": {
+      "region_id": "fj_福州",
+      "province": "福建省",
+      "city": "福州",
+      "total_road_km": 12298,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "福州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.15,
+        "max_lat": 26.83,
+        "min_lon": 118.08,
+        "max_lon": 120.31
+      },
+      "update_time": "2026-04-27"
+    },
+    "厦门": {
+      "region_id": "fj_厦门",
+      "province": "福建省",
+      "city": "厦门",
+      "total_road_km": 2135,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "厦门路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.23,
+        "max_lat": 24.9,
+        "min_lon": 117.75,
+        "max_lon": 118.52
+      },
+      "update_time": "2026-04-27"
+    },
+    "莆田": {
+      "region_id": "fj_莆田",
+      "province": "福建省",
+      "city": "莆田",
+      "total_road_km": 6549,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "莆田路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.96,
+        "max_lat": 25.72,
+        "min_lon": 118.27,
+        "max_lon": 119.46
+      },
+      "update_time": "2026-04-27"
+    },
+    "三明": {
+      "region_id": "fj_三明",
+      "province": "福建省",
+      "city": "三明",
+      "total_road_km": 16016,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "三明路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.3,
+        "max_lat": 27.07,
+        "min_lon": 116.22,
+        "max_lon": 118.39
+      },
+      "update_time": "2026-04-27"
+    },
+    "泉州": {
+      "region_id": "fj_泉州",
+      "province": "福建省",
+      "city": "泉州",
+      "total_road_km": 18877,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "泉州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.23,
+        "max_lat": 25.72,
+        "min_lon": 117.35,
+        "max_lon": 119.05
+      },
+      "update_time": "2026-04-27"
+    },
+    "漳州": {
+      "region_id": "fj_漳州",
+      "province": "福建省",
+      "city": "漳州",
+      "total_road_km": 13211,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "漳州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.34,
+        "max_lat": 25.12,
+        "min_lon": 116.53,
+        "max_lon": 118.1
+      },
+      "update_time": "2026-04-27"
+    },
+    "南平": {
+      "region_id": "fj_南平",
+      "province": "福建省",
+      "city": "南平",
+      "total_road_km": 16231,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南平路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.14,
+        "max_lat": 28.19,
+        "min_lon": 116.78,
+        "max_lon": 119.17
+      },
+      "update_time": "2026-04-27"
+    },
+    "龙岩": {
+      "region_id": "fj_龙岩",
+      "province": "福建省",
+      "city": "龙岩",
+      "total_road_km": 15039,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "龙岩路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.23,
+        "max_lat": 26.02,
+        "min_lon": 115.51,
+        "max_lon": 117.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "宁德": {
+      "region_id": "fj_宁德",
+      "province": "福建省",
+      "city": "宁德",
+      "total_road_km": 12522,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宁德路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.18,
+        "max_lat": 27.77,
+        "min_lon": 118.43,
+        "max_lon": 120.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "南昌": {
+      "region_id": "jx_南昌",
+      "province": "江西省",
+      "city": "南昌",
+      "total_road_km": 11674,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南昌路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.1,
+        "max_lat": 29.11,
+        "min_lon": 115.27,
+        "max_lon": 116.67
+      },
+      "update_time": "2026-04-27"
+    },
+    "景德镇": {
+      "region_id": "jx_景德",
+      "province": "江西省",
+      "city": "景德镇",
+      "total_road_km": 5444,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "景德镇路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.44,
+        "max_lat": 29.56,
+        "min_lon": 116.57,
+        "max_lon": 117.63
+      },
+      "update_time": "2026-04-27"
+    },
+    "萍乡": {
+      "region_id": "jx_萍乡",
+      "province": "江西省",
+      "city": "萍乡",
+      "total_road_km": 9359,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "萍乡路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.05,
+        "max_lat": 28.06,
+        "min_lon": 113.35,
+        "max_lon": 114.17
+      },
+      "update_time": "2026-04-27"
+    },
+    "九江": {
+      "region_id": "jx_九江",
+      "province": "江西省",
+      "city": "九江",
+      "total_road_km": 23874,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "九江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.47,
+        "max_lat": 30.06,
+        "min_lon": 114.69,
+        "max_lon": 116.67
+      },
+      "update_time": "2026-04-27"
+    },
+    "新余": {
+      "region_id": "jx_新余",
+      "province": "江西省",
+      "city": "新余",
+      "total_road_km": 5013,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "新余路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.33,
+        "max_lat": 28.08,
+        "min_lon": 114.31,
+        "max_lon": 115.28
+      },
+      "update_time": "2026-04-27"
+    },
+    "鹰潭": {
+      "region_id": "jx_鹰潭",
+      "province": "江西省",
+      "city": "鹰潭",
+      "total_road_km": 5483,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鹰潭路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.76,
+        "max_lat": 28.68,
+        "min_lon": 116.41,
+        "max_lon": 117.3
+      },
+      "update_time": "2026-04-27"
+    },
+    "赣州": {
+      "region_id": "jx_赣州",
+      "province": "江西省",
+      "city": "赣州",
+      "total_road_km": 45428,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "赣州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.29,
+        "max_lat": 27.09,
+        "min_lon": 113.54,
+        "max_lon": 116.63
+      },
+      "update_time": "2026-04-27"
+    },
+    "吉安": {
+      "region_id": "jx_吉安",
+      "province": "江西省",
+      "city": "吉安",
+      "total_road_km": 30668,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "吉安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.02,
+        "max_lat": 27.85,
+        "min_lon": 113.46,
+        "max_lon": 115.56
+      },
+      "update_time": "2026-04-27"
+    },
+    "宜春": {
+      "region_id": "jx_宜春",
+      "province": "江西省",
+      "city": "宜春",
+      "total_road_km": 27349,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宜春路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.33,
+        "max_lat": 29.06,
+        "min_lon": 113.54,
+        "max_lon": 116.01
+      },
+      "update_time": "2026-04-27"
+    },
+    "抚州": {
+      "region_id": "jx_抚州",
+      "province": "江西省",
+      "city": "抚州",
+      "total_road_km": 19279,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "抚州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.29,
+        "max_lat": 28.35,
+        "min_lon": 115.35,
+        "max_lon": 117.18
+      },
+      "update_time": "2026-04-27"
+    },
+    "上饶": {
+      "region_id": "jx_上饶",
+      "province": "江西省",
+      "city": "上饶",
+      "total_road_km": 27140,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "上饶路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.48,
+        "max_lat": 29.62,
+        "min_lon": 116.13,
+        "max_lon": 118.86
+      },
+      "update_time": "2026-04-27"
+    },
+    "济南": {
+      "region_id": "sd_济南",
+      "province": "山东省",
+      "city": "济南",
+      "total_road_km": 18284,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "济南路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.02,
+        "max_lat": 37.54,
+        "min_lon": 116.21,
+        "max_lon": 117.93
+      },
+      "update_time": "2026-04-27"
+    },
+    "青岛": {
+      "region_id": "sd_青岛",
+      "province": "山东省",
+      "city": "青岛",
+      "total_road_km": 15447,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "青岛路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.35,
+        "max_lat": 36.87,
+        "min_lon": 119.3,
+        "max_lon": 121.04
+      },
+      "update_time": "2026-04-27"
+    },
+    "淄博": {
+      "region_id": "sd_淄博",
+      "province": "山东省",
+      "city": "淄博",
+      "total_road_km": 11501,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "淄博路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.88,
+        "max_lat": 37.18,
+        "min_lon": 117.32,
+        "max_lon": 118.53
+      },
+      "update_time": "2026-04-27"
+    },
+    "枣庄": {
+      "region_id": "sd_枣庄",
+      "province": "山东省",
+      "city": "枣庄",
+      "total_road_km": 9417,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "枣庄路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.27,
+        "max_lat": 35.19,
+        "min_lon": 116.48,
+        "max_lon": 117.85
+      },
+      "update_time": "2026-04-27"
+    },
+    "东营": {
+      "region_id": "sd_东营",
+      "province": "山东省",
+      "city": "东营",
+      "total_road_km": 9358,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "东营路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.55,
+        "max_lat": 38.1,
+        "min_lon": 118.07,
+        "max_lon": 119.52
+      },
+      "update_time": "2026-04-27"
+    },
+    "烟台": {
+      "region_id": "sd_烟台",
+      "province": "山东省",
+      "city": "烟台",
+      "total_road_km": 19820,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "烟台路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.16,
+        "max_lat": 38.0,
+        "min_lon": 119.34,
+        "max_lon": 121.97
+      },
+      "update_time": "2026-04-27"
+    },
+    "潍坊": {
+      "region_id": "sd_潍坊",
+      "province": "山东省",
+      "city": "潍坊",
+      "total_road_km": 29513,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "潍坊路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.42,
+        "max_lat": 37.26,
+        "min_lon": 118.1,
+        "max_lon": 120.01
+      },
+      "update_time": "2026-04-27"
+    },
+    "济宁": {
+      "region_id": "sd_济宁",
+      "province": "山东省",
+      "city": "济宁",
+      "total_road_km": 21361,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "济宁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.26,
+        "max_lat": 36.02,
+        "min_lon": 115.52,
+        "max_lon": 117.36
+      },
+      "update_time": "2026-04-27"
+    },
+    "泰安": {
+      "region_id": "sd_泰安",
+      "province": "山东省",
+      "city": "泰安",
+      "total_road_km": 16938,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "泰安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.38,
+        "max_lat": 36.62,
+        "min_lon": 116.02,
+        "max_lon": 117.59
+      },
+      "update_time": "2026-04-27"
+    },
+    "威海": {
+      "region_id": "sd_威海",
+      "province": "山东省",
+      "city": "威海",
+      "total_road_km": 7235,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "威海路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.41,
+        "max_lat": 37.53,
+        "min_lon": 121.11,
+        "max_lon": 122.73
+      },
+      "update_time": "2026-04-27"
+    },
+    "日照": {
+      "region_id": "sd_日照",
+      "province": "山东省",
+      "city": "日照",
+      "total_road_km": 10377,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "日照路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.94,
+        "max_lat": 36.02,
+        "min_lon": 118.35,
+        "max_lon": 119.86
+      },
+      "update_time": "2026-04-27"
+    },
+    "临沂": {
+      "region_id": "sd_临沂",
+      "province": "山东省",
+      "city": "临沂",
+      "total_road_km": 32072,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "临沂路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.22,
+        "max_lat": 36.22,
+        "min_lon": 117.24,
+        "max_lon": 119.11
+      },
+      "update_time": "2026-04-27"
+    },
+    "德州": {
+      "region_id": "sd_德州",
+      "province": "山东省",
+      "city": "德州",
+      "total_road_km": 21948,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "德州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.24,
+        "max_lat": 37.95,
+        "min_lon": 115.45,
+        "max_lon": 117.24
+      },
+      "update_time": "2026-04-27"
+    },
+    "聊城": {
+      "region_id": "sd_聊城",
+      "province": "山东省",
+      "city": "聊城",
+      "total_road_km": 21447,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "聊城路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.47,
+        "max_lat": 37.02,
+        "min_lon": 115.16,
+        "max_lon": 116.75
+      },
+      "update_time": "2026-04-27"
+    },
+    "滨州": {
+      "region_id": "sd_滨州",
+      "province": "山东省",
+      "city": "滨州",
+      "total_road_km": 17645,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "滨州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.41,
+        "max_lat": 38.16,
+        "min_lon": 117.15,
+        "max_lon": 118.64
+      },
+      "update_time": "2026-04-27"
+    },
+    "菏泽": {
+      "region_id": "sd_菏泽",
+      "province": "山东省",
+      "city": "菏泽",
+      "total_road_km": 29397,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "菏泽路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.39,
+        "max_lat": 35.85,
+        "min_lon": 114.48,
+        "max_lon": 116.24
+      },
+      "update_time": "2026-04-27"
+    },
+    "郑州": {
+      "region_id": "ha_郑州",
+      "province": "河南省",
+      "city": "郑州",
+      "total_road_km": 14125,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "郑州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.16,
+        "max_lat": 34.97,
+        "min_lon": 112.42,
+        "max_lon": 114.14
+      },
+      "update_time": "2026-04-27"
+    },
+    "开封": {
+      "region_id": "ha_开封",
+      "province": "河南省",
+      "city": "开封",
+      "total_road_km": 10031,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "开封路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.17,
+        "max_lat": 35.01,
+        "min_lon": 113.52,
+        "max_lon": 115.15
+      },
+      "update_time": "2026-04-27"
+    },
+    "洛阳": {
+      "region_id": "ha_洛阳",
+      "province": "河南省",
+      "city": "洛阳",
+      "total_road_km": 20135,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "洛阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.39,
+        "max_lat": 35.05,
+        "min_lon": 110.97,
+        "max_lon": 112.97
+      },
+      "update_time": "2026-04-27"
+    },
+    "平顶山": {
+      "region_id": "ha_平顶",
+      "province": "河南省",
+      "city": "平顶山",
+      "total_road_km": 14885,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "平顶山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.08,
+        "max_lat": 34.23,
+        "min_lon": 112.15,
+        "max_lon": 113.65
+      },
+      "update_time": "2026-04-27"
+    },
+    "安阳": {
+      "region_id": "ha_安阳",
+      "province": "河南省",
+      "city": "安阳",
+      "total_road_km": 13220,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "安阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.12,
+        "max_lat": 36.44,
+        "min_lon": 113.37,
+        "max_lon": 114.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "鹤壁": {
+      "region_id": "ha_鹤壁",
+      "province": "河南省",
+      "city": "鹤壁",
+      "total_road_km": 4749,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鹤壁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.32,
+        "max_lat": 36.0,
+        "min_lon": 113.92,
+        "max_lon": 114.74
+      },
+      "update_time": "2026-04-27"
+    },
+    "新乡": {
+      "region_id": "ha_新乡",
+      "province": "河南省",
+      "city": "新乡",
+      "total_road_km": 13927,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "新乡路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.88,
+        "max_lat": 35.88,
+        "min_lon": 113.23,
+        "max_lon": 114.78
+      },
+      "update_time": "2026-04-27"
+    },
+    "焦作": {
+      "region_id": "ha_焦作",
+      "province": "河南省",
+      "city": "焦作",
+      "total_road_km": 8143,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "焦作路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.74,
+        "max_lat": 35.66,
+        "min_lon": 112.43,
+        "max_lon": 113.65
+      },
+      "update_time": "2026-04-27"
+    },
+    "濮阳": {
+      "region_id": "ha_濮阳",
+      "province": "河南省",
+      "city": "濮阳",
+      "total_road_km": 7194,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "濮阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.2,
+        "max_lat": 36.12,
+        "min_lon": 114.52,
+        "max_lon": 116.01
+      },
+      "update_time": "2026-04-27"
+    },
+    "许昌": {
+      "region_id": "ha_许昌",
+      "province": "河南省",
+      "city": "许昌",
+      "total_road_km": 10236,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "许昌路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.42,
+        "max_lat": 34.39,
+        "min_lon": 113.03,
+        "max_lon": 114.43
+      },
+      "update_time": "2026-04-27"
+    },
+    "漯河": {
+      "region_id": "ha_漯河",
+      "province": "河南省",
+      "city": "漯河",
+      "total_road_km": 5609,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "漯河路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.2,
+        "max_lat": 33.89,
+        "min_lon": 113.45,
+        "max_lon": 114.41
+      },
+      "update_time": "2026-04-27"
+    },
+    "三门峡": {
+      "region_id": "ha_三门",
+      "province": "河南省",
+      "city": "三门峡",
+      "total_road_km": 10388,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "三门峡路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.53,
+        "max_lat": 35.06,
+        "min_lon": 110.21,
+        "max_lon": 112.01
+      },
+      "update_time": "2026-04-27"
+    },
+    "南阳": {
+      "region_id": "ha_南阳",
+      "province": "河南省",
+      "city": "南阳",
+      "total_road_km": 41719,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.17,
+        "max_lat": 33.72,
+        "min_lon": 110.58,
+        "max_lon": 113.49
+      },
+      "update_time": "2026-04-27"
+    },
+    "商丘": {
+      "region_id": "ha_商丘",
+      "province": "河南省",
+      "city": "商丘",
+      "total_road_km": 24934,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "商丘路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.44,
+        "max_lat": 34.8,
+        "min_lon": 114.49,
+        "max_lon": 116.4
+      },
+      "update_time": "2026-04-27"
+    },
+    "信阳": {
+      "region_id": "ha_信阳",
+      "province": "河南省",
+      "city": "信阳",
+      "total_road_km": 28373,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "信阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.23,
+        "max_lat": 32.94,
+        "min_lon": 113.45,
+        "max_lon": 115.95
+      },
+      "update_time": "2026-04-27"
+    },
+    "周口": {
+      "region_id": "ha_周口",
+      "province": "河南省",
+      "city": "周口",
+      "total_road_km": 24434,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "周口路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.03,
+        "max_lat": 34.2,
+        "min_lon": 114.08,
+        "max_lon": 115.65
+      },
+      "update_time": "2026-04-27"
+    },
+    "驻马店": {
+      "region_id": "ha_驻马",
+      "province": "河南省",
+      "city": "驻马店",
+      "total_road_km": 22530,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "驻马店路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.18,
+        "max_lat": 33.55,
+        "min_lon": 113.1,
+        "max_lon": 115.12
+      },
+      "update_time": "2026-04-27"
+    },
+    "武汉": {
+      "region_id": "hb_武汉",
+      "province": "湖北省",
+      "city": "武汉",
+      "total_road_km": 16814,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "武汉路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.97,
+        "max_lat": 31.36,
+        "min_lon": 113.7,
+        "max_lon": 115.05
+      },
+      "update_time": "2026-04-27"
+    },
+    "黄石": {
+      "region_id": "hb_黄石",
+      "province": "湖北省",
+      "city": "黄石",
+      "total_road_km": 8420,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "黄石路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.3,
+        "max_lat": 30.38,
+        "min_lon": 114.53,
+        "max_lon": 115.63
+      },
+      "update_time": "2026-04-27"
+    },
+    "十堰": {
+      "region_id": "hb_十堰",
+      "province": "湖北省",
+      "city": "十堰",
+      "total_road_km": 31040,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "十堰路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.3,
+        "max_lat": 33.16,
+        "min_lon": 109.29,
+        "max_lon": 111.25
+      },
+      "update_time": "2026-04-27"
+    },
+    "宜昌": {
+      "region_id": "hb_宜昌",
+      "province": "湖北省",
+      "city": "宜昌",
+      "total_road_km": 37867,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宜昌路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.56,
+        "max_lat": 31.34,
+        "min_lon": 110.15,
+        "max_lon": 112.04
+      },
+      "update_time": "2026-04-27"
+    },
+    "襄阳": {
+      "region_id": "hb_襄阳",
+      "province": "湖北省",
+      "city": "襄阳",
+      "total_road_km": 32382,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "襄阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.14,
+        "max_lat": 32.76,
+        "min_lon": 110.46,
+        "max_lon": 113.04
+      },
+      "update_time": "2026-04-27"
+    },
+    "鄂州": {
+      "region_id": "hb_鄂州",
+      "province": "湖北省",
+      "city": "鄂州",
+      "total_road_km": 3760,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "鄂州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.0,
+        "max_lat": 30.56,
+        "min_lon": 114.52,
+        "max_lon": 115.09
+      },
+      "update_time": "2026-04-27"
+    },
+    "荆门": {
+      "region_id": "hb_荆门",
+      "province": "湖北省",
+      "city": "荆门",
+      "total_road_km": 16297,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "荆门路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.32,
+        "max_lat": 31.47,
+        "min_lon": 111.51,
+        "max_lon": 113.2
+      },
+      "update_time": "2026-04-27"
+    },
+    "孝感": {
+      "region_id": "hb_孝感",
+      "province": "湖北省",
+      "city": "孝感",
+      "total_road_km": 18357,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "孝感路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.15,
+        "max_lat": 31.64,
+        "min_lon": 113.19,
+        "max_lon": 114.53
+      },
+      "update_time": "2026-04-27"
+    },
+    "荆州": {
+      "region_id": "hb_荆州",
+      "province": "湖北省",
+      "city": "荆州",
+      "total_road_km": 25031,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "荆州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.26,
+        "max_lat": 31.07,
+        "min_lon": 111.15,
+        "max_lon": 113.37
+      },
+      "update_time": "2026-04-27"
+    },
+    "黄冈": {
+      "region_id": "hb_黄冈",
+      "province": "湖北省",
+      "city": "黄冈",
+      "total_road_km": 34391,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "黄冈路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.45,
+        "max_lat": 31.35,
+        "min_lon": 114.25,
+        "max_lon": 116.11
+      },
+      "update_time": "2026-04-27"
+    },
+    "咸宁": {
+      "region_id": "hb_咸宁",
+      "province": "湖北省",
+      "city": "咸宁",
+      "total_road_km": 16910,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "咸宁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.97,
+        "max_lat": 30.19,
+        "min_lon": 113.54,
+        "max_lon": 114.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "随州": {
+      "region_id": "hb_随州",
+      "province": "湖北省",
+      "city": "随州",
+      "total_road_km": 12548,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "随州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.19,
+        "max_lat": 32.37,
+        "min_lon": 112.43,
+        "max_lon": 113.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "长沙": {
+      "region_id": "hn_长沙",
+      "province": "湖南省",
+      "city": "长沙",
+      "total_road_km": 16359,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "长沙路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.85,
+        "max_lat": 28.67,
+        "min_lon": 111.88,
+        "max_lon": 114.15
+      },
+      "update_time": "2026-04-27"
+    },
+    "株洲": {
+      "region_id": "hn_株洲",
+      "province": "湖南省",
+      "city": "株洲",
+      "total_road_km": 13936,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "株洲路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.03,
+        "max_lat": 28.01,
+        "min_lon": 112.57,
+        "max_lon": 114.07
+      },
+      "update_time": "2026-04-27"
+    },
+    "湘潭": {
+      "region_id": "hn_湘潭",
+      "province": "湖南省",
+      "city": "湘潭",
+      "total_road_km": 7969,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "湘潭路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.21,
+        "max_lat": 28.14,
+        "min_lon": 111.58,
+        "max_lon": 113.05
+      },
+      "update_time": "2026-04-27"
+    },
+    "衡阳": {
+      "region_id": "hn_衡阳",
+      "province": "湖南省",
+      "city": "衡阳",
+      "total_road_km": 21204,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "衡阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.07,
+        "max_lat": 27.31,
+        "min_lon": 111.63,
+        "max_lon": 113.17
+      },
+      "update_time": "2026-04-27"
+    },
+    "邵阳": {
+      "region_id": "hn_邵阳",
+      "province": "湖南省",
+      "city": "邵阳",
+      "total_road_km": 22629,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "邵阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.58,
+        "max_lat": 27.62,
+        "min_lon": 109.73,
+        "max_lon": 112.13
+      },
+      "update_time": "2026-04-27"
+    },
+    "岳阳": {
+      "region_id": "hn_岳阳",
+      "province": "湖南省",
+      "city": "岳阳",
+      "total_road_km": 20887,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "岳阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.25,
+        "max_lat": 29.72,
+        "min_lon": 112.14,
+        "max_lon": 114.09
+      },
+      "update_time": "2026-04-27"
+    },
+    "常德": {
+      "region_id": "hn_常德",
+      "province": "湖南省",
+      "city": "常德",
+      "total_road_km": 22859,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "常德路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.42,
+        "max_lat": 30.07,
+        "min_lon": 110.56,
+        "max_lon": 112.18
+      },
+      "update_time": "2026-04-27"
+    },
+    "张家界": {
+      "region_id": "hn_张家",
+      "province": "湖南省",
+      "city": "张家界",
+      "total_road_km": 9264,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "张家界路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.52,
+        "max_lat": 29.48,
+        "min_lon": 109.4,
+        "max_lon": 110.68
+      },
+      "update_time": "2026-04-27"
+    },
+    "益阳": {
+      "region_id": "hn_益阳",
+      "province": "湖南省",
+      "city": "益阳",
+      "total_road_km": 16480,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "益阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.58,
+        "max_lat": 29.07,
+        "min_lon": 111.43,
+        "max_lon": 112.72
+      },
+      "update_time": "2026-04-27"
+    },
+    "郴州": {
+      "region_id": "hn_郴州",
+      "province": "湖南省",
+      "city": "郴州",
+      "total_road_km": 18101,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "郴州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.89,
+        "max_lat": 26.5,
+        "min_lon": 112.13,
+        "max_lon": 114.14
+      },
+      "update_time": "2026-04-27"
+    },
+    "永州": {
+      "region_id": "hn_永州",
+      "province": "湖南省",
+      "city": "永州",
+      "total_road_km": 23255,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "永州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.76,
+        "max_lat": 26.97,
+        "min_lon": 110.95,
+        "max_lon": 112.57
+      },
+      "update_time": "2026-04-27"
+    },
+    "怀化": {
+      "region_id": "hn_怀化",
+      "province": "湖南省",
+      "city": "怀化",
+      "total_road_km": 20908,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "怀化路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.52,
+        "max_lat": 28.24,
+        "min_lon": 108.78,
+        "max_lon": 111.06
+      },
+      "update_time": "2026-04-27"
+    },
+    "娄底": {
+      "region_id": "hn_娄底",
+      "province": "湖南省",
+      "city": "娄底",
+      "total_road_km": 15208,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "娄底路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.08,
+        "max_lat": 28.15,
+        "min_lon": 110.89,
+        "max_lon": 112.31
+      },
+      "update_time": "2026-04-27"
+    },
+    "广州": {
+      "region_id": "gd_广州",
+      "province": "广东省",
+      "city": "广州",
+      "total_road_km": 9045,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "广州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.47,
+        "max_lat": 23.93,
+        "min_lon": 112.57,
+        "max_lon": 114.05
+      },
+      "update_time": "2026-04-27"
+    },
+    "韶关": {
+      "region_id": "gd_韶关",
+      "province": "广东省",
+      "city": "韶关",
+      "total_road_km": 17195,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "韶关路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.5,
+        "max_lat": 25.52,
+        "min_lon": 112.53,
+        "max_lon": 114.45
+      },
+      "update_time": "2026-04-27"
+    },
+    "深圳": {
+      "region_id": "gd_深圳",
+      "province": "广东省",
+      "city": "深圳",
+      "total_road_km": 726,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "深圳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.27,
+        "max_lat": 22.83,
+        "min_lon": 113.68,
+        "max_lon": 114.68
+      },
+      "update_time": "2026-04-27"
+    },
+    "珠海": {
+      "region_id": "gd_珠海",
+      "province": "广东省",
+      "city": "珠海",
+      "total_road_km": 1480,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "珠海路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 21.48,
+        "max_lat": 22.41,
+        "min_lon": 113.05,
+        "max_lon": 114.19
+      },
+      "update_time": "2026-04-27"
+    },
+    "汕头": {
+      "region_id": "gd_汕头",
+      "province": "广东省",
+      "city": "汕头",
+      "total_road_km": 4054,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "汕头路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.02,
+        "max_lat": 23.68,
+        "min_lon": 116.14,
+        "max_lon": 117.19
+      },
+      "update_time": "2026-04-27"
+    },
+    "佛山": {
+      "region_id": "gd_佛山",
+      "province": "广东省",
+      "city": "佛山",
+      "total_road_km": 5412,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "佛山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.38,
+        "max_lat": 23.58,
+        "min_lon": 112.47,
+        "max_lon": 113.39
+      },
+      "update_time": "2026-04-27"
+    },
+    "江门": {
+      "region_id": "gd_江门",
+      "province": "广东省",
+      "city": "江门",
+      "total_road_km": 9877,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "江门路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 21.48,
+        "max_lat": 22.88,
+        "min_lon": 112.23,
+        "max_lon": 113.39
+      },
+      "update_time": "2026-04-27"
+    },
+    "湛江": {
+      "region_id": "gd_湛江",
+      "province": "广东省",
+      "city": "湛江",
+      "total_road_km": 22539,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "湛江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 20.13,
+        "max_lat": 21.57,
+        "min_lon": 109.4,
+        "max_lon": 110.92
+      },
+      "update_time": "2026-04-27"
+    },
+    "茂名": {
+      "region_id": "gd_茂名",
+      "province": "广东省",
+      "city": "茂名",
+      "total_road_km": 19148,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "茂名路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 21.22,
+        "max_lat": 22.42,
+        "min_lon": 110.19,
+        "max_lon": 111.79
+      },
+      "update_time": "2026-04-27"
+    },
+    "肇庆": {
+      "region_id": "gd_肇庆",
+      "province": "广东省",
+      "city": "肇庆",
+      "total_road_km": 14337,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "肇庆路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.47,
+        "max_lat": 24.24,
+        "min_lon": 111.21,
+        "max_lon": 112.52
+      },
+      "update_time": "2026-04-27"
+    },
+    "惠州": {
+      "region_id": "gd_惠州",
+      "province": "广东省",
+      "city": "惠州",
+      "total_road_km": 13515,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "惠州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.34,
+        "max_lat": 23.76,
+        "min_lon": 113.51,
+        "max_lon": 115.42
+      },
+      "update_time": "2026-04-27"
+    },
+    "梅州": {
+      "region_id": "gd_梅州",
+      "province": "广东省",
+      "city": "梅州",
+      "total_road_km": 20854,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "梅州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.36,
+        "max_lat": 24.9,
+        "min_lon": 115.18,
+        "max_lon": 116.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "汕尾": {
+      "region_id": "gd_汕尾",
+      "province": "广东省",
+      "city": "汕尾",
+      "total_road_km": 5892,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "汕尾路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.37,
+        "max_lat": 23.38,
+        "min_lon": 114.54,
+        "max_lon": 116.13
+      },
+      "update_time": "2026-04-27"
+    },
+    "河源": {
+      "region_id": "gd_河源",
+      "province": "广东省",
+      "city": "河源",
+      "total_road_km": 17417,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "河源路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.1,
+        "max_lat": 24.5,
+        "min_lon": 114.14,
+        "max_lon": 115.83
+      },
+      "update_time": "2026-04-27"
+    },
+    "阳江": {
+      "region_id": "gd_阳江",
+      "province": "广东省",
+      "city": "阳江",
+      "total_road_km": 10831,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "阳江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 21.51,
+        "max_lat": 22.41,
+        "min_lon": 111.16,
+        "max_lon": 112.43
+      },
+      "update_time": "2026-04-27"
+    },
+    "清远": {
+      "region_id": "gd_清远",
+      "province": "广东省",
+      "city": "清远",
+      "total_road_km": 20778,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "清远路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.27,
+        "max_lat": 25.12,
+        "min_lon": 111.55,
+        "max_lon": 113.92
+      },
+      "update_time": "2026-04-27"
+    },
+    "东莞": {
+      "region_id": "gd_东莞",
+      "province": "广东省",
+      "city": "东莞",
+      "total_road_km": 5266,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "东莞路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.67,
+        "max_lat": 23.1,
+        "min_lon": 113.58,
+        "max_lon": 114.24
+      },
+      "update_time": "2026-04-27"
+    },
+    "中山": {
+      "region_id": "gd_中山",
+      "province": "广东省",
+      "city": "中山",
+      "total_road_km": 2830,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "中山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.17,
+        "max_lat": 22.78,
+        "min_lon": 113.1,
+        "max_lon": 113.66
+      },
+      "update_time": "2026-04-27"
+    },
+    "潮州": {
+      "region_id": "gd_潮州",
+      "province": "广东省",
+      "city": "潮州",
+      "total_road_km": 5470,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "潮州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.26,
+        "max_lat": 24.14,
+        "min_lon": 116.22,
+        "max_lon": 117.08
+      },
+      "update_time": "2026-04-27"
+    },
+    "揭阳": {
+      "region_id": "gd_揭阳",
+      "province": "广东省",
+      "city": "揭阳",
+      "total_road_km": 7624,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "揭阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.89,
+        "max_lat": 23.85,
+        "min_lon": 115.36,
+        "max_lon": 116.78
+      },
+      "update_time": "2026-04-27"
+    },
+    "云浮": {
+      "region_id": "gd_云浮",
+      "province": "广东省",
+      "city": "云浮",
+      "total_road_km": 8923,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "云浮路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.28,
+        "max_lat": 23.47,
+        "min_lon": 111.03,
+        "max_lon": 112.37
+      },
+      "update_time": "2026-04-27"
+    },
+    "南宁": {
+      "region_id": "gx_南宁",
+      "province": "广西壮族自治区",
+      "city": "南宁",
+      "total_road_km": 18661,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南宁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.13,
+        "max_lat": 24.02,
+        "min_lon": 107.23,
+        "max_lon": 109.58
+      },
+      "update_time": "2026-04-27"
+    },
+    "柳州": {
+      "region_id": "gx_柳州",
+      "province": "广西壮族自治区",
+      "city": "柳州",
+      "total_road_km": 11371,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "柳州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.54,
+        "max_lat": 25.49,
+        "min_lon": 108.32,
+        "max_lon": 110.2
+      },
+      "update_time": "2026-04-27"
+    },
+    "桂林": {
+      "region_id": "gx_桂林",
+      "province": "广西壮族自治区",
+      "city": "桂林",
+      "total_road_km": 18151,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "桂林路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.15,
+        "max_lat": 26.23,
+        "min_lon": 109.36,
+        "max_lon": 111.29
+      },
+      "update_time": "2026-04-27"
+    },
+    "梧州": {
+      "region_id": "gx_梧州",
+      "province": "广西壮族自治区",
+      "city": "梧州",
+      "total_road_km": 8679,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "梧州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.52,
+        "max_lat": 24.1,
+        "min_lon": 110.18,
+        "max_lon": 111.67
+      },
+      "update_time": "2026-04-27"
+    },
+    "北海": {
+      "region_id": "gx_北海",
+      "province": "广西壮族自治区",
+      "city": "北海",
+      "total_road_km": 3916,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "北海路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 20.54,
+        "max_lat": 21.98,
+        "min_lon": 108.5,
+        "max_lon": 109.82
+      },
+      "update_time": "2026-04-27"
+    },
+    "防城港": {
+      "region_id": "gx_防城",
+      "province": "广西壮族自治区",
+      "city": "防城港",
+      "total_road_km": 4145,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "防城港路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 20.9,
+        "max_lat": 22.11,
+        "min_lon": 107.28,
+        "max_lon": 108.6
+      },
+      "update_time": "2026-04-27"
+    },
+    "贵港": {
+      "region_id": "gx_贵港",
+      "province": "广西壮族自治区",
+      "city": "贵港",
+      "total_road_km": 11344,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "贵港路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.51,
+        "max_lat": 23.92,
+        "min_lon": 109.11,
+        "max_lon": 110.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "玉林": {
+      "region_id": "gx_玉林",
+      "province": "广西壮族自治区",
+      "city": "玉林",
+      "total_road_km": 12572,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "玉林路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 21.86,
+        "max_lat": 23.05,
+        "min_lon": 109.25,
+        "max_lon": 110.86
+      },
+      "update_time": "2026-04-27"
+    },
+    "百色": {
+      "region_id": "gx_百色",
+      "province": "广西壮族自治区",
+      "city": "百色",
+      "total_road_km": 26470,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "百色路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.55,
+        "max_lat": 25.07,
+        "min_lon": 104.28,
+        "max_lon": 108.18
+      },
+      "update_time": "2026-04-27"
+    },
+    "贺州": {
+      "region_id": "gx_贺州",
+      "province": "广西壮族自治区",
+      "city": "贺州",
+      "total_road_km": 7289,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "贺州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.59,
+        "max_lat": 24.93,
+        "min_lon": 110.34,
+        "max_lon": 112.03
+      },
+      "update_time": "2026-04-27"
+    },
+    "河池": {
+      "region_id": "gx_河池",
+      "province": "广西壮族自治区",
+      "city": "河池",
+      "total_road_km": 19152,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "河池路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.42,
+        "max_lat": 25.53,
+        "min_lon": 106.34,
+        "max_lon": 109.09
+      },
+      "update_time": "2026-04-27"
+    },
+    "来宾": {
+      "region_id": "gx_来宾",
+      "province": "广西壮族自治区",
+      "city": "来宾",
+      "total_road_km": 9099,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "来宾路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 22.98,
+        "max_lat": 24.78,
+        "min_lon": 108.31,
+        "max_lon": 110.27
+      },
+      "update_time": "2026-04-27"
+    },
+    "崇左": {
+      "region_id": "gx_崇左",
+      "province": "广西壮族自治区",
+      "city": "崇左",
+      "total_road_km": 10574,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "崇左路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 21.36,
+        "max_lat": 23.31,
+        "min_lon": 106.33,
+        "max_lon": 108.35
+      },
+      "update_time": "2026-04-27"
+    },
+    "海口": {
+      "region_id": "hi_海口",
+      "province": "海南省",
+      "city": "海口",
+      "total_road_km": 6499,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "海口路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 19.32,
+        "max_lat": 20.15,
+        "min_lon": 109.85,
+        "max_lon": 110.7
+      },
+      "update_time": "2026-04-27"
+    },
+    "三亚": {
+      "region_id": "hi_三亚",
+      "province": "海南省",
+      "city": "三亚",
+      "total_road_km": 2001,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "三亚路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 18.09,
+        "max_lat": 18.7,
+        "min_lon": 108.93,
+        "max_lon": 109.95
+      },
+      "update_time": "2026-04-27"
+    },
+    "重庆": {
+      "region_id": "cq_重庆",
+      "province": "重庆市",
+      "city": "重庆",
+      "total_road_km": 186137,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "重庆路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.16,
+        "max_lat": 32.2,
+        "min_lon": 105.11,
+        "max_lon": 110.2
+      },
+      "update_time": "2026-04-27"
+    },
+    "成都": {
+      "region_id": "sc_成都",
+      "province": "四川省",
+      "city": "成都",
+      "total_road_km": 29338,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "成都路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.05,
+        "max_lat": 31.44,
+        "min_lon": 102.54,
+        "max_lon": 104.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "自贡": {
+      "region_id": "sc_自贡",
+      "province": "四川省",
+      "city": "自贡",
+      "total_road_km": 9997,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "自贡路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.86,
+        "max_lat": 29.66,
+        "min_lon": 104.02,
+        "max_lon": 105.4
+      },
+      "update_time": "2026-04-27"
+    },
+    "攀枝花": {
+      "region_id": "sc_攀枝",
+      "province": "四川省",
+      "city": "攀枝花",
+      "total_road_km": 5119,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "攀枝花路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.05,
+        "max_lat": 27.21,
+        "min_lon": 100.75,
+        "max_lon": 102.15
+      },
+      "update_time": "2026-04-27"
+    },
+    "泸州": {
+      "region_id": "sc_泸州",
+      "province": "四川省",
+      "city": "泸州",
+      "total_road_km": 20186,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "泸州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.39,
+        "max_lat": 29.52,
+        "min_lon": 104.3,
+        "max_lon": 106.31
+      },
+      "update_time": "2026-04-27"
+    },
+    "德阳": {
+      "region_id": "sc_德阳",
+      "province": "四川省",
+      "city": "德阳",
+      "total_road_km": 10452,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "德阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.5,
+        "max_lat": 31.84,
+        "min_lon": 103.45,
+        "max_lon": 105.03
+      },
+      "update_time": "2026-04-27"
+    },
+    "绵阳": {
+      "region_id": "sc_绵阳",
+      "province": "四川省",
+      "city": "绵阳",
+      "total_road_km": 24509,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "绵阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.72,
+        "max_lat": 33.03,
+        "min_lon": 103.73,
+        "max_lon": 105.43
+      },
+      "update_time": "2026-04-27"
+    },
+    "广元": {
+      "region_id": "sc_广元",
+      "province": "四川省",
+      "city": "广元",
+      "total_road_km": 24084,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "广元路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.31,
+        "max_lat": 32.56,
+        "min_lon": 104.36,
+        "max_lon": 106.45
+      },
+      "update_time": "2026-04-27"
+    },
+    "遂宁": {
+      "region_id": "sc_遂宁",
+      "province": "四川省",
+      "city": "遂宁",
+      "total_road_km": 13952,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "遂宁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.1,
+        "max_lat": 31.1,
+        "min_lon": 104.9,
+        "max_lon": 106.21
+      },
+      "update_time": "2026-04-27"
+    },
+    "内江": {
+      "region_id": "sc_内江",
+      "province": "四川省",
+      "city": "内江",
+      "total_road_km": 14071,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "内江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.11,
+        "max_lat": 30.12,
+        "min_lon": 104.16,
+        "max_lon": 105.65
+      },
+      "update_time": "2026-04-27"
+    },
+    "乐山": {
+      "region_id": "sc_乐山",
+      "province": "四川省",
+      "city": "乐山",
+      "total_road_km": 16638,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "乐山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.28,
+        "max_lat": 30.15,
+        "min_lon": 102.73,
+        "max_lon": 104.36
+      },
+      "update_time": "2026-04-27"
+    },
+    "南充": {
+      "region_id": "sc_南充",
+      "province": "四川省",
+      "city": "南充",
+      "total_road_km": 30900,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "南充路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.25,
+        "max_lat": 31.78,
+        "min_lon": 105.27,
+        "max_lon": 106.88
+      },
+      "update_time": "2026-04-27"
+    },
+    "眉山": {
+      "region_id": "sc_眉山",
+      "province": "四川省",
+      "city": "眉山",
+      "total_road_km": 9266,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "眉山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.3,
+        "max_lat": 30.52,
+        "min_lon": 102.49,
+        "max_lon": 104.41
+      },
+      "update_time": "2026-04-27"
+    },
+    "宜宾": {
+      "region_id": "sc_宜宾",
+      "province": "四川省",
+      "city": "宜宾",
+      "total_road_km": 26088,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宜宾路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 27.5,
+        "max_lat": 29.2,
+        "min_lon": 103.36,
+        "max_lon": 105.73
+      },
+      "update_time": "2026-04-27"
+    },
+    "广安": {
+      "region_id": "sc_广安",
+      "province": "四川省",
+      "city": "广安",
+      "total_road_km": 16535,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "广安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.01,
+        "max_lat": 30.79,
+        "min_lon": 105.56,
+        "max_lon": 107.18
+      },
+      "update_time": "2026-04-27"
+    },
+    "达州": {
+      "region_id": "sc_达州",
+      "province": "四川省",
+      "city": "达州",
+      "total_road_km": 28847,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "达州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 30.38,
+        "max_lat": 32.17,
+        "min_lon": 106.39,
+        "max_lon": 108.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "雅安": {
+      "region_id": "sc_雅安",
+      "province": "四川省",
+      "city": "雅安",
+      "total_road_km": 8442,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "雅安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 28.51,
+        "max_lat": 30.56,
+        "min_lon": 101.56,
+        "max_lon": 103.87
+      },
+      "update_time": "2026-04-27"
+    },
+    "巴中": {
+      "region_id": "sc_巴中",
+      "province": "四川省",
+      "city": "巴中",
+      "total_road_km": 25863,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "巴中路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.15,
+        "max_lat": 32.78,
+        "min_lon": 105.73,
+        "max_lon": 107.74
+      },
+      "update_time": "2026-04-27"
+    },
+    "资阳": {
+      "region_id": "sc_资阳",
+      "province": "四川省",
+      "city": "资阳",
+      "total_road_km": 12668,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "资阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 29.64,
+        "max_lat": 30.56,
+        "min_lon": 104.21,
+        "max_lon": 105.55
+      },
+      "update_time": "2026-04-27"
+    },
+    "贵阳": {
+      "region_id": "gz_贵阳",
+      "province": "贵州省",
+      "city": "贵阳",
+      "total_road_km": 10512,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "贵阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.11,
+        "max_lat": 27.22,
+        "min_lon": 106.07,
+        "max_lon": 107.17
+      },
+      "update_time": "2026-04-27"
+    },
+    "六盘水": {
+      "region_id": "gz_六盘",
+      "province": "贵州省",
+      "city": "六盘水",
+      "total_road_km": 14791,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "六盘水路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.19,
+        "max_lat": 26.89,
+        "min_lon": 104.18,
+        "max_lon": 105.55
+      },
+      "update_time": "2026-04-27"
+    },
+    "遵义": {
+      "region_id": "gz_遵义",
+      "province": "贵州省",
+      "city": "遵义",
+      "total_road_km": 39598,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "遵义路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.97,
+        "max_lat": 29.23,
+        "min_lon": 105.36,
+        "max_lon": 107.85
+      },
+      "update_time": "2026-04-27"
+    },
+    "安顺": {
+      "region_id": "gz_安顺",
+      "province": "贵州省",
+      "city": "安顺",
+      "total_road_km": 14307,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "安顺路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.2,
+        "max_lat": 26.67,
+        "min_lon": 104.99,
+        "max_lon": 106.42
+      },
+      "update_time": "2026-04-27"
+    },
+    "昆明": {
+      "region_id": "yn_昆明",
+      "province": "云南省",
+      "city": "昆明",
+      "total_road_km": 22877,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "昆明路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.23,
+        "max_lat": 26.22,
+        "min_lon": 102.1,
+        "max_lon": 103.75
+      },
+      "update_time": "2026-04-27"
+    },
+    "曲靖": {
+      "region_id": "yn_曲靖",
+      "province": "云南省",
+      "city": "曲靖",
+      "total_road_km": 29395,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "曲靖路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.19,
+        "max_lat": 27.03,
+        "min_lon": 103.03,
+        "max_lon": 104.5
+      },
+      "update_time": "2026-04-27"
+    },
+    "玉溪": {
+      "region_id": "yn_玉溪",
+      "province": "云南省",
+      "city": "玉溪",
+      "total_road_km": 17973,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "玉溪路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.19,
+        "max_lat": 24.8,
+        "min_lon": 101.16,
+        "max_lon": 103.09
+      },
+      "update_time": "2026-04-27"
+    },
+    "保山": {
+      "region_id": "yn_保山",
+      "province": "云南省",
+      "city": "保山",
+      "total_road_km": 21917,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "保山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 24.08,
+        "max_lat": 25.88,
+        "min_lon": 98.05,
+        "max_lon": 100.02
+      },
+      "update_time": "2026-04-27"
+    },
+    "昭通": {
+      "region_id": "yn_昭通",
+      "province": "云南省",
+      "city": "昭通",
+      "total_road_km": 28017,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "昭通路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 26.55,
+        "max_lat": 28.64,
+        "min_lon": 102.52,
+        "max_lon": 105.19
+      },
+      "update_time": "2026-04-27"
+    },
+    "丽江": {
+      "region_id": "yn_丽江",
+      "province": "云南省",
+      "city": "丽江",
+      "total_road_km": 11522,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "丽江路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 25.59,
+        "max_lat": 27.86,
+        "min_lon": 99.23,
+        "max_lon": 101.31
+      },
+      "update_time": "2026-04-27"
+    },
+    "临沧": {
+      "region_id": "yn_临沧",
+      "province": "云南省",
+      "city": "临沧",
+      "total_road_km": 22053,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "临沧路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 23.02,
+        "max_lat": 24.77,
+        "min_lon": 98.4,
+        "max_lon": 100.48
+      },
+      "update_time": "2026-04-27"
+    },
+    "西安": {
+      "region_id": "sn_西安",
+      "province": "陕西省",
+      "city": "西安",
+      "total_road_km": 13474,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "西安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.42,
+        "max_lat": 34.77,
+        "min_lon": 107.4,
+        "max_lon": 109.87
+      },
+      "update_time": "2026-04-27"
+    },
+    "铜川": {
+      "region_id": "sn_铜川",
+      "province": "陕西省",
+      "city": "铜川",
+      "total_road_km": 4012,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "铜川路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.48,
+        "max_lat": 35.48,
+        "min_lon": 108.34,
+        "max_lon": 109.43
+      },
+      "update_time": "2026-04-27"
+    },
+    "宝鸡": {
+      "region_id": "sn_宝鸡",
+      "province": "陕西省",
+      "city": "宝鸡",
+      "total_road_km": 18411,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "宝鸡路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.35,
+        "max_lat": 35.1,
+        "min_lon": 106.18,
+        "max_lon": 108.03
+      },
+      "update_time": "2026-04-27"
+    },
+    "咸阳": {
+      "region_id": "sn_咸阳",
+      "province": "陕西省",
+      "city": "咸阳",
+      "total_road_km": 16719,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "咸阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.02,
+        "max_lat": 35.47,
+        "min_lon": 107.39,
+        "max_lon": 109.14
+      },
+      "update_time": "2026-04-27"
+    },
+    "渭南": {
+      "region_id": "sn_渭南",
+      "province": "陕西省",
+      "city": "渭南",
+      "total_road_km": 20312,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "渭南路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.14,
+        "max_lat": 35.71,
+        "min_lon": 108.58,
+        "max_lon": 110.35
+      },
+      "update_time": "2026-04-27"
+    },
+    "延安": {
+      "region_id": "sn_延安",
+      "province": "陕西省",
+      "city": "延安",
+      "total_road_km": 18478,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "延安路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.21,
+        "max_lat": 37.57,
+        "min_lon": 107.41,
+        "max_lon": 110.62
+      },
+      "update_time": "2026-04-27"
+    },
+    "汉中": {
+      "region_id": "sn_汉中",
+      "province": "陕西省",
+      "city": "汉中",
+      "total_road_km": 21859,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "汉中路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.08,
+        "max_lat": 33.7,
+        "min_lon": 105.3,
+        "max_lon": 108.16
+      },
+      "update_time": "2026-04-27"
+    },
+    "榆林": {
+      "region_id": "sn_榆林",
+      "province": "陕西省",
+      "city": "榆林",
+      "total_road_km": 30214,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "榆林路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.57,
+        "max_lat": 39.58,
+        "min_lon": 107.23,
+        "max_lon": 111.15
+      },
+      "update_time": "2026-04-27"
+    },
+    "安康": {
+      "region_id": "sn_安康",
+      "province": "陕西省",
+      "city": "安康",
+      "total_road_km": 25778,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "安康路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 31.42,
+        "max_lat": 33.49,
+        "min_lon": 108.01,
+        "max_lon": 110.21
+      },
+      "update_time": "2026-04-27"
+    },
+    "商洛": {
+      "region_id": "sn_商洛",
+      "province": "陕西省",
+      "city": "商洛",
+      "total_road_km": 15963,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "商洛路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 33.02,
+        "max_lat": 34.25,
+        "min_lon": 108.34,
+        "max_lon": 111.01
+      },
+      "update_time": "2026-04-27"
+    },
+    "兰州": {
+      "region_id": "gs_兰州",
+      "province": "甘肃省",
+      "city": "兰州",
+      "total_road_km": 9110,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "兰州路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.32,
+        "max_lat": 37.14,
+        "min_lon": 102.36,
+        "max_lon": 104.33
+      },
+      "update_time": "2026-04-27"
+    },
+    "嘉峪关": {
+      "region_id": "gs_嘉峪",
+      "province": "甘肃省",
+      "city": "嘉峪关",
+      "total_road_km": 685,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "嘉峪关路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 39.3,
+        "max_lat": 40.16,
+        "min_lon": 97.67,
+        "max_lon": 98.68
+      },
+      "update_time": "2026-04-27"
+    },
+    "金昌": {
+      "region_id": "gs_金昌",
+      "province": "甘肃省",
+      "city": "金昌",
+      "total_road_km": 2372,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "金昌路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.89,
+        "max_lat": 39.29,
+        "min_lon": 101.15,
+        "max_lon": 102.85
+      },
+      "update_time": "2026-04-27"
+    },
+    "白银": {
+      "region_id": "gs_白银",
+      "province": "甘肃省",
+      "city": "白银",
+      "total_road_km": 12193,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "白银路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.12,
+        "max_lat": 37.62,
+        "min_lon": 103.33,
+        "max_lon": 105.11
+      },
+      "update_time": "2026-04-27"
+    },
+    "天水": {
+      "region_id": "gs_天水",
+      "province": "甘肃省",
+      "city": "天水",
+      "total_road_km": 14273,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "天水路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.05,
+        "max_lat": 35.21,
+        "min_lon": 104.34,
+        "max_lon": 106.44
+      },
+      "update_time": "2026-04-27"
+    },
+    "武威": {
+      "region_id": "gs_武威",
+      "province": "甘肃省",
+      "city": "武威",
+      "total_road_km": 13240,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "武威路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.29,
+        "max_lat": 39.27,
+        "min_lon": 101.49,
+        "max_lon": 104.17
+      },
+      "update_time": "2026-04-27"
+    },
+    "张掖": {
+      "region_id": "gs_张掖",
+      "province": "甘肃省",
+      "city": "张掖",
+      "total_road_km": 11004,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "张掖路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.28,
+        "max_lat": 39.95,
+        "min_lon": 97.21,
+        "max_lon": 102.12
+      },
+      "update_time": "2026-04-27"
+    },
+    "平凉": {
+      "region_id": "gs_平凉",
+      "province": "甘肃省",
+      "city": "平凉",
+      "total_road_km": 11235,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "平凉路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.54,
+        "max_lat": 35.75,
+        "min_lon": 105.4,
+        "max_lon": 107.62
+      },
+      "update_time": "2026-04-27"
+    },
+    "酒泉": {
+      "region_id": "gs_酒泉",
+      "province": "甘肃省",
+      "city": "酒泉",
+      "total_road_km": 17782,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "酒泉路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 38.09,
+        "max_lat": 42.48,
+        "min_lon": 92.09,
+        "max_lon": 100.2
+      },
+      "update_time": "2026-04-27"
+    },
+    "庆阳": {
+      "region_id": "gs_庆阳",
+      "province": "甘肃省",
+      "city": "庆阳",
+      "total_road_km": 16653,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "庆阳路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 35.15,
+        "max_lat": 37.1,
+        "min_lon": 106.2,
+        "max_lon": 108.42
+      },
+      "update_time": "2026-04-27"
+    },
+    "定西": {
+      "region_id": "gs_定西",
+      "province": "甘肃省",
+      "city": "定西",
+      "total_road_km": 12901,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "定西路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.26,
+        "max_lat": 36.16,
+        "min_lon": 103.52,
+        "max_lon": 105.47
+      },
+      "update_time": "2026-04-27"
+    },
+    "陇南": {
+      "region_id": "gs_陇南",
+      "province": "甘肃省",
+      "city": "陇南",
+      "total_road_km": 19264,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "陇南路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 32.38,
+        "max_lat": 34.31,
+        "min_lon": 104.01,
+        "max_lon": 106.78
+      },
+      "update_time": "2026-04-27"
+    },
+    "西宁": {
+      "region_id": "qh_西宁",
+      "province": "青海省",
+      "city": "西宁",
+      "total_road_km": 5246,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "西宁路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.19,
+        "max_lat": 37.25,
+        "min_lon": 100.77,
+        "max_lon": 102.63
+      },
+      "update_time": "2026-04-27"
+    },
+    "银川": {
+      "region_id": "nx_银川",
+      "province": "宁夏回族自治区",
+      "city": "银川",
+      "total_road_km": 6806,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "银川路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 37.6,
+        "max_lat": 38.83,
+        "min_lon": 105.49,
+        "max_lon": 106.82
+      },
+      "update_time": "2026-04-27"
+    },
+    "石嘴山": {
+      "region_id": "nx_石嘴",
+      "province": "宁夏回族自治区",
+      "city": "石嘴山",
+      "total_road_km": 2873,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "石嘴山路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 38.67,
+        "max_lat": 39.38,
+        "min_lon": 106.06,
+        "max_lon": 106.96
+      },
+      "update_time": "2026-04-27"
+    },
+    "吴忠": {
+      "region_id": "nx_吴忠",
+      "province": "宁夏回族自治区",
+      "city": "吴忠",
+      "total_road_km": 9942,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "吴忠路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 36.62,
+        "max_lat": 38.18,
+        "min_lon": 105.45,
+        "max_lon": 107.41
+      },
+      "update_time": "2026-04-27"
+    },
+    "固原": {
+      "region_id": "nx_固原",
+      "province": "宁夏回族自治区",
+      "city": "固原",
+      "total_road_km": 10707,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "固原路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 34.84,
+        "max_lat": 36.56,
+        "min_lon": 105.18,
+        "max_lon": 106.94
+      },
+      "update_time": "2026-04-27"
+    },
+    "乌鲁木齐": {
+      "region_id": "xj_乌鲁",
+      "province": "新疆维吾尔自治区",
+      "city": "乌鲁木齐",
+      "total_road_km": 3036,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "乌鲁木齐路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 42.45,
+        "max_lat": 44.71,
+        "min_lon": 86.37,
+        "max_lon": 88.58
+      },
+      "update_time": "2026-04-27"
+    },
+    "克拉玛依": {
+      "region_id": "xj_克拉",
+      "province": "新疆维吾尔自治区",
+      "city": "克拉玛依",
+      "total_road_km": 1229,
+      "data_source": "网络获取数据",
+      "data_year": "2024",
+      "note": "克拉玛依路网总长度",
+      "road_types": {},
+      "bounds": {
+        "min_lat": 44.04,
+        "max_lat": 46.41,
+        "min_lon": 84.07,
+        "max_lon": 86.44
+      },
+      "update_time": "2026-04-27"
     }
   },
-  "default_region": "青岛市",
+  "default_region": "青岛",
   "data_notes": {
-    "definition": "建成区道路长度：城市建成区内铺设路面的道路总长度",
-    "source_primary": "住房和城乡建设部《中国城乡建设统计年鉴》",
-    "source_secondary": "各城市统计局统计年鉴",
-    "limitation": "部分城市数据为估算值，实际道路长度可能因统计口径不同而有差异",
+    "definition": "城市路网总长度：城市行政区域内道路总长度",
+    "source_primary": "网络获取数据",
+    "source_secondary": "各城市统计年鉴",
+    "limitation": "数据来源于公开网络，可能因统计口径不同而有差异",
     "suggestion": "建议使用OpenStreetMap提取更精确的道路网络长度数据"
   }
 }
