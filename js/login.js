@@ -196,7 +196,10 @@ async function initApp() {
         const cachedTracks = await trackStorage.getAllTracks();
         
         if (cachedTracks && cachedTracks.length > 0) {
-          console.log(`从缓存加载 ${cachedTracks.length} 条轨迹`);
+          console.log('[DEBUG] 从缓存加载 ' + cachedTracks.length + ' 条轨迹');
+          cachedTracks.forEach(function(t, i) {
+            console.log('[DEBUG] 缓存轨迹[' + i + '] fit_url:', t.fit_url, 'start_time:', t.start_time);
+          });
           
           window.uploadedTracks.length = 0;
           
@@ -206,6 +209,8 @@ async function initApp() {
               renderTrackOnMap(track);
             }
           }
+          
+          console.log('[DEBUG] 缓存加载后 uploadedTracks 数量:', window.uploadedTracks.length);
           
           if (typeof updateStats === 'function') {
             await updateStats();
@@ -223,7 +228,26 @@ async function initApp() {
       if (userInfo.data) {
         const user = userInfo.data;
         document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
-        document.getElementById('user-avatar').textContent = user.nickname ? user.nickname.charAt(0) : '';
+        
+        // 设置头像：优先使用API返回的头像URL，否则显示昵称首字
+        const avatarEl = document.getElementById('user-avatar');
+        const avatarUrl = user.avatar || user.avatar_url || user.headimg || user.head_img || user.profile_image;
+        if (avatarUrl) {
+          const img = document.createElement('img');
+          img.src = avatarUrl;
+          img.alt = '头像';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.onerror = function() {
+            avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
+          };
+          avatarEl.innerHTML = '';
+          avatarEl.appendChild(img);
+        } else {
+          avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
+        }
+        
         document.getElementById('user-info-card').style.display = 'flex';
         
         const settingsBtn = document.getElementById('settings-btn');

@@ -41,6 +41,40 @@ function generateTrackId() {
   return `track_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
+/**
+ * 将FIT时间戳转换为ISO字符串
+ * FIT时间戳可能是：Date对象、数字（秒）、或已格式化的字符串
+ * @param {any} timeValue - FIT时间值
+ * @returns {string|null} ISO时间字符串
+ */
+function formatFitTime(timeValue) {
+  if (!timeValue) return null;
+  
+  if (typeof timeValue === 'string') {
+    if (timeValue.includes('T') && timeValue.includes('Z')) {
+      return timeValue;
+    }
+    const parsed = new Date(timeValue);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toISOString();
+    }
+    return null;
+  }
+  
+  if (timeValue instanceof Date) {
+    return timeValue.toISOString();
+  }
+  
+  if (typeof timeValue === 'number') {
+    const date = new Date(timeValue * 1000);
+    if (!isNaN(date.getTime())) {
+      return date.toISOString();
+    }
+  }
+  
+  return null;
+}
+
 // ============ FIT文件解析 ============
 
 /**
@@ -125,8 +159,8 @@ async function parseFitFile(fitBuffer) {
       track_id: generateTrackId(),
       fit_file_name: 'uploaded.fit',
       device: deviceInfo.manufacturer || deviceInfo.device_name || 'Unknown',
-      start_time: session.start_time || validPoints[0]?.time,
-      end_time: session.timestamp || validPoints[validPoints.length - 1]?.time,
+      start_time: formatFitTime(session.start_time) || validPoints[0]?.time,
+      end_time: formatFitTime(session.timestamp) || validPoints[validPoints.length - 1]?.time,
       total_distance_km: totalDistance,
       points_count: validPoints.length,
       points: validPoints
@@ -187,5 +221,6 @@ window.readAndParseFitFile = readAndParseFitFile;
 window.semicirclesToDegrees = semicirclesToDegrees;
 window.haversineDistance = haversineDistance;
 window.generateTrackId = generateTrackId;
+window.formatFitTime = formatFitTime;
 
 console.log('FIT解析模块已加载');

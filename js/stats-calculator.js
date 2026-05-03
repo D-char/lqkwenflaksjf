@@ -546,8 +546,13 @@ function countThisWeekUploads(tracks) {
   const weekStart = getWeekStartTime();
   
   return tracks.filter(track => {
-    // 使用轨迹的开始时间作为上传时间参考
-    const trackTime = track.start_time ? new Date(track.start_time) : new Date();
+    // 仅当 track.start_time 有效时才判断是否属于本周
+    if (!track.start_time) return false;
+    
+    const trackTime = new Date(track.start_time);
+    // 检查日期是否有效
+    if (isNaN(trackTime.getTime())) return false;
+    
     return trackTime >= weekStart;
   }).length;
 }
@@ -561,7 +566,13 @@ function calculateThisWeekDistance(tracks) {
   const weekStart = getWeekStartTime();
   
   return tracks.filter(track => {
-    const trackTime = track.start_time ? new Date(track.start_time) : new Date();
+    // 仅当 track.start_time 有效时才判断是否属于本周
+    if (!track.start_time) return false;
+    
+    const trackTime = new Date(track.start_time);
+    // 检查日期是否有效
+    if (isNaN(trackTime.getTime())) return false;
+    
     return trackTime >= weekStart;
   }).reduce((sum, track) => sum + (track.total_distance_km || 0), 0);
 }

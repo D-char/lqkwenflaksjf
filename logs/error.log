@@ -3,3 +3,5 @@
 2026/04/28 16:50:39 [emerg] 44904#44620: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
 2026/04/28 16:56:06 [emerg] 42812#45604: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
 2026/04/28 18:42:01 [emerg] 53060#53064: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
+2026/05/03 10:25:37 [emerg] 2396#12480: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
+2026/05/03 10:28:26 [emerg] 2060#1868: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)

@@ -340,15 +340,32 @@ const CITY_COORDINATES = {
 };
 
 function addTrackUnique(trackData) {
-  const existingIndex = window.uploadedTracks.findIndex(t => 
-    (t.track_id && t.track_id === trackData.track_id) || 
-    (t.fit_url && t.fit_url === trackData.fit_url)
-  );
-  if (existingIndex === -1) {
-    window.uploadedTracks.push(trackData);
-    return true;
+  console.log('addTrackUnique called, fit_url:', trackData.fit_url, 'current tracks:', window.uploadedTracks.length);
+  
+  if (!trackData.fit_url) {
+    const existingById = window.uploadedTracks.findIndex(t => 
+      t.track_id && t.track_id === trackData.track_id
+    );
+    if (existingById === -1) {
+      window.uploadedTracks.push(trackData);
+      console.log('Added by track_id, new count:', window.uploadedTracks.length);
+      return true;
+    }
+    console.log('Skipped, exists by track_id');
+    return false;
   }
-  return false;
+  
+  const existingByFitUrl = window.uploadedTracks.findIndex(t => 
+    t.fit_url && t.fit_url === trackData.fit_url
+  );
+  if (existingByFitUrl !== -1) {
+    console.log('Skipped, exists by fit_url');
+    return false;
+  }
+  
+  window.uploadedTracks.push(trackData);
+  console.log('Added by fit_url, new count:', window.uploadedTracks.length);
+  return true;
 }
 
 function triggerUpload() {
@@ -691,19 +708,26 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     return { success: [], failed: [] };
   }
 
+  console.log('[DEBUG] uploadFitFilesFromUrlsBatch called with ' + urls.length + ' URLs');
+  console.log('[DEBUG] current uploadedTracks count:', window.uploadedTracks.length);
+  window.uploadedTracks.forEach(function(t, i) {
+    console.log('[DEBUG] uploadedTracks[' + i + '] fit_url:', t.fit_url);
+  });
+
   const results = [];
   const errors = [];
   const needsDownload = [];
 
   for (const url of urls) {
     const exists = window.uploadedTracks.some(t => t.fit_url === url);
+    console.log('[DEBUG] URL ' + url + ' exists in uploadedTracks:', exists);
     if (!exists) {
       needsDownload.push(url);
     }
   }
 
   if (needsDownload.length === 0) {
-    console.log('所有轨迹已在缓存中');
+    console.log('[DEBUG] 所有轨迹已在缓存中，跳过下载');
     await updateStats();
     return { success: [], failed: [] };
   }
