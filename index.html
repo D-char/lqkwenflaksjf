@@ -5,12 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>骑行路线点亮 - 真实地图原型</title>
   
-  <!-- 高德地图 JS API 1.4 -->
-  <script src="https://webapi.amap.com/maps?v=1.4.15&key=ab2d12c583618aa0959c3dcbd7709f1d"></script>
-  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
-  
   <!-- 项目样式 -->
   <link rel="stylesheet" href="css/style.css">
+  
+  <!-- 高德地图 JS API 异步加载 -->
+  <script>
+    window.initAMap = function() {
+      console.log('✅ 高德地图SDK加载完成');
+    };
+  </script>
+  <script src="https://webapi.amap.com/maps?v=1.4.15&key=ab2d12c583618aa0959c3dcbd7709f1d&callback=initAMap" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js" async></script>
 </head>
 <body>
   <div class="phone-frame">
@@ -52,8 +57,8 @@
     
     <!-- Main Screen with Real Map -->
     <div id="screen-main" class="screen main-screen">
-      <div class="user-info-card" id="user-info-card" style="display: none;">
-        <div class="user-avatar" id="user-avatar"></div>
+      <div class="user-info-card" id="user-info-card">
+        <div class="user-avatar" id="user-avatar">骑</div>
         <div class="user-details">
           <div class="user-name" id="user-name">加载中...</div>
           <div class="user-status">已连接顽鹿</div>
@@ -62,11 +67,16 @@
       </div>
       
       <div class="header">
-        <span class="header-title">我的点亮</span>
+        <div class="city-selector-inline" id="city-selector" style="display: none;">
+          <div class="city-dropdown" onclick="toggleCityDropdown()">
+            <span id="current-city">请选择区域</span>
+            <span class="city-dropdown-arrow">▼</span>
+          </div>
+          <div class="city-list" id="city-list"></div>
+        </div>
         <div class="header-actions">
           <div class="header-btn upload-btn" onclick="triggerUpload()">📤</div>
           <div class="header-btn style-btn" onclick="toggleStylePanel()">🗺️</div>
-          <div class="header-btn" id="settings-btn" onclick="logout()">⚙️</div>
         </div>
       </div>
       
@@ -97,14 +107,14 @@
       </div>
       
       <div class="map-container">
-        <div id="map"></div>
-        
-        <div class="city-selector" id="city-selector" style="display: none;">
-          <div class="city-dropdown" onclick="toggleCityDropdown()">
-            <span id="current-city">请选择您所探索过的区域</span>
-            <span class="city-dropdown-arrow">▼</span>
+        <div id="map">
+          <div id="map-loading" class="map-loading">
+            <img id="static-map" class="static-map" src="https://restapi.amap.com/v3/staticmap?key=ab2d12c583618aa0959c3dcbd7709f1d&location=116.4074,39.9042&zoom=11&size=375*600&traffic=0" alt="地图加载中">
+            <div class="map-loading-overlay">
+              <div class="map-loading-spinner"></div>
+              <div class="map-loading-text">加载中...</div>
+            </div>
           </div>
-          <div class="city-list" id="city-list"></div>
         </div>
         
         <div class="map-legend">
@@ -121,15 +131,15 @@
           </div>
           <div class="stats-row">
             <div class="stat-item">
-              <div class="stat-value">0%</div>
+              <div class="stat-value">--%</div>
               <div class="stat-label">点亮率</div>
             </div>
             <div class="stat-item">
-              <div class="stat-value">0km</div>
+              <div class="stat-value">--km</div>
               <div class="stat-label">已点亮</div>
             </div>
             <div class="stat-item">
-              <div class="stat-value">18500km</div>
+              <div class="stat-value">--km</div>
               <div class="stat-label">总路线</div>
             </div>
           </div>

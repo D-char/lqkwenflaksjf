@@ -182,13 +182,45 @@ async function initApp() {
   
   showMainScreen();
   
-  try {
-    if (typeof initMap === 'function') {
-      initMap();
+  const userInfoPromise = getUserInfo();
+  
+  userInfoPromise.then(userInfo => {
+    console.log('用户信息:', userInfo);
+    if (userInfo.data) {
+      const user = userInfo.data;
+      const avatarEl = document.getElementById('user-avatar');
+      const avatarUrl = user.avatar || user.avatar_url || user.headimg || user.head_img || user.profile_image;
+      
+      if (avatarUrl) {
+        const img = new Image();
+        img.onload = function() {
+          avatarEl.innerHTML = '';
+          avatarEl.appendChild(img);
+          document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
+        };
+        img.onerror = function() {
+          avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
+          document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
+        };
+        img.src = avatarUrl;
+        img.alt = '头像';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+      } else {
+        avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
+        document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
+      }
     }
-
-    const userInfoPromise = getUserInfo();
-    
+  }).catch(err => {
+    console.warn('获取用户信息失败:', err);
+  });
+  
+  if (typeof initMap === 'function') {
+    initMap();
+  }
+  
+  try {
     window.uploadedTracks = window.uploadedTracks || [];
     
     if (window.trackStorage) {
@@ -219,44 +251,6 @@ async function initApp() {
       } catch (e) {
         console.warn('缓存加载失败:', e);
       }
-    }
-
-    try {
-      const userInfo = await userInfoPromise;
-      console.log('用户信息:', userInfo);
-      
-      if (userInfo.data) {
-        const user = userInfo.data;
-        document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
-        
-        // 设置头像：优先使用API返回的头像URL，否则显示昵称首字
-        const avatarEl = document.getElementById('user-avatar');
-        const avatarUrl = user.avatar || user.avatar_url || user.headimg || user.head_img || user.profile_image;
-        if (avatarUrl) {
-          const img = document.createElement('img');
-          img.src = avatarUrl;
-          img.alt = '头像';
-          img.style.width = '100%';
-          img.style.height = '100%';
-          img.style.objectFit = 'cover';
-          img.onerror = function() {
-            avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
-          };
-          avatarEl.innerHTML = '';
-          avatarEl.appendChild(img);
-        } else {
-          avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
-        }
-        
-        document.getElementById('user-info-card').style.display = 'flex';
-        
-        const settingsBtn = document.getElementById('settings-btn');
-        if (settingsBtn) {
-          settingsBtn.style.display = 'none';
-        }
-      }
-    } catch (userInfoError) {
-      console.warn('获取用户信息失败:', userInfoError);
     }
 
     try {

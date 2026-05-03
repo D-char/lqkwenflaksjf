@@ -145,6 +145,11 @@ function initMap() {
   const DEFAULT_ZOOM = 11;
   const DEFAULT_REGION_DISPLAY = '未定位';
   
+  if (typeof AMap === 'undefined') {
+    setTimeout(initMap, 100);
+    return;
+  }
+  
   const map = new AMap.Map('map', {
     resizeEnable: true,
     zoom: DEFAULT_ZOOM,
@@ -154,6 +159,13 @@ function initMap() {
   });
   
   window.map = map;
+  
+  map.on('complete', function() {
+    const loadingEl = document.getElementById('map-loading');
+    if (loadingEl) {
+      loadingEl.style.display = 'none';
+    }
+  });
   
   updateRegionDisplay(DEFAULT_REGION_DISPLAY);
   
