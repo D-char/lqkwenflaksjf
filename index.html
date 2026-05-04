@@ -74,10 +74,17 @@
           </div>
           <div class="city-list" id="city-list"></div>
         </div>
-        <div class="header-actions">
-          <div class="header-btn upload-btn" onclick="triggerUpload()">📤</div>
-          <div class="header-btn style-btn" onclick="toggleStylePanel()">🗺️</div>
+        <div class="map-legend">
+          <div class="legend-item">
+            <div class="legend-line lit"></div>
+            <span>已点亮路线</span>
+          </div>
         </div>
+      </div>
+      
+      <div class="header-actions">
+        <div class="header-btn upload-btn" onclick="triggerUpload()">📤</div>
+        <div class="header-btn style-btn" onclick="toggleStylePanel()">🗺️</div>
       </div>
       
       <div id="style-panel" class="style-panel" style="display: none;">
@@ -117,13 +124,6 @@
           </div>
         </div>
         
-        <div class="map-legend">
-          <div class="legend-item">
-            <div class="legend-line lit"></div>
-            <span>已点亮路线</span>
-          </div>
-        </div>
-        
         <div class="achievement-card">
           <div class="card-header">
             <span class="card-title">点亮成就</span>
@@ -150,17 +150,8 @@
             <span id="region-name">未定位</span>
             <span>上传FIT文件点亮路线</span>
           </div>
-          <button class="btn-share" onclick="enterShowcaseMode()">📤 炫耀一下</button>
+          <button class="btn-share" onclick="enterShowcaseMode(event)">📤 炫耀一下</button>
         </div>
-      </div>
-      
-      <!-- 截图提示条 -->
-      <div id="showcase-tip-bar" class="showcase-tip-bar" style="display: none;">
-        <div class="tip-content">
-          <span class="tip-icon">📸</span>
-          <span class="tip-text">截图分享给好友吧！</span>
-        </div>
-        <button class="tip-back-btn" onclick="exitShowcaseMode()">返回</button>
       </div>
       
     </div>

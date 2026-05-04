@@ -1,6 +1,7 @@
 /**
  * 分享展示模式模块
  * 点击"炫耀一下"进入展示页面，隐藏无关按钮，用户手动截图
+ * 点击页面任意位置退出展示模式
  */
 
 const HIDE_ELEMENTS_IN_SHOWCASE = [
@@ -15,8 +16,12 @@ const HIDE_ELEMENTS_IN_SHOWCASE = [
 let showcaseModeActive = false;
 let originalDisplayStates = new Map();
 
-function enterShowcaseMode() {
+function enterShowcaseMode(event) {
   if (showcaseModeActive) return;
+  
+  if (event) {
+    event.stopPropagation();
+  }
   
   showcaseModeActive = true;
   originalDisplayStates.clear();
@@ -30,8 +35,14 @@ function enterShowcaseMode() {
     });
   });
   
-  const tipBar = document.getElementById('showcase-tip-bar');
-  if (tipBar) tipBar.style.display = 'flex';
+  setTimeout(() => {
+    document.addEventListener('click', handleShowcaseClick);
+  }, 100);
+}
+
+function handleShowcaseClick(event) {
+  if (!showcaseModeActive) return;
+  exitShowcaseMode();
 }
 
 function exitShowcaseMode() {
@@ -39,14 +50,13 @@ function exitShowcaseMode() {
   
   showcaseModeActive = false;
   
+  document.removeEventListener('click', handleShowcaseClick);
+  
   originalDisplayStates.forEach((originalDisplay, el) => {
     if (el) el.style.display = originalDisplay;
   });
   
   originalDisplayStates.clear();
-  
-  const tipBar = document.getElementById('showcase-tip-bar');
-  if (tipBar) tipBar.style.display = 'none';
 }
 
 window.enterShowcaseMode = enterShowcaseMode;

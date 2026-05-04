@@ -5,3 +5,4 @@
 2026/04/28 18:42:01 [emerg] 53060#53064: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
 2026/05/03 10:25:37 [emerg] 2396#12480: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
 2026/05/03 10:28:26 [emerg] 2060#1868: CreateDirectory() "D:\onelapMap/temp/client_body_temp" failed (3: The system cannot find the path specified)
+2026/05/04 21:48:53 [emerg] 11332#10084: CreateFile() "D:\onelapMap/nginx.conf\" failed (267: The directory name is invalid)
