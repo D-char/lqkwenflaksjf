@@ -145,68 +145,84 @@ function initMap() {
   const DEFAULT_ZOOM = 11;
   const DEFAULT_REGION_DISPLAY = '未定位';
   
-  if (typeof AMap === 'undefined') {
-    setTimeout(initMap, 100);
-    return;
-  }
+  const checkAMap = () => {
+    if (typeof AMap === 'undefined') {
+      return new Promise(resolve => {
+        const checkInterval = setInterval(() => {
+          if (typeof AMap !== 'undefined') {
+            clearInterval(checkInterval);
+            resolve();
+          }
+        }, 50);
+        
+        setTimeout(() => {
+          clearInterval(checkInterval);
+          console.warn('高德地图SDK加载超时');
+        }, 10000);
+      });
+    }
+    return Promise.resolve();
+  };
   
-  const map = new AMap.Map('map', {
-    resizeEnable: true,
-    zoom: DEFAULT_ZOOM,
-    center: [DEFAULT_LNG, DEFAULT_LAT],
-    viewMode: '2D',
-    mapStyle: 'amap://styles/normal'
-  });
-  
-  window.map = map;
-  
-  map.on('complete', function() {
-    const loadingEl = document.getElementById('map-loading');
-    if (loadingEl) {
-      loadingEl.style.display = 'none';
+  checkAMap().then(() => {
+    const map = new AMap.Map('map', {
+      resizeEnable: true,
+      zoom: DEFAULT_ZOOM,
+      center: [DEFAULT_LNG, DEFAULT_LAT],
+      viewMode: '2D',
+      mapStyle: 'amap://styles/normal'
+    });
+    
+    window.map = map;
+    
+    map.on('complete', function() {
+      const loadingEl = document.getElementById('map-loading');
+      if (loadingEl) {
+        loadingEl.style.display = 'none';
+      }
+    });
+    
+    updateRegionDisplay(DEFAULT_REGION_DISPLAY);
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async function(position) {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          
+          const [gcjLat, gcjLng] = wgs84ToGcj02(userLat, userLng);
+          map.setCenter([gcjLng, gcjLat]);
+          map.setZoom(DEFAULT_ZOOM);
+          
+          const regionName = await getRegionName(gcjLat, gcjLng);
+          updateRegionDisplay(regionName);
+          
+          if (regionName && window.roadDataApi) {
+            const roadData = await window.roadDataApi.getCityRoadLength(regionName);
+            if (roadData) {
+              const totalRoadEl = document.querySelector('.achievement-card .stat-item:nth-child(3) .stat-value');
+              if (totalRoadEl) {
+                totalRoadEl.textContent = `${roadData.length_km}km`;
+              }
+            }
+          }
+        },
+        function(error) {
+          updateRegionDisplay(null);
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 60000
+        }
+      );
+    } else {
+      console.warn('浏览器不支持定位功能');
+      updateRegionDisplay(DEFAULT_REGION_DISPLAY);
     }
   });
   
-  updateRegionDisplay(DEFAULT_REGION_DISPLAY);
-  
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      async function(position) {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        
-        const [gcjLat, gcjLng] = wgs84ToGcj02(userLat, userLng);
-        map.setCenter([gcjLng, gcjLat]);
-        map.setZoom(DEFAULT_ZOOM);
-        
-        const regionName = await getRegionName(gcjLat, gcjLng);
-        updateRegionDisplay(regionName);
-        
-        if (regionName && window.roadDataApi) {
-          const roadData = await window.roadDataApi.getCityRoadLength(regionName);
-          if (roadData) {
-            const totalRoadEl = document.querySelector('.achievement-card .stat-item:nth-child(3) .stat-value');
-            if (totalRoadEl) {
-              totalRoadEl.textContent = `${roadData.length_km}km`;
-            }
-          }
-        }
-      },
-      function(error) {
-        updateRegionDisplay(null);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      }
-    );
-  } else {
-    console.warn('浏览器不支持定位功能');
-    updateRegionDisplay(DEFAULT_REGION_DISPLAY);
-  }
-  
-  return map;
+  return window.map;
 }
 
 window.initMap = initMap;

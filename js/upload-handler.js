@@ -417,9 +417,16 @@ function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = 'toast';
   toast.textContent = message;
+  
+  if (type === 'error') {
+    toast.style.background = 'rgba(231, 76, 60, 0.95)';
+    toast.style.color = '#fff';
+    toast.style.borderColor = 'rgba(231, 76, 60, 0.5)';
+  }
+  
   document.body.appendChild(toast);
 
-  const duration = type === 'info' ? 5000 : 2000;
+  const duration = type === 'info' ? 4000 : 2000;
   setTimeout(() => {
     toast.classList.add('toast-fade');
     setTimeout(() => toast.remove(), 300);
@@ -432,6 +439,10 @@ function renderTrackOnMap(trackData) {
     return;
   }
 
+  if (!trackData.points || trackData.points.length < 2) {
+    return;
+  }
+
   const coords = trackData.points.map(p => {
     if (typeof wgs84ToGcj02 === 'function') {
       const [gcjLat, gcjLon] = wgs84ToGcj02(p.lat, p.lon);
@@ -441,7 +452,6 @@ function renderTrackOnMap(trackData) {
   });
 
   if (coords.length < 2) {
-    console.warn('轨迹点数不足');
     return;
   }
 
@@ -708,43 +718,56 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     return { success: [], failed: [] };
   }
 
-  console.log('[DEBUG] uploadFitFilesFromUrlsBatch called with ' + urls.length + ' URLs');
-  console.log('[DEBUG] current uploadedTracks count:', window.uploadedTracks.length);
-  window.uploadedTracks.forEach(function(t, i) {
-    console.log('[DEBUG] uploadedTracks[' + i + '] fit_url:', t.fit_url);
-  });
+  console.log('[优化] uploadFitFilesFromUrlsBatch called with ' + urls.length + ' URLs');
+  console.log('[优化] current uploadedTracks count:', window.uploadedTracks.length);
 
   const results = [];
   const errors = [];
   const needsDownload = [];
 
+  const getFileName = (url) => {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.pathname.split('/').pop();
+    } catch (e) {
+      return url.split('/').pop();
+    }
+  };
+
+  const cachedFileNames = new Set(
+    window.uploadedTracks
+      .filter(t => t.fit_url)
+      .map(t => getFileName(t.fit_url))
+  );
+
   for (const url of urls) {
-    const exists = window.uploadedTracks.some(t => t.fit_url === url);
-    console.log('[DEBUG] URL ' + url + ' exists in uploadedTracks:', exists);
+    const fileName = getFileName(url);
+    const exists = cachedFileNames.has(fileName);
+    
     if (!exists) {
       needsDownload.push(url);
     }
   }
 
   if (needsDownload.length === 0) {
-    console.log('[DEBUG] 所有轨迹已在缓存中，跳过下载');
+    console.log('[优化] 所有轨迹已在缓存中，跳过下载');
     await updateStats();
     return { success: [], failed: [] };
   }
 
-  showToast(`正在加载 ${needsDownload.length} 个轨迹...`, 'info');
-  
-  const CONCURRENT_LIMIT = 4;
+  const CONCURRENT_LIMIT = 3;
 
   async function downloadSingle(url) {
     try {
-      const response = await fetch(url);
+      const httpsUrl = url.replace(/^http:/, 'https:');
+      
+      const response = await fetch(httpsUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
       const buffer = await response.arrayBuffer();
       const trackData = await parseFitFile(buffer);
-      trackData.fit_file_name = url.split('/').pop() || 'remote.fit';
+      trackData.fit_file_name = httpsUrl.split('/').pop() || 'remote.fit';
       trackData.fit_url = url;
       
       addTrackUnique(trackData);
@@ -756,9 +779,14 @@ async function uploadFitFilesFromUrlsBatch(urls) {
       
       return { success: true, trackData };
     } catch (error) {
-      errors.push({ url, error: error.message });
-      console.warn(`文件加载失败: ${url}`, error);
-      return { success: false, url, error };
+      const isCorsError = error.message.includes('Failed to fetch') && url.includes('aliyuncs.com');
+      const errorMsg = isCorsError 
+        ? 'CORS 跨域限制,请联系后端配置 OSS CORS 规则' 
+        : error.message;
+      
+      errors.push({ url, error: errorMsg });
+      console.warn(`文件加载失败: ${url}`, errorMsg);
+      return { success: false, url, error: errorMsg };
     }
   }
 
@@ -767,19 +795,32 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     downloadBatches.push(needsDownload.slice(i, i + CONCURRENT_LIMIT));
   }
 
-  for (const batch of downloadBatches) {
+  for (let batchIndex = 0; batchIndex < downloadBatches.length; batchIndex++) {
+    const batch = downloadBatches[batchIndex];
     await Promise.all(batch.map(url => downloadSingle(url)));
   }
   
-  showToast(`已加载 ${results.length} 个轨迹`, 'success');
-
-  for (const trackData of results) {
-    try {
-      renderTrackOnMap(trackData);
-    } catch (renderError) {
-      console.warn('渲染失败:', renderError);
-    }
+  if (results.length > 0 && typeof showToast === 'function') {
+    showToast(`成功加载 ${results.length} 个新轨迹`, 'success');
   }
+
+  const renderBatch = (tracks, startIndex = 0, batchSize = 5) => {
+    const endIndex = Math.min(startIndex + batchSize, tracks.length);
+    
+    for (let i = startIndex; i < endIndex; i++) {
+      try {
+        renderTrackOnMap(tracks[i]);
+      } catch (renderError) {
+        console.warn('渲染失败:', renderError);
+      }
+    }
+    
+    if (endIndex < tracks.length) {
+      requestAnimationFrame(() => renderBatch(tracks, endIndex, batchSize));
+    }
+  };
+  
+  renderBatch(results);
 
   try {
     await updateStats();

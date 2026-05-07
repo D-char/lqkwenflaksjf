@@ -174,6 +174,10 @@ async function getUserInfo() {
   return result;
 }
 
+/**
+ * 优化后的初始化函数 - 并行加载
+ * 将串行操作改为并行,大幅提升加载速度
+ */
 async function initApp() {
   if (!isLoggedIn()) {
     showLoginScreen();
@@ -182,114 +186,138 @@ async function initApp() {
   
   showMainScreen();
   
-  const userInfoPromise = getUserInfo();
+  const initPromises = {
+    userInfo: getUserInfo().catch(err => {
+      console.error('获取用户信息失败:', err);
+      return null;
+    }),
+    cachedTracks: window.trackStorage 
+      ? trackStorage.getAllTracks().catch(err => {
+          console.warn('缓存加载失败:', err);
+          return [];
+        })
+      : Promise.resolve([])
+  };
   
-  userInfoPromise.then(userInfo => {
-    console.log('用户信息:', userInfo);
-    if (userInfo.data) {
-      const user = userInfo.data;
-      const avatarEl = document.getElementById('user-avatar');
-      const avatarUrl = user.avatar || user.avatar_url || user.headimg || user.head_img || user.profile_image;
-      
-      if (avatarUrl) {
-        const img = new Image();
-        img.onload = function() {
-          avatarEl.innerHTML = '';
-          avatarEl.appendChild(img);
-          document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
-        };
-        img.onerror = function() {
-          avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
-          document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
-        };
-        img.src = avatarUrl;
-        img.alt = '头像';
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-      } else {
-        avatarEl.textContent = user.nickname ? user.nickname.charAt(0) : '骑';
-        document.getElementById('user-name').textContent = user.nickname || '骑行爱好者';
-      }
-    }
-  }).catch(err => {
-    console.warn('获取用户信息失败:', err);
-  });
-  
+  // 地图初始化不阻塞其他操作
   if (typeof initMap === 'function') {
     initMap();
   }
   
-  try {
-    window.uploadedTracks = window.uploadedTracks || [];
+  // 等待关键数据加载完成
+  const results = await Promise.all([
+    initPromises.userInfo,
+    initPromises.cachedTracks
+  ]);
+  
+  const userInfo = results[0];
+  const cachedTracks = results[1];
+  
+  if (userInfo && userInfo.data) {
+    const user = userInfo.data;
+    const avatarEl = document.getElementById('user-avatar');
+    const userNameEl = document.getElementById('user-name');
+    const avatarUrl = user.avatar || user.avatar_url || user.headimg || user.head_img || user.profile_image;
+    const nickname = user.nickname || user.name || user.username || '骑行爱好者';
     
-    if (window.trackStorage) {
-      try {
-        const cachedTracks = await trackStorage.getAllTracks();
+    if (avatarEl && avatarUrl) {
+      const img = new Image();
+      img.onload = function() {
+        avatarEl.innerHTML = '';
+        avatarEl.appendChild(img);
+        if (userNameEl) userNameEl.textContent = nickname;
+      };
+      img.onerror = function() {
+        avatarEl.textContent = nickname.charAt(0);
+        if (userNameEl) userNameEl.textContent = nickname;
+      };
+      img.src = avatarUrl;
+      img.alt = '头像';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+    } else if (avatarEl) {
+      avatarEl.textContent = nickname.charAt(0);
+      if (userNameEl) userNameEl.textContent = nickname;
+    }
+  } else {
+    console.warn('用户信息为空或格式不正确:', userInfo);
+  }
+  
+  // 3. 处理缓存轨迹(立即渲染,不等待API)
+  window.uploadedTracks = window.uploadedTracks || [];
+  
+  if (cachedTracks && cachedTracks.length > 0) {
+    window.uploadedTracks.length = 0;
+    
+    for (const track of cachedTracks) {
+      window.uploadedTracks.push(track);
+    }
+    
+    if (typeof renderTrackOnMap === 'function') {
+      const renderBatch = (tracks, startIndex = 0, batchSize = 10) => {
+        const endIndex = Math.min(startIndex + batchSize, tracks.length);
         
-        if (cachedTracks && cachedTracks.length > 0) {
-          console.log('[DEBUG] 从缓存加载 ' + cachedTracks.length + ' 条轨迹');
-          cachedTracks.forEach(function(t, i) {
-            console.log('[DEBUG] 缓存轨迹[' + i + '] fit_url:', t.fit_url, 'start_time:', t.start_time);
-          });
-          
-          window.uploadedTracks.length = 0;
-          
-          for (const track of cachedTracks) {
-            window.uploadedTracks.push(track);
-            if (typeof renderTrackOnMap === 'function') {
-              renderTrackOnMap(track);
-            }
-          }
-          
-          console.log('[DEBUG] 缓存加载后 uploadedTracks 数量:', window.uploadedTracks.length);
-          
-          if (typeof updateStats === 'function') {
-            await updateStats();
+        for (let i = startIndex; i < endIndex; i++) {
+          try {
+            renderTrackOnMap(tracks[i]);
+          } catch (e) {
+            console.warn('轨迹渲染失败:', e);
           }
         }
-      } catch (e) {
-        console.warn('缓存加载失败:', e);
-      }
-    }
-
-    try {
-      const records = await getCyclingRecords();
-      console.log('骑行记录:', records);
-    
-    let recordsArray = null;
-    if (Array.isArray(records.data)) {
-      recordsArray = records.data;
-    } else if (records.data && Array.isArray(records.data.list)) {
-      recordsArray = records.data.list;
-    } else if (records.data && Array.isArray(records.data.records)) {
-      recordsArray = records.data.records;
-    } else if (records.data && Array.isArray(records.data.activities)) {
-      recordsArray = records.data.activities;
-    } else if (Array.isArray(records)) {
-      recordsArray = records;
+        
+        if (endIndex < tracks.length) {
+          requestAnimationFrame(() => renderBatch(tracks, endIndex, batchSize));
+        }
+      };
+      
+      renderBatch(cachedTracks);
     }
     
-    if (recordsArray && recordsArray.length > 0) {
-      console.log(`API 返回 ${recordsArray.length} 条记录`);
-      
-      const fitUrls = recordsArray
-        .map(record => record.fit_url || record.file_url || record.download_url || record.activity_file || record.fit_file)
-        .filter(url => url && typeof url === 'string' && url.trim() !== '');
-      
-      console.log(`提取到 ${fitUrls.length} 个FIT文件URL`);
-      
-      if (fitUrls.length > 0 && typeof uploadFitFilesFromUrlsBatch === 'function') {
-        await uploadFitFilesFromUrlsBatch(fitUrls);
-      }
+    if (typeof updateStats === 'function') {
+      updateStats().catch(err => console.warn('统计更新失败:', err));
     }
-    } catch (recordsError) {
-      console.warn('获取骑行记录失败:', recordsError);
-    }
-    
-  } catch (error) {
-    console.error('初始化失败:', error);
   }
+  
+  // 4. 后台获取云端记录(不阻塞页面显示)
+  getCyclingRecords()
+    .then(records => {
+      console.log('骑行记录:', records);
+      
+      let recordsArray = null;
+      if (Array.isArray(records.data)) {
+        recordsArray = records.data;
+      } else if (records.data && Array.isArray(records.data.list)) {
+        recordsArray = records.data.list;
+      } else if (records.data && Array.isArray(records.data.records)) {
+        recordsArray = records.data.records;
+      } else if (records.data && Array.isArray(records.data.activities)) {
+        recordsArray = records.data.activities;
+      } else if (Array.isArray(records)) {
+        recordsArray = records;
+      }
+      
+      if (recordsArray && recordsArray.length > 0) {
+        const fitUrls = recordsArray
+          .map(record => {
+            const url = record.fit_url || record.file_url || record.download_url || record.activity_file || record.fit_file;
+            if (url && url.includes('oss-cn-hangzhou.aliyuncs.com')) {
+              console.warn('OSS URL 可能存在 CORS 限制:', url);
+            }
+            return url;
+          })
+          .filter(url => url && typeof url === 'string' && url.trim() !== '');
+        
+        if (fitUrls.length > 0 && typeof uploadFitFilesFromUrlsBatch === 'function') {
+          uploadFitFilesFromUrlsBatch(fitUrls).catch(err => {
+            console.warn('FIT文件加载失败:', err);
+          });
+        }
+      }
+    })
+    .catch(recordsError => {
+      console.warn('获取骑行记录失败:', recordsError);
+    });
 }
 
 window.redirectToLogin = redirectToLogin;

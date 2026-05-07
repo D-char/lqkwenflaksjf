@@ -12,6 +12,7 @@
   <script>
     window.initAMap = function() {
       console.log('✅ 高德地图SDK加载完成');
+      window.amapReady = true;
     };
   </script>
   <script src="https://webapi.amap.com/maps?v=1.4.15&key=ab2d12c583618aa0959c3dcbd7709f1d&callback=initAMap" async></script>
@@ -116,7 +117,6 @@
       <div class="map-container">
         <div id="map">
           <div id="map-loading" class="map-loading">
-            <img id="static-map" class="static-map" src="https://restapi.amap.com/v3/staticmap?key=ab2d12c583618aa0959c3dcbd7709f1d&location=116.4074,39.9042&zoom=11&size=375*600&traffic=0" alt="地图加载中">
             <div class="map-loading-overlay">
               <div class="map-loading-spinner"></div>
               <div class="map-loading-text">加载中...</div>
