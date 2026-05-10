@@ -231,7 +231,8 @@ async function initApp() {
         avatarEl.textContent = nickname.charAt(0);
         if (userNameEl) userNameEl.textContent = nickname;
       };
-      img.src = avatarUrl;
+      // 修复混合内容：将 HTTP 转为 HTTPS
+      img.src = avatarUrl.replace(/^http:/, 'https:');
       img.alt = '头像';
       img.style.width = '100%';
       img.style.height = '100%';
@@ -301,12 +302,21 @@ async function initApp() {
         const fitUrls = recordsArray
           .map(record => {
             const url = record.fit_url || record.file_url || record.download_url || record.activity_file || record.fit_file;
-            if (url && url.includes('oss-cn-hangzhou.aliyuncs.com')) {
-              console.warn('OSS URL 可能存在 CORS 限制:', url);
-            }
             return url;
           })
-          .filter(url => url && typeof url === 'string' && url.trim() !== '');
+          .filter(url => {
+            if (!url || typeof url !== 'string' || url.trim() === '') {
+              return false;
+            }
+            // 过滤掉 OSS URL（游戏内虚拟骑行，坐标无效）
+            if (url.includes('aliyuncs.com')) {
+              console.log('[过滤] 跳过虚拟骑行记录(OSS):', url);
+              return false;
+            }
+            return true;
+          });
+        
+        console.log(`[骑行记录] 共 ${recordsArray.length} 条，过滤后 ${fitUrls.length} 条真实码表数据`);
         
         if (fitUrls.length > 0 && typeof uploadFitFilesFromUrlsBatch === 'function') {
           uploadFitFilesFromUrlsBatch(fitUrls).catch(err => {

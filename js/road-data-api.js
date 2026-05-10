@@ -67,8 +67,8 @@ async function getCityAreaId(cityName) {
   const searchName = cityName.replace('市', '');
   
   const queries = [
-    `area["name:zh"="${cityName}"]["boundary"="administrative"];area out ids;`,
-    `area["name"="${searchName}"]["boundary"="administrative"];area out ids;`,
+    `area["name:zh"="${cityName}"]["boundary"="administrative"];out ids;`,
+    `area["name"="${searchName}"]["boundary"="administrative"];out ids;`,
   ];
   
   for (const queryStr of queries) {
