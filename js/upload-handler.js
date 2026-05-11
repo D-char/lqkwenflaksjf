@@ -377,7 +377,7 @@ async function handleFileUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  showUploadProgress();
+  showUploadProgress('正在解析FIT文件...');
 
   try {
     const trackData = await readAndParseFitFile(file);
@@ -397,10 +397,16 @@ async function handleFileUpload(event) {
   event.target.value = '';
 }
 
-function showUploadProgress() {
+function showUploadProgress(statusText) {
+  const overlay = document.getElementById('upload-progress');
+  const progressText = document.getElementById('progress-text');
+  if (overlay) overlay.style.display = 'flex';
+  if (progressText && statusText) progressText.textContent = statusText;
 }
 
 function hideUploadProgress() {
+  const overlay = document.getElementById('upload-progress');
+  if (overlay) overlay.style.display = 'none';
 }
 
 function hideUploadOverlay() {
@@ -434,8 +440,8 @@ function showToast(message, type = 'success') {
 }
 
 function renderTrackOnMap(trackData) {
-  if (!window.map) {
-    console.error('地图未初始化');
+  if (!window.map || typeof AMap === 'undefined') {
+    console.warn('地图或AMap SDK未就绪，跳过轨迹渲染');
     return;
   }
 
@@ -455,11 +461,15 @@ function renderTrackOnMap(trackData) {
     return;
   }
 
+  // 地图样式为默认（标准）时使用更明亮的黄色
+  const activeStyle = (typeof currentMapStyle !== 'undefined') ? currentMapStyle : 'normal';
+  const strokeColor = activeStyle === 'normal' ? '#FFE600' : '#FFD93D';
+
   new AMap.Polyline({
     path: coords,
-    strokeColor: '#FFD93D',
+    strokeColor: strokeColor,
     strokeWeight: 2,
-    strokeOpacity: 0.85,
+    strokeOpacity: 0.9,
     lineJoin: 'round',
     lineCap: 'round'
   }).setMap(window.map);
@@ -480,19 +490,21 @@ async function updateStats() {
   const progressBarEl = document.querySelector('.achievement-card .progress-fill');
   
   if (lightingRateEl) {
-    lightingRateEl.textContent = `${stats.lighting_rate.toFixed(1)}%`;
+    const rate = stats.lighting_rate;
+    lightingRateEl.textContent = rate != null && !isNaN(rate) ? `${rate.toFixed(1)}%` : '--%';
   }
-  
+
   if (litDistanceEl) {
-    litDistanceEl.textContent = `${stats.unique_distance_km.toFixed(1)}km`;
+    const dist = stats.unique_distance_km;
+    litDistanceEl.textContent = dist != null && !isNaN(dist) ? `${dist.toFixed(1)}km` : '--km';
   }
-  
+
   if (totalRoadEl) {
-    totalRoadEl.textContent = `${stats.total_road_km}km`;
+    totalRoadEl.textContent = stats.total_road_km ? `${stats.total_road_km}km` : '--km';
   }
   
   if (weeklyBadgeEl) {
-    weeklyBadgeEl.textContent = `本周+${stats.this_week_uploads}`;
+    weeklyBadgeEl.textContent = `本周+${stats.this_week_uploads || 0}`;
   }
   
   if (regionNameEl) {

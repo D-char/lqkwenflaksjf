@@ -110,6 +110,8 @@ async function getRegionName(lat, lng) {
     }
     
     if (regionName) {
+      // 统一去除"市"后缀，与 stats-calculator.js detectRegionAsync() 保持一致
+      regionName = regionName.replace(/市$/, '');
       console.log(`✅ 成功提取城市名称: ${regionName}`);
       return regionName;
     } else {
@@ -123,17 +125,28 @@ async function getRegionName(lat, lng) {
 }
 
 /**
- * 更新页面上的地区名称显示
+ * 更新页面上的地区名称显示，同时持久化到 localStorage
  */
+const LAST_REGION_KEY = 'onelap_last_region';
+
 function updateRegionDisplay(regionName) {
   const regionElement = document.getElementById('region-name');
   if (regionElement) {
     const displayText = regionName || '未定位';
     regionElement.textContent = displayText;
     console.log(`页面显示更新为: ${displayText}`);
+
+    // 持久化有效的城市名，刷新时不丢失
+    if (regionName && regionName !== '未定位') {
+      try { localStorage.setItem(LAST_REGION_KEY, regionName); } catch (e) {}
+    }
   } else {
     console.warn('未找到region-name元素');
   }
+}
+
+function getLastKnownRegion() {
+  try { return localStorage.getItem(LAST_REGION_KEY); } catch (e) { return null; }
 }
 
 /**
@@ -144,27 +157,28 @@ function initMap() {
   const DEFAULT_LNG = 116.4074;
   const DEFAULT_ZOOM = 11;
   const DEFAULT_REGION_DISPLAY = '未定位';
-  
+
   const checkAMap = () => {
     if (typeof AMap === 'undefined') {
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         const checkInterval = setInterval(() => {
           if (typeof AMap !== 'undefined') {
             clearInterval(checkInterval);
             resolve();
           }
         }, 50);
-        
+
         setTimeout(() => {
           clearInterval(checkInterval);
-          console.warn('高德地图SDK加载超时');
-        }, 10000);
+          reject(new Error('高德地图SDK加载超时'));
+        }, 15000);
       });
     }
     return Promise.resolve();
   };
-  
-  checkAMap().then(() => {
+
+  // 返回 Promise，外部可 await 确保地图就绪后再渲染轨迹
+  return checkAMap().then(() => {
     const map = new AMap.Map('map', {
       resizeEnable: true,
       zoom: DEFAULT_ZOOM,
@@ -182,21 +196,23 @@ function initMap() {
       }
     });
     
-    updateRegionDisplay(DEFAULT_REGION_DISPLAY);
-    
+    // 优先恢复上次已知城市，避免刷新后闪回"未定位"
+    const savedRegion = getLastKnownRegion();
+    updateRegionDisplay(savedRegion || DEFAULT_REGION_DISPLAY);
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async function(position) {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
-          
+
           const [gcjLat, gcjLng] = wgs84ToGcj02(userLat, userLng);
           map.setCenter([gcjLng, gcjLat]);
           map.setZoom(DEFAULT_ZOOM);
-          
+
           const regionName = await getRegionName(gcjLat, gcjLng);
           updateRegionDisplay(regionName);
-          
+
           if (regionName && window.roadDataApi) {
             const roadData = await window.roadDataApi.getCityRoadLength(regionName);
             if (roadData) {
@@ -208,21 +224,28 @@ function initMap() {
           }
         },
         function(error) {
-          updateRegionDisplay(null);
+          // 定位失败时不覆盖已有的有效城市名
+          const currentEl = document.getElementById('region-name');
+          const currentDisplay = currentEl?.textContent || '';
+          if (currentDisplay === '未定位' || !currentDisplay) {
+            updateRegionDisplay(null);
+          }
+          console.warn('浏览器定位失败:', error.message);
         },
         {
           enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: 60000
+          timeout: 10000,
+          maximumAge: 120000
         }
       );
     } else {
       console.warn('浏览器不支持定位功能');
       updateRegionDisplay(DEFAULT_REGION_DISPLAY);
     }
+  }).then(() => {
+    window.mapReady = true;
+    return window.map;
   });
-  
-  return window.map;
 }
 
 window.initMap = initMap;
@@ -313,8 +336,9 @@ async function clearAllCache() {
       }
       
       if (window.map) {
-        const overlays = window.map.getOverlays();
-        overlays.clearOverlays();
+        // AMap: getOverlays() 返回数组，没有 clearOverlays 方法
+        // 使用 clearMap() 移除所有覆盖物
+        window.map.clearMap();
       }
       
       if (typeof window.updateStats === 'function') {

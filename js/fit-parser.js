@@ -83,7 +83,7 @@ function formatFitTime(timeValue) {
  * @returns {Promise<Object>} 解析后的轨迹数据
  */
 function waitForFitParser() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (typeof FitParser !== 'undefined') {
       resolve();
     } else {
@@ -93,10 +93,12 @@ function waitForFitParser() {
           resolve();
         }
       }, 100);
-      
+
       setTimeout(() => {
         clearInterval(checkInterval);
-        console.warn('FitParser加载超时，请检查CDN连接');
+        const msg = 'FIT解析库加载超时，请检查CDN连接 (cdn.jsdelivr.net) 是否可访问';
+        console.error(msg);
+        reject(new Error(msg));
       }, 5000);
     }
   });

@@ -17,11 +17,12 @@ async function loadRoadData() {
     const response = await fetch('data/road-data.json');
     roadData = await response.json();
   } catch (e) {
+    // ⚠️ fallback 数据中的城市名必须不带"市"后缀，与 road-data.json 内部 key 一致
     roadData = {
       regions: {
-        '青岛市': { total_road_km: 4500, bounds: { min_lat: 35.5, max_lat: 37.5, min_lon: 119.5, max_lon: 121.5 } }
+        '青岛': { total_road_km: 4500, bounds: { min_lat: 35.5, max_lat: 37.5, min_lon: 119.5, max_lon: 121.5 } }
       },
-      default_region: '青岛市'
+      default_region: '青岛'
     };
   }
   return roadData;
@@ -471,52 +472,18 @@ function calculateUniqueDistanceByOrder(tracks, regionName) {
 
 /**
  * 计算去重后的骑行距离（已点亮）
+ *
+ * @deprecated 请使用 calculateUniqueDistanceByOrder() 替代。
+ *   原始实现将去重后的坐标点按 lat/lon 排序再计算距离，
+ *   这种"空间排序"不反映实际骑行路径，可能导致距离计算错误。
+ *   委托给 calculateUniqueDistanceByOrder 以保持向后兼容。
+ *
  * @param {Array} tracks - 所有轨迹数据
  * @param {string} regionName - 区域名称
  * @returns {number} 去重后的距离（km）
  */
 function calculateUniqueDistance(tracks, regionName) {
-  const regionPoints = [];
-  
-  for (const track of tracks) {
-    if (!track.points) continue;
-    
-    for (const point of track.points) {
-      if (isPointInRegion(point.lat, point.lon, regionName)) {
-        regionPoints.push({
-          lat: point.lat,
-          lon: point.lon,
-          time: point.time
-        });
-      }
-    }
-  }
-  
-  if (regionPoints.length === 0) {
-    return 0;
-  }
-  
-  const uniquePointsSet = deduplicatePoints(regionPoints);
-  const uniquePoints = uniquePointsToArray(uniquePointsSet);
-  
-  uniquePoints.sort((a, b) => {
-    if (a.lat !== b.lat) return a.lat - b.lat;
-    return a.lon - b.lon;
-  });
-  
-  let totalDistance = 0;
-  
-  for (let i = 0; i < uniquePoints.length - 1; i++) {
-    const dist = haversineDistance(
-      uniquePoints[i].lat,
-      uniquePoints[i].lon,
-      uniquePoints[i + 1].lat,
-      uniquePoints[i + 1].lon
-    );
-    totalDistance += dist;
-  }
-  
-  return totalDistance / 1000;
+  return calculateUniqueDistanceByOrder(tracks, regionName);
 }
 
 // ============ 本周统计 ============

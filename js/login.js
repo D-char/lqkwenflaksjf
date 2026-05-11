@@ -1,10 +1,28 @@
 /**
  * 顽鹿竞技登录模块
  * 处理用户登录、token管理和API调用
+ *
+ * ╔══════════════════════════════════════════════════════════════╗
+ * ║  ⚠️ 安全性警告                                              ║
+ * ║                                                              ║
+ * ║  ONELAP_CONFIG 中的 appid 和 secret 当前硬编码在客户端代码中， ║
+ * ║  任何人都可以查看页面源码获取这些凭证。                         ║
+ * ║                                                              ║
+ * ║  建议修复方案：                                               ║
+ * ║  方案1（推荐）：将 API 签名逻辑移到服务器端 proxy              ║
+ * ║     - 前端发送请求到自身后端                                  ║
+ * ║     - 后端(nginxs/Node.js/Python)添加 secret 并生成签名       ║
+ * ║     - 后端转发请求到 OneLap API                               ║
+ * ║  方案2：将 appid/secret 放在服务器端配置文件                  ║
+ * ║     - 前端通过一个内部 API 获取临时签名 token                  ║
+ * ║     - token 有过期时间，降低泄露风险                          ║
+ * ╚══════════════════════════════════════════════════════════════╝
  */
 
 const ONELAP_CONFIG = {
   appid: 'wlai_69c0f71a877a0',
+  // TODO: 将 secret 移至服务端！客户端暴露存在安全风险
+  // 当前空字符串时会在控制台输出警告
   secret: '59461a7550832e4d375d47a66c4865c5',
   loginBaseUrl: 'https://www.onelap.cn',
   apiBaseUrl: ''
@@ -76,24 +94,70 @@ function generateSign(nonce, timestamp, uri, appid, secret) {
   return md5(paramStr + '&secret=' + secret);
 }
 
-async function getCyclingRecords(options = {}) {
+/**
+ * 等待 md5 CDN 库加载就绪
+ * blueimp-md5 通过 <script async> 加载，首次访问可能比 DOMContentLoaded 晚
+ */
+let md5Ready = false;
+let md5ReadyPromise = null;
+
+function waitForMd5() {
+  if (typeof md5 !== 'undefined') {
+    md5Ready = true;
+    return Promise.resolve();
+  }
+  if (!md5ReadyPromise) {
+    md5ReadyPromise = new Promise((resolve, reject) => {
+      const check = setInterval(() => {
+        if (typeof md5 !== 'undefined') {
+          clearInterval(check);
+          md5Ready = true;
+          resolve();
+        }
+      }, 50);
+      setTimeout(() => {
+        clearInterval(check);
+        if (!md5Ready) {
+          reject(new Error('md5 签名库加载超时，请检查 CDN 连接 (cdn.jsdelivr.net)'));
+        }
+      }, 8000);
+    });
+  }
+  return md5ReadyPromise;
+}
+
+/**
+ * 生成 API 请求的签名头
+ * @param {string} uri - API 路径（如 '/api/v1/activities'）
+ * @returns {Object} { nonce, timestamp, sign }
+ */
+async function buildApiAuthHeaders(uri) {
+  await waitForMd5();
+  const nonce = generateNonce();
+  const timestamp = String(Date.now());
+  const sign = generateSign(nonce, timestamp, uri, ONELAP_CONFIG.appid, ONELAP_CONFIG.secret);
+  return {
+    'nonce': nonce,
+    'timestamp': timestamp,
+    'sign': sign
+  };
+}
+
+/**
+ * 通用 API 请求函数
+ * @param {string} uri - API 路径
+ * @param {Object} queryParams - URL 查询参数
+ * @returns {Promise<Object>} API 响应 JSON
+ */
+async function callOneLapApi(uri, queryParams = {}) {
   const token = getToken();
   if (!token) {
     throw new Error('未登录');
   }
-  
-  const uri = '/api/v1/activities';
-  const nonce = generateNonce();
-  const timestamp = String(Date.now());
-  const sign = generateSign(nonce, timestamp, uri, ONELAP_CONFIG.appid, ONELAP_CONFIG.secret);
-  
-  const queryParams = {
-    appid: ONELAP_CONFIG.appid,
-    page: options.page || 1,
-    page_size: options.page_size || 200
-  };
+
+  const authHeaders = await buildApiAuthHeaders(uri);
   const queryString = new URLSearchParams(queryParams).toString();
-  
+
   const response = await fetch(
     `${ONELAP_CONFIG.apiBaseUrl}${uri}?${queryString}`,
     {
@@ -101,77 +165,41 @@ async function getCyclingRecords(options = {}) {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
-        'nonce': nonce,
-        'timestamp': timestamp,
-        'sign': sign
+        ...authHeaders
       }
     }
   );
-  
+
   if (!response.ok) {
     throw new Error(`API 请求失败: ${response.status}`);
   }
-  
+
   const result = await response.json();
-  
+
   if (isTokenExpired(result.code)) {
     handleTokenExpired();
     throw new Error('token已过期');
   }
-  
+
   if (result.code !== 200) {
     throw new Error(result.message || `API 返回错误: ${result.code}`);
   }
-  
+
   return result;
 }
 
+async function getCyclingRecords(options = {}) {
+  return callOneLapApi('/api/v1/activities', {
+    appid: ONELAP_CONFIG.appid,
+    page: options.page || 1,
+    page_size: options.page_size || 200
+  });
+}
+
 async function getUserInfo() {
-  const token = getToken();
-  if (!token) {
-    throw new Error('未登录');
-  }
-  
-  const uri = '/api/v1/user/info';
-  const nonce = generateNonce();
-  const timestamp = String(Date.now());
-  const sign = generateSign(nonce, timestamp, uri, ONELAP_CONFIG.appid, ONELAP_CONFIG.secret);
-  
-  const queryParams = {
+  return callOneLapApi('/api/v1/user/info', {
     appid: ONELAP_CONFIG.appid
-  };
-  const queryString = new URLSearchParams(queryParams).toString();
-  
-  const response = await fetch(
-    `${ONELAP_CONFIG.apiBaseUrl}${uri}?${queryString}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-        'nonce': nonce,
-        'timestamp': timestamp,
-        'sign': sign
-      }
-    }
-  );
-  
-  if (!response.ok) {
-    throw new Error(`API 请求失败: ${response.status}`);
-  }
-  
-  const result = await response.json();
-  
-  if (isTokenExpired(result.code)) {
-    handleTokenExpired();
-    throw new Error('token已过期');
-  }
-  
-  if (result.code !== 200) {
-    throw new Error(result.message || `API 返回错误: ${result.code}`);
-  }
-  
-  return result;
+  });
 }
 
 /**
@@ -191,23 +219,27 @@ async function initApp() {
       console.error('获取用户信息失败:', err);
       return null;
     }),
-    cachedTracks: window.trackStorage 
+    cachedTracks: window.trackStorage
       ? trackStorage.getAllTracks().catch(err => {
           console.warn('缓存加载失败:', err);
           return [];
         })
       : Promise.resolve([])
   };
-  
-  // 地图初始化不阻塞其他操作
-  if (typeof initMap === 'function') {
-    initMap();
-  }
-  
-  // 等待关键数据加载完成
+
+  // 地图初始化与用户数据并行，但最终必须等待地图就绪再渲染轨迹
+  const mapPromise = typeof initMap === 'function'
+    ? Promise.resolve(initMap()).catch(err => {
+        console.error('地图初始化失败:', err);
+        return null;
+      })
+    : Promise.resolve(null);
+
+  // 等待关键数据 + 地图全部就绪
   const results = await Promise.all([
     initPromises.userInfo,
-    initPromises.cachedTracks
+    initPromises.cachedTracks,
+    mapPromise
   ]);
   
   const userInfo = results[0];
