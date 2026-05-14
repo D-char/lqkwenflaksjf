@@ -1,4 +1,10 @@
 window.uploadedTracks = window.uploadedTracks || [];
+window._trackPolylines = window._trackPolylines || [];
+
+// 已点亮路线颜色管理（持久化到 localStorage）
+const LIT_ROAD_COLOR_KEY = 'onelap_lit_road_color';
+const DEFAULT_LIT_ROAD_COLOR = '#FFE600';
+window.litRoadColor = localStorage.getItem(LIT_ROAD_COLOR_KEY) || DEFAULT_LIT_ROAD_COLOR;
 
 const CITY_COORDINATES = {
   // 直辖市
@@ -461,18 +467,21 @@ function renderTrackOnMap(trackData) {
     return;
   }
 
-  // 地图样式为默认（标准）时使用更明亮的黄色
-  const activeStyle = (typeof currentMapStyle !== 'undefined') ? currentMapStyle : 'normal';
-  const strokeColor = activeStyle === 'normal' ? '#FFE600' : '#FFD93D';
+  // 使用用户选择的颜色（优先于地图样式默认色）
+  const strokeColor = window.litRoadColor || DEFAULT_LIT_ROAD_COLOR;
 
-  new AMap.Polyline({
+  const polyline = new AMap.Polyline({
     path: coords,
     strokeColor: strokeColor,
     strokeWeight: 2,
     strokeOpacity: 0.9,
     lineJoin: 'round',
     lineCap: 'round'
-  }).setMap(window.map);
+  });
+  polyline.setMap(window.map);
+
+  // 跟踪此 polyline，以便后续切换颜色时批量更新
+  window._trackPolylines.push(polyline);
 
   window.map.setFitView(null, false, [50, 50, 50, 50]);
 }
@@ -733,6 +742,12 @@ async function uploadFitFilesFromUrlsBatch(urls) {
   console.log('[优化] uploadFitFilesFromUrlsBatch called with ' + urls.length + ' URLs');
   console.log('[优化] current uploadedTracks count:', window.uploadedTracks.length);
 
+  // 首次大量加载时显示加载弹窗
+  const isFirstLoad = window.uploadedTracks.length === 0 && urls.length > 3;
+  if (isFirstLoad) {
+    showTrackLoading();
+  }
+
   const results = [];
   const errors = [];
   const needsDownload = [];
@@ -764,6 +779,7 @@ async function uploadFitFilesFromUrlsBatch(urls) {
   if (needsDownload.length === 0) {
     console.log('[优化] 所有轨迹已在缓存中，跳过下载');
     await updateStats();
+    hideTrackLoading();
     return { success: [], failed: [] };
   }
 
@@ -840,8 +856,150 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     console.error('更新统计失败:', e);
   }
 
+  // 隐藏加载弹窗
+  hideTrackLoading();
+
   return { success: results, failed: errors };
 }
+
+// ========== 轨迹加载弹窗 ==========
+
+function showTrackLoading() {
+  const overlay = document.getElementById('track-loading-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+  }
+}
+
+function hideTrackLoading() {
+  const overlay = document.getElementById('track-loading-overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+}
+
+window.showTrackLoading = showTrackLoading;
+window.hideTrackLoading = hideTrackLoading;
+
+// ========== 路线颜色选择器 ==========
+
+/**
+ * 切换已点亮路线颜色选择器的显示/隐藏
+ */
+function toggleLitRoadColorPicker(event) {
+  event.stopPropagation();
+  const picker = document.getElementById('lit-road-color-picker');
+  if (!picker) return;
+
+  const isVisible = picker.style.display !== 'none';
+  picker.style.display = isVisible ? 'none' : 'block';
+
+  // 显示时同步当前颜色为 active 状态
+  if (!isVisible) {
+    syncColorPickerActive();
+  }
+}
+
+/**
+ * 选择已点亮路线的颜色
+ */
+function selectLitRoadColor(color, clickedEl) {
+  if (!color || color === window.litRoadColor) return;
+
+  window.litRoadColor = color;
+
+  // 持久化
+  localStorage.setItem(LIT_ROAD_COLOR_KEY, color);
+
+  // 更新所有已有 polyline 的颜色（无需重新创建）
+  window._trackPolylines.forEach(polyline => {
+    try {
+      polyline.setOptions({ strokeColor: color });
+    } catch (e) {
+      console.warn('更新 polyline 颜色失败:', e);
+    }
+  });
+
+  // 更新图例线条颜色
+  updateLegendLineColor(color);
+
+  // 更新颜色选择器中的 active 状态
+  syncColorPickerActive();
+
+  // 关闭选择器
+  const picker = document.getElementById('lit-road-color-picker');
+  if (picker) {
+    picker.style.display = 'none';
+  }
+}
+
+/**
+ * 同步颜色选择器中的 active 状态
+ */
+function syncColorPickerActive() {
+  const currentColor = window.litRoadColor || DEFAULT_LIT_ROAD_COLOR;
+  document.querySelectorAll('#lit-road-color-picker .color-option').forEach(opt => {
+    const optColor = opt.getAttribute('data-color');
+    if (optColor === currentColor) {
+      opt.classList.add('active');
+    } else {
+      opt.classList.remove('active');
+    }
+  });
+}
+
+/**
+ * 更新图例线条颜色
+ */
+function updateLegendLineColor(color) {
+  const legendLine = document.getElementById('legend-lit-line');
+  if (legendLine) {
+    legendLine.style.background = color;
+    legendLine.style.boxShadow = `0 0 6px ${color}`;
+  }
+}
+
+// 页面初始化时应用已保存的颜色
+function initLitRoadColor() {
+  const savedColor = window.litRoadColor;
+  if (savedColor) {
+    updateLegendLineColor(savedColor);
+    syncColorPickerActive();
+  }
+}
+
+// 点击页面其他地方关闭弹窗（颜色选择器、城市列表、样式面板）
+document.addEventListener('click', function(event) {
+  const target = event.target;
+
+  // 颜色选择器
+  const picker = document.getElementById('lit-road-color-picker');
+  const legend = document.getElementById('lit-road-legend');
+  if (picker && legend && picker.style.display !== 'none' && !legend.contains(target)) {
+    picker.style.display = 'none';
+  }
+
+  // 城市下拉列表
+  const citySelector = document.getElementById('city-selector');
+  const cityDropdown = document.querySelector('.city-dropdown');
+  const cityList = document.getElementById('city-list');
+  if (citySelector && cityDropdown && cityList && cityList.classList.contains('show') && !citySelector.contains(target)) {
+    cityDropdown.classList.remove('open');
+    cityList.classList.remove('show');
+  }
+
+  // 样式面板
+  const stylePanel = document.getElementById('style-panel');
+  const styleBtn = document.querySelector('.style-btn');
+  if (stylePanel && styleBtn && stylePanel.style.display !== 'none' && !stylePanel.contains(target) && !styleBtn.contains(target)) {
+    stylePanel.style.display = 'none';
+  }
+});
+
+// 暴露到全局
+window.toggleLitRoadColorPicker = toggleLitRoadColorPicker;
+window.selectLitRoadColor = selectLitRoadColor;
+window.initLitRoadColor = initLitRoadColor;
 
 window.triggerUpload = triggerUpload;
 window.handleFileUpload = handleFileUpload;

@@ -28,8 +28,6 @@
 </head>
 <body>
   <div class="phone-frame">
-    <div class="notch"></div>
-    
     <!-- Login Screen -->
     <div id="screen-login" class="screen login-screen active">
       <div class="login-container">
@@ -72,6 +70,7 @@
           <div class="user-name" id="user-name">加载中...</div>
           <div class="user-status">已连接顽鹿</div>
         </div>
+        <button class="help-btn" onclick="toggleHelpPopup(event)">?</button>
         <button class="logout-btn" onclick="logout()">退出</button>
       </div>
       
@@ -84,9 +83,38 @@
           <div class="city-list" id="city-list"></div>
         </div>
         <div class="map-legend">
-          <div class="legend-item">
-            <div class="legend-line lit"></div>
+          <div class="legend-item" id="lit-road-legend" onclick="toggleLitRoadColorPicker(event)">
+            <div class="legend-line lit" id="legend-lit-line"></div>
             <span>已点亮路线</span>
+          </div>
+          <div id="lit-road-color-picker" class="lit-road-color-picker" style="display: none;">
+            <div class="color-picker-title">选择路线颜色</div>
+            <div class="color-options">
+              <div class="color-option active" data-color="#FFE600" onclick="selectLitRoadColor('#FFE600', this)" title="高亮黄">
+                <span class="color-swatch" style="background: #FFE600;"></span>
+                <span>高亮黄</span>
+              </div>
+              <div class="color-option" data-color="#00E676" onclick="selectLitRoadColor('#00E676', this)" title="高亮绿">
+                <span class="color-swatch" style="background: #00E676;"></span>
+                <span>高亮绿</span>
+              </div>
+              <div class="color-option" data-color="#FF1744" onclick="selectLitRoadColor('#FF1744', this)" title="高亮红">
+                <span class="color-swatch" style="background: #FF1744;"></span>
+                <span>高亮红</span>
+              </div>
+              <div class="color-option" data-color="#40C4FF" onclick="selectLitRoadColor('#40C4FF', this)" title="高亮蓝">
+                <span class="color-swatch" style="background: #40C4FF;"></span>
+                <span>高亮蓝</span>
+              </div>
+              <div class="color-option" data-color="#FF6D00" onclick="selectLitRoadColor('#FF6D00', this)" title="高亮橙">
+                <span class="color-swatch" style="background: #FF6D00;"></span>
+                <span>高亮橙</span>
+              </div>
+              <div class="color-option" data-color="#E040FB" onclick="selectLitRoadColor('#E040FB', this)" title="高亮紫">
+                <span class="color-swatch" style="background: #E040FB;"></span>
+                <span>高亮紫</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -125,13 +153,20 @@
       <div class="map-container">
         <div id="map">
           <div id="map-loading" class="map-loading">
-            <div class="map-loading-overlay">
+            <div class="map-loading-box">
               <div class="map-loading-spinner"></div>
               <div class="map-loading-text">加载中...</div>
             </div>
           </div>
         </div>
         
+        <div id="track-loading-overlay" class="track-loading-overlay" style="display: none;">
+          <div class="track-loading-box">
+            <div class="track-loading-spinner"></div>
+            <div class="track-loading-text">加载轨迹中...</div>
+          </div>
+        </div>
+
         <div class="achievement-card">
           <div class="card-header">
             <span class="card-title">点亮成就</span>
@@ -164,7 +199,21 @@
       
     </div>
   </div>
-  
+
+  <!-- 帮助弹窗 -->
+  <div id="help-popup-overlay" class="help-popup-overlay" style="display: none;" onclick="toggleHelpPopup(event)">
+    <div class="help-popup" onclick="event.stopPropagation()">
+      <div class="help-popup-title">温馨提示</div>
+      <div class="help-popup-list">
+        <div class="help-popup-item">由于算法精确度限制，您的路线去重后的距离可能有些许偏差；</div>
+        <div class="help-popup-item">已点亮数据显示是根据当前市范围内的轨迹路线去重后的数据；</div>
+        <div class="help-popup-item">总路线为该市公路网总长度；</div>
+        <div class="help-popup-item">点亮率 = 已点亮数据 / 总路线数据。</div>
+      </div>
+      <button class="help-popup-close" onclick="toggleHelpPopup(event)">我知道了</button>
+    </div>
+  </div>
+
   <!-- 项目脚本 -->
   <script src="js/app.js"></script>
   <script src="js/road-data-api.js"></script>

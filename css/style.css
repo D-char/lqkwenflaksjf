@@ -47,23 +47,11 @@ body {
   box-shadow: 0 25px 50px rgba(0,0,0,0.5);
 }
 
-.notch {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 35px;
-  background: rgba(26, 26, 46, 1);
-  border-radius: 0 0 20px 20px;
-  z-index: 100;
-}
-
 .screen {
   height: 100%;
   display: none;
   flex-direction: column;
-  padding-top: 50px;
+  padding-top: 0;
 }
 
 .screen.active { display: flex; }
@@ -74,7 +62,7 @@ body {
 
 .header {
   position: absolute;
-  top: 105px;
+  top: 70px;
   left: 0;
   right: 0;
   padding: 0 16px;
@@ -88,14 +76,15 @@ body {
   position: absolute;
   right: 16px;
   background: rgba(37, 37, 66, 0.9);
-  border-radius: 12px;
-  padding: 10px;
-  font-size: 12px;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  z-index: 651;
 }
 
 .header-actions {
   position: absolute;
-  top: 153px;
+  top: 118px;
   right: 16px;
   display: flex;
   gap: 8px;
@@ -166,6 +155,17 @@ body {
   position: relative;
 }
 
+/* 轨迹加载弹窗 — 仅覆盖层定位，盒子样式与 map-loading 共用 */
+.track-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 800;
+  pointer-events: none;
+}
+
 #map {
   width: 100%;
   height: 100%;
@@ -173,6 +173,7 @@ body {
   position: relative;
 }
 
+/* 统一加载弹窗 — 地图初始化和轨迹加载共用 */
 .map-loading {
   position: absolute;
   top: 0;
@@ -180,7 +181,6 @@ body {
   right: 0;
   bottom: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #1a3a4a;
@@ -197,31 +197,40 @@ body {
   opacity: 0.7;
 }
 
-.map-loading-overlay {
-  position: relative;
-  z-index: 2;
+.map-loading-overlay,
+.track-loading-overlay {
+  background: transparent;
+}
+
+.map-loading-box,
+.track-loading-box {
+  width: 120px;
+  height: 120px;
+  background: rgba(37, 37, 66, 0.95);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(26, 26, 46, 0.6);
-  padding: 20px 30px;
-  border-radius: 12px;
+  gap: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
-.map-loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(255, 217, 61, 0.3);
+.map-loading-spinner,
+.track-loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
   border-top-color: var(--highlight);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 12px;
+  animation: spin 0.8s linear infinite;
 }
 
-.map-loading-text {
-  color: var(--text);
-  font-size: 14px;
+.map-loading-text,
+.track-loading-text {
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 #map, .amap-container {
@@ -363,17 +372,23 @@ body {
   color: var(--primary);
 }
 
-.map-legend {
-  background: rgba(37, 37, 66, 0.9);
-  border-radius: 12px;
-  padding: 10px;
-  font-size: 12px;
-}
-
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 6px;
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.legend-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.legend-item:active {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .legend-line {
@@ -385,6 +400,67 @@ body {
 .legend-line.lit {
   background: var(--highlight);
   box-shadow: 0 0 6px var(--highlight);
+}
+
+/* 路线颜色选择器 — 相对图例定位：顶部对齐，右侧紧贴图例左侧 */
+.lit-road-color-picker {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 6px);
+  width: 230px;
+  max-width: calc(100vw - 80px);
+  background: rgba(37, 37, 66, 0.97);
+  border-radius: 8px;
+  padding: 8px 10px;
+  z-index: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.color-picker-title {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.color-option {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  font-size: 10px;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.color-option:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.color-option.active {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.color-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px currentColor;
 }
 
 .nav-buttons {
@@ -509,7 +585,7 @@ body {
 /* 用户信息卡片 */
 .user-info-card {
     position: absolute;
-    top: 35px;
+    top: 0;
     left: 0;
     right: 0;
     padding: 12px 16px;
@@ -576,10 +652,114 @@ body {
   cursor: pointer;
 }
 
+.help-btn {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--text-secondary);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.help-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* 帮助弹窗 */
+.help-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.help-popup {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 28px 24px 20px;
+  width: 300px;
+  max-width: 85vw;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.help-popup-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: var(--highlight);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.help-popup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.help-popup-item {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 12px;
+  position: relative;
+}
+
+.help-popup-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.help-popup-close {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), #ff8c5a);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 22px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.help-popup-close:active {
+  transform: scale(0.97);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* 骑行记录页面样式 */
 .records-screen {
   background: var(--bg);
-  padding-top: 50px;
+  padding-top: 0;
 }
 
 .records-container {
@@ -817,7 +997,7 @@ body {
 
 .style-panel {
   position: absolute;
-  top: 193px;
+  top: 158px;
   right: 16px;
   background: rgba(37, 37, 66, 0.95);
   border-radius: 16px;
@@ -949,7 +1129,7 @@ body {
 
 .toast {
   position: fixed;
-  top: 180px;
+  top: 145px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(26, 26, 46, 0.95);
@@ -968,4 +1148,60 @@ body {
 
 .toast-fade {
   opacity: 0;
+}
+
+/* 移动端响应式适配 — 使手机壳填满屏幕 */
+@media (max-width: 768px) {
+  body {
+    padding: 0;
+  }
+
+  .phone-frame {
+    width: 100%;
+    height: 100dvh;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* 底部安全区域适配 (iPhone X 及以上) */
+  .achievement-card {
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  }
+
+  /* 防止地图加载弹窗溢出 */
+  .map-loading,
+  .track-loading-overlay {
+    max-height: 100%;
+  }
+}
+
+/* 超小屏幕 (< 360px 宽度) 微调字体 */
+@media (max-width: 360px) {
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .card-title {
+    font-size: 12px;
+  }
+
+  .card-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+
+  .btn-share {
+    padding: 12px;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+
+  .achievement-card {
+    padding: 14px;
+  }
+
+  .stats-row {
+    margin-bottom: 12px;
+  }
 }

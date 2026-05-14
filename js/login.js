@@ -362,6 +362,15 @@ async function initApp() {
     });
 }
 
+// 帮助弹窗切换
+function toggleHelpPopup(event) {
+  if (event) event.stopPropagation();
+  const overlay = document.getElementById('help-popup-overlay');
+  if (!overlay) return;
+  const isVisible = overlay.style.display === 'flex';
+  overlay.style.display = isVisible ? 'none' : 'flex';
+}
+
 window.redirectToLogin = redirectToLogin;
 window.logout = logout;
 window.showLoginScreen = showLoginScreen;
@@ -371,5 +380,6 @@ window.isLoggedIn = isLoggedIn;
 window.getCyclingRecords = getCyclingRecords;
 window.getUserInfo = getUserInfo;
 window.initApp = initApp;
+window.toggleHelpPopup = toggleHelpPopup;
 
 document.addEventListener('DOMContentLoaded', initApp);

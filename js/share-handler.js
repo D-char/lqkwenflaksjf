@@ -10,7 +10,10 @@ const HIDE_ELEMENTS_IN_SHOWCASE = [
   '.prototype-label',
   '.upload-overlay',
   '.upload-progress',
-  '.toast'
+  '.toast',
+  '.city-selector-inline',
+  '.help-btn',
+  '.logout-btn'
 ];
 
 let showcaseModeActive = false;

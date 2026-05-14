@@ -103,13 +103,19 @@ async function getRegionName(lat, lng) {
     let regionName = null;
     
     // 直辖市（北京、上海、天津、重庆）的city字段为空，需使用province
+    // 注意：高德API返回的city/province可能是数组（如 ['北京市']），需转为字符串
     if (addressComponent.city && addressComponent.city.length > 0) {
       regionName = addressComponent.city;
     } else if (addressComponent.province) {
       regionName = addressComponent.province;
     }
-    
-    if (regionName) {
+
+    // 兼容API返回数组的情况（如 city: ["北京市"]）
+    if (Array.isArray(regionName)) {
+      regionName = regionName[0] || null;
+    }
+
+    if (regionName && typeof regionName === 'string') {
       // 统一去除"市"后缀，与 stats-calculator.js detectRegionAsync() 保持一致
       regionName = regionName.replace(/市$/, '');
       console.log(`✅ 成功提取城市名称: ${regionName}`);
@@ -188,7 +194,11 @@ function initMap() {
     });
     
     window.map = map;
-    
+
+    // 初始化已点亮路线的颜色（从 localStorage 恢复上次选择）
+    if (typeof initLitRoadColor === 'function') {
+      initLitRoadColor();
+    }
     map.on('complete', function() {
       const loadingEl = document.getElementById('map-loading');
       if (loadingEl) {
@@ -334,7 +344,12 @@ async function clearAllCache() {
       if (window.uploadedTracks) {
         window.uploadedTracks.length = 0;
       }
-      
+
+      // 清空 polyline 引用数组
+      if (window._trackPolylines) {
+        window._trackPolylines.length = 0;
+      }
+
       if (window.map) {
         // AMap: getOverlays() 返回数组，没有 clearOverlays 方法
         // 使用 clearMap() 移除所有覆盖物
