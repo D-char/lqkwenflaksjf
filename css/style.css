@@ -331,6 +331,44 @@ body {
   cursor: pointer;
 }
 
+.map-zoom-controls {
+  position: absolute;
+  right: 12px;
+  bottom: 290px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.zoom-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(37, 37, 66, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.15s;
+}
+
+.zoom-btn:hover {
+  background: rgba(37, 37, 66, 1);
+}
+
+.zoom-btn:active {
+  background: rgba(80, 80, 140, 0.9);
+}
+
 .btn-import {
   width: 100%;
   background: linear-gradient(135deg, var(--secondary), #3dbdb5);
@@ -1167,6 +1205,10 @@ body {
   /* 底部安全区域适配 (iPhone X 及以上) */
   .achievement-card {
     bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  }
+
+  .map-zoom-controls {
+    bottom: max(290px, calc(290px + env(safe-area-inset-bottom, 0px)));
   }
 
   /* 防止地图加载弹窗溢出 */

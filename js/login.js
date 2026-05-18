@@ -196,6 +196,49 @@ async function getCyclingRecords(options = {}) {
   });
 }
 
+async function getAllCyclingRecords(options = {}) {
+  const pageSize = options.page_size || 100;
+  let page = 1;
+  const allRecords = [];
+
+  while (true) {
+    const result = await callOneLapApi('/api/v1/activities', {
+      appid: ONELAP_CONFIG.appid,
+      page: page,
+      page_size: pageSize
+    });
+
+    let recordsArray = null;
+    if (Array.isArray(result.data)) {
+      recordsArray = result.data;
+    } else if (result.data && Array.isArray(result.data.list)) {
+      recordsArray = result.data.list;
+    } else if (result.data && Array.isArray(result.data.records)) {
+      recordsArray = result.data.records;
+    } else if (result.data && Array.isArray(result.data.activities)) {
+      recordsArray = result.data.activities;
+    } else if (Array.isArray(result)) {
+      recordsArray = result;
+    }
+
+    if (!recordsArray || recordsArray.length === 0) {
+      break;
+    }
+
+    allRecords.push(...recordsArray);
+    console.log(`[分页] 第${page}页获取 ${recordsArray.length} 条，累计 ${allRecords.length} 条`);
+
+    if (recordsArray.length < pageSize) {
+      break;
+    }
+
+    page++;
+  }
+
+  console.log(`[分页] 全部拉取完成，共 ${allRecords.length} 条骑行记录`);
+  return { data: allRecords };
+}
+
 async function getUserInfo() {
   return callOneLapApi('/api/v1/user/info', {
     appid: ONELAP_CONFIG.appid
@@ -312,25 +355,12 @@ async function initApp() {
     }
   }
   
-  // 4. 后台获取云端记录(不阻塞页面显示)
-  getCyclingRecords()
+  // 4. 后台获取云端全部记录(不阻塞页面显示，自动分页)
+  getAllCyclingRecords()
     .then(records => {
-      console.log('骑行记录:', records);
-      
-      let recordsArray = null;
-      if (Array.isArray(records.data)) {
-        recordsArray = records.data;
-      } else if (records.data && Array.isArray(records.data.list)) {
-        recordsArray = records.data.list;
-      } else if (records.data && Array.isArray(records.data.records)) {
-        recordsArray = records.data.records;
-      } else if (records.data && Array.isArray(records.data.activities)) {
-        recordsArray = records.data.activities;
-      } else if (Array.isArray(records)) {
-        recordsArray = records;
-      }
-      
-      if (recordsArray && recordsArray.length > 0) {
+      const recordsArray = records.data || [];
+
+      if (recordsArray.length > 0) {
         const fitUrls = recordsArray
           .map(record => {
             const url = record.fit_url || record.file_url || record.download_url || record.activity_file || record.fit_file;
@@ -340,16 +370,15 @@ async function initApp() {
             if (!url || typeof url !== 'string' || url.trim() === '') {
               return false;
             }
-            // 过滤掉 OSS URL（游戏内虚拟骑行，坐标无效）
             if (url.includes('aliyuncs.com')) {
               console.log('[过滤] 跳过虚拟骑行记录(OSS):', url);
               return false;
             }
             return true;
           });
-        
+
         console.log(`[骑行记录] 共 ${recordsArray.length} 条，过滤后 ${fitUrls.length} 条真实码表数据`);
-        
+
         if (fitUrls.length > 0 && typeof uploadFitFilesFromUrlsBatch === 'function') {
           uploadFitFilesFromUrlsBatch(fitUrls).catch(err => {
             console.warn('FIT文件加载失败:', err);

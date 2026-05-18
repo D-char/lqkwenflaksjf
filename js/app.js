@@ -195,6 +195,14 @@ function initMap() {
     
     window.map = map;
 
+    // 地图缩放按钮
+    document.querySelector('.zoom-in')?.addEventListener('click', () => {
+      map.setZoom(map.getZoom() + 1);
+    });
+    document.querySelector('.zoom-out')?.addEventListener('click', () => {
+      map.setZoom(map.getZoom() - 1);
+    });
+
     // 初始化已点亮路线的颜色（从 localStorage 恢复上次选择）
     if (typeof initLitRoadColor === 'function') {
       initLitRoadColor();

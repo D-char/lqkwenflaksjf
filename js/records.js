@@ -129,17 +129,11 @@ async function loadRecords() {
     const userInfo = await getUserInfo();
     updateUserInfo(userInfo);
     
-    // 获取骑行记录
-    const result = await getCyclingRecords({ page: 1, page_size: 50 });
-    
-    if (result.data && result.data.activities) {
-      const records = result.data.activities;
-      renderRecords(records);
-      updateStats(records);
-    } else {
-      renderRecords([]);
-      updateStats([]);
-    }
+    // 获取全部骑行记录（自动分页）
+    const result = await getAllCyclingRecords();
+    const records = result.data || [];
+    renderRecords(records);
+    updateStats(records);
     
   } catch (error) {
     console.error('加载骑行记录失败:', error);

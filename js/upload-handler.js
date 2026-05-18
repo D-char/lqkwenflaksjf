@@ -742,12 +742,6 @@ async function uploadFitFilesFromUrlsBatch(urls) {
   console.log('[优化] uploadFitFilesFromUrlsBatch called with ' + urls.length + ' URLs');
   console.log('[优化] current uploadedTracks count:', window.uploadedTracks.length);
 
-  // 首次大量加载时显示加载弹窗
-  const isFirstLoad = window.uploadedTracks.length === 0 && urls.length > 3;
-  if (isFirstLoad) {
-    showTrackLoading();
-  }
-
   const results = [];
   const errors = [];
   const needsDownload = [];
@@ -769,9 +763,7 @@ async function uploadFitFilesFromUrlsBatch(urls) {
 
   for (const url of urls) {
     const fileName = getFileName(url);
-    const exists = cachedFileNames.has(fileName);
-    
-    if (!exists) {
+    if (!cachedFileNames.has(fileName)) {
       needsDownload.push(url);
     }
   }
@@ -783,12 +775,19 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     return { success: [], failed: [] };
   }
 
+  // 有需要下载的文件时始终显示加载弹窗
+  showTrackLoading();
+  const loadingText = document.querySelector('.track-loading-text');
+  if (loadingText) {
+    loadingText.textContent = `加载轨迹中... 0/${needsDownload.length}`;
+  }
+
   const CONCURRENT_LIMIT = 3;
+  let completedCount = 0;
 
   async function downloadSingle(url) {
     try {
       const httpsUrl = url.replace(/^http:/, 'https:');
-      
       const response = await fetch(httpsUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -797,23 +796,39 @@ async function uploadFitFilesFromUrlsBatch(urls) {
       const trackData = await parseFitFile(buffer);
       trackData.fit_file_name = httpsUrl.split('/').pop() || 'remote.fit';
       trackData.fit_url = url;
-      
+
       addTrackUnique(trackData);
       results.push(trackData);
-      
+
+      // 下载一条立即渲染一条到地图
+      try {
+        renderTrackOnMap(trackData);
+      } catch (renderError) {
+        console.warn('渲染失败:', renderError);
+      }
+
       if (window.trackStorage) {
         await trackStorage.saveTrack(trackData, url);
       }
-      
+
+      completedCount++;
+      if (loadingText) {
+        loadingText.textContent = `加载轨迹中... ${completedCount}/${needsDownload.length}`;
+      }
+
       return { success: true, trackData };
     } catch (error) {
       const isCorsError = error.message.includes('Failed to fetch') && url.includes('aliyuncs.com');
-      const errorMsg = isCorsError 
-        ? 'CORS 跨域限制,请联系后端配置 OSS CORS 规则' 
+      const errorMsg = isCorsError
+        ? 'CORS 跨域限制,请联系后端配置 OSS CORS 规则'
         : error.message;
-      
+
       errors.push({ url, error: errorMsg });
       console.warn(`文件加载失败: ${url}`, errorMsg);
+      completedCount++;
+      if (loadingText) {
+        loadingText.textContent = `加载轨迹中... ${completedCount}/${needsDownload.length}`;
+      }
       return { success: false, url, error: errorMsg };
     }
   }
@@ -827,28 +842,10 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     const batch = downloadBatches[batchIndex];
     await Promise.all(batch.map(url => downloadSingle(url)));
   }
-  
+
   if (results.length > 0 && typeof showToast === 'function') {
     showToast(`成功加载 ${results.length} 个新轨迹`, 'success');
   }
-
-  const renderBatch = (tracks, startIndex = 0, batchSize = 5) => {
-    const endIndex = Math.min(startIndex + batchSize, tracks.length);
-    
-    for (let i = startIndex; i < endIndex; i++) {
-      try {
-        renderTrackOnMap(tracks[i]);
-      } catch (renderError) {
-        console.warn('渲染失败:', renderError);
-      }
-    }
-    
-    if (endIndex < tracks.length) {
-      requestAnimationFrame(() => renderBatch(tracks, endIndex, batchSize));
-    }
-  };
-  
-  renderBatch(results);
 
   try {
     await updateStats();
@@ -856,7 +853,6 @@ async function uploadFitFilesFromUrlsBatch(urls) {
     console.error('更新统计失败:', e);
   }
 
-  // 隐藏加载弹窗
   hideTrackLoading();
 
   return { success: results, failed: errors };

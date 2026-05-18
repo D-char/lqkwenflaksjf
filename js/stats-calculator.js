@@ -114,7 +114,7 @@ async function queryCityFromAmap(lat, lon) {
     // 直辖市city字段为空，需使用province
     let city = addressComponent.city || addressComponent.province;
     if (city) {
-      return city.replace(/市$/, '');
+      return String(city).replace(/市$/, '');
     }
     
     return null;
@@ -125,39 +125,7 @@ async function queryCityFromAmap(lat, lon) {
 }
 
 /**
- * 使用Nominatim逆地理编码API查询城市（fallback）
- */
-async function queryCityFromNominatim(lat, lon) {
-  const urls = [
-    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=zh-CN`,
-    `http://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=zh-CN`
-  ];
-  
-  for (const url of urls) {
-    try {
-      const response = await fetch(url, { headers: { 'User-Agent': 'onelapMap/1.0' } });
-      
-      if (!response.ok) continue;
-      
-      const data = await response.json();
-      
-      if (data.address) {
-        const city = data.address.city || data.address.county || data.address.state;
-        if (city) {
-          return city.replace(/市$/, '');
-        }
-      }
-    } catch (e) {
-      console.warn('Nominatim查询失败:', e);
-    }
-  }
-  
-  return null;
-}
-
-/**
- * 异步城市定位函数 - 使用网络逆地理编码API
- * 优先使用高德API（中国更稳定），Nominatim作为fallback
+ * 异步城市定位函数 - 使用高德逆地理编码API
  * @param {number} lat - 纬度
  * @param {number} lon - 经度
  * @returns {Promise<string|null>} 城市名称
@@ -174,10 +142,7 @@ async function detectRegionAsync(lat, lon) {
     return dynamicRegions[memCacheKey];
   }
   
-  let cityName = await queryCityFromAmap(lat, lon);
-  if (!cityName) {
-    cityName = await queryCityFromNominatim(lat, lon);
-  }
+  const cityName = await queryCityFromAmap(lat, lon);
   
   if (cityName) {
     setCachedGeocode(lat, lon, cityName);
@@ -315,7 +280,7 @@ async function detectAllRegions(tracks) {
     if (!track.points || track.points.length === 0 || !track.total_distance_km) continue;
 
     const startPoint = track.points[0];
-    
+
     const cachedCity = getCachedGeocode(startPoint.lat, startPoint.lon);
     if (cachedCity && cachedCity !== '其他地区') {
       if (!regionDistances[cachedCity]) {
@@ -332,7 +297,7 @@ async function detectAllRegions(tracks) {
     const batchSize = 5;
     for (let i = 0; i < pendingPoints.length; i += batchSize) {
       const batch = pendingPoints.slice(i, i + batchSize);
-      
+
       for (const item of batch) {
         const cityName = await detectRegionAsync(item.lat, item.lon);
         if (cityName && cityName !== '其他地区') {
@@ -343,7 +308,7 @@ async function detectAllRegions(tracks) {
           regionDistances[cityName].trackCount++;
         }
       }
-      
+
       if (i + batchSize < pendingPoints.length) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
