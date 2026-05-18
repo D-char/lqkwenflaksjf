@@ -198,10 +198,11 @@ async function getCyclingRecords(options = {}) {
 
 async function getAllCyclingRecords(options = {}) {
   const pageSize = options.page_size || 100;
+  const MAX_PAGES = 100;
   let page = 1;
   const allRecords = [];
 
-  while (true) {
+  while (page <= MAX_PAGES) {
     const result = await callOneLapApi('/api/v1/activities', {
       appid: ONELAP_CONFIG.appid,
       page: page,
@@ -226,7 +227,6 @@ async function getAllCyclingRecords(options = {}) {
     }
 
     allRecords.push(...recordsArray);
-    console.log(`[分页] 第${page}页获取 ${recordsArray.length} 条，累计 ${allRecords.length} 条`);
 
     if (recordsArray.length < pageSize) {
       break;

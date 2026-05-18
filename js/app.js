@@ -54,16 +54,17 @@ function wgs84ToGcj02(lat, lon) {
   return [mgLat, mgLon];
 }
 
+// 高德地图 API Key（stats-calculator.js 通过此全局变量共享，避免重复暴露）
+// 申请地址: https://console.amap.com/dev/key/app
+window.AMAP_KEY = 'ab2d12c583618aa0959c3dcbd7709f1d';
+
 /**
  * 根据经纬度获取城市/地区名称（使用高德地图逆地理编码API）
- * 注意：需要申请高德地图API Key，访问 https://lbs.amap.com/
  */
 async function getRegionName(lat, lng) {
-  // 高德地图API Key - 请替换为你自己的Key
-  // 申请地址: https://console.amap.com/dev/key/app
-  const AMAP_KEY = 'ab2d12c583618aa0959c3dcbd7709f1d'; // ← 替换为你的高德API Key
-  
-  if (AMAP_KEY === 'YOUR_AMAP_KEY_HERE') {
+  const AMAP_KEY = window.AMAP_KEY || '';
+
+  if (!AMAP_KEY || AMAP_KEY === 'YOUR_AMAP_KEY_HERE') {
     console.warn('⚠️ 请先配置高德地图API Key！访问 https://console.amap.com/dev/key/app 申请');
     return null;
   }
@@ -351,6 +352,10 @@ async function clearAllCache() {
       
       if (window.uploadedTracks) {
         window.uploadedTracks.length = 0;
+      }
+
+      if (window.invalidateStatsCache) {
+        window.invalidateStatsCache();
       }
 
       // 清空 polyline 引用数组

@@ -4,7 +4,13 @@ window._trackPolylines = window._trackPolylines || [];
 // 已点亮路线颜色管理（持久化到 localStorage）
 const LIT_ROAD_COLOR_KEY = 'onelap_lit_road_color';
 const DEFAULT_LIT_ROAD_COLOR = '#FFE600';
-window.litRoadColor = localStorage.getItem(LIT_ROAD_COLOR_KEY) || DEFAULT_LIT_ROAD_COLOR;
+window.litRoadColor = (function() {
+  try {
+    return localStorage.getItem(LIT_ROAD_COLOR_KEY) || DEFAULT_LIT_ROAD_COLOR;
+  } catch (e) {
+    return DEFAULT_LIT_ROAD_COLOR;
+  }
+})();
 
 const CITY_COORDINATES = {
   // 直辖市
@@ -346,31 +352,27 @@ const CITY_COORDINATES = {
 };
 
 function addTrackUnique(trackData) {
-  console.log('addTrackUnique called, fit_url:', trackData.fit_url, 'current tracks:', window.uploadedTracks.length);
-  
   if (!trackData.fit_url) {
-    const existingById = window.uploadedTracks.findIndex(t => 
+    const existingById = window.uploadedTracks.findIndex(t =>
       t.track_id && t.track_id === trackData.track_id
     );
     if (existingById === -1) {
       window.uploadedTracks.push(trackData);
-      console.log('Added by track_id, new count:', window.uploadedTracks.length);
+      if (window.invalidateStatsCache) window.invalidateStatsCache();
       return true;
     }
-    console.log('Skipped, exists by track_id');
     return false;
   }
-  
-  const existingByFitUrl = window.uploadedTracks.findIndex(t => 
+
+  const existingByFitUrl = window.uploadedTracks.findIndex(t =>
     t.fit_url && t.fit_url === trackData.fit_url
   );
   if (existingByFitUrl !== -1) {
-    console.log('Skipped, exists by fit_url');
     return false;
   }
-  
+
   window.uploadedTracks.push(trackData);
-  console.log('Added by fit_url, new count:', window.uploadedTracks.length);
+  if (window.invalidateStatsCache) window.invalidateStatsCache();
   return true;
 }
 
@@ -486,18 +488,14 @@ function renderTrackOnMap(trackData) {
   window.map.setFitView(null, false, [50, 50, 50, 50]);
 }
 
-async function updateStats() {
-  await loadRoadData();
-  
-  const stats = await calculateAllStats(window.uploadedTracks);
-  
+function renderStatsToDom(stats) {
   const lightingRateEl = document.querySelector('.achievement-card .stat-item:nth-child(1) .stat-value');
   const litDistanceEl = document.querySelector('.achievement-card .stat-item:nth-child(2) .stat-value');
   const totalRoadEl = document.querySelector('.achievement-card .stat-item:nth-child(3) .stat-value');
   const weeklyBadgeEl = document.querySelector('.achievement-card .card-badge');
   const regionNameEl = document.getElementById('region-name');
   const progressBarEl = document.querySelector('.achievement-card .progress-fill');
-  
+
   if (lightingRateEl) {
     const rate = stats.lighting_rate;
     lightingRateEl.textContent = rate != null && !isNaN(rate) ? `${rate.toFixed(1)}%` : '--%';
@@ -511,19 +509,26 @@ async function updateStats() {
   if (totalRoadEl) {
     totalRoadEl.textContent = stats.total_road_km ? `${stats.total_road_km}km` : '--km';
   }
-  
+
   if (weeklyBadgeEl) {
     weeklyBadgeEl.textContent = `本周+${stats.this_week_uploads || 0}`;
   }
-  
+
   if (regionNameEl) {
     regionNameEl.textContent = stats.region;
   }
-  
+
   if (progressBarEl) {
-    progressBarEl.style.width = `${Math.min(stats.lighting_rate, 100)}%`;
+    progressBarEl.style.width = `${Math.min(stats.lighting_rate || 0, 100)}%`;
   }
-  
+}
+
+async function updateStats() {
+  await loadRoadData();
+
+  const stats = await calculateAllStats(window.uploadedTracks);
+
+  renderStatsToDom(stats);
   updateCitySelector(stats.regions);
 }
 
@@ -568,31 +573,7 @@ async function switchCity(cityName) {
 
   const stats = await calculateAllStats(window.uploadedTracks, cityName);
 
-  const lightingRateEl = document.querySelector('.achievement-card .stat-item:nth-child(1) .stat-value');
-  const litDistanceEl = document.querySelector('.achievement-card .stat-item:nth-child(2) .stat-value');
-  const totalRoadEl = document.querySelector('.achievement-card .stat-item:nth-child(3) .stat-value');
-  const regionNameEl = document.getElementById('region-name');
-  const progressBarEl = document.querySelector('.achievement-card .progress-fill');
-
-  if (lightingRateEl) {
-    lightingRateEl.textContent = `${stats.lighting_rate.toFixed(1)}%`;
-  }
-
-  if (litDistanceEl) {
-    litDistanceEl.textContent = `${stats.unique_distance_km.toFixed(1)}km`;
-  }
-
-  if (totalRoadEl) {
-    totalRoadEl.textContent = `${stats.total_road_km}km`;
-  }
-
-  if (regionNameEl) {
-    regionNameEl.textContent = cityName;
-  }
-
-  if (progressBarEl) {
-    progressBarEl.style.width = `${Math.min(stats.lighting_rate, 100)}%`;
-  }
+  renderStatsToDom(stats);
 
   document.getElementById('current-city').textContent = cityName;
   document.querySelector('.city-dropdown').classList.remove('open');
@@ -905,7 +886,11 @@ function selectLitRoadColor(color, clickedEl) {
   window.litRoadColor = color;
 
   // 持久化
-  localStorage.setItem(LIT_ROAD_COLOR_KEY, color);
+  try {
+    localStorage.setItem(LIT_ROAD_COLOR_KEY, color);
+  } catch (e) {
+    // 隐私模式或存储已满时静默忽略
+  }
 
   // 更新所有已有 polyline 的颜色（无需重新创建）
   window._trackPolylines.forEach(polyline => {

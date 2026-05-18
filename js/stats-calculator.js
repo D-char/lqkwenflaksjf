@@ -86,8 +86,8 @@ function setCachedGeocode(lat, lon, cityName) {
  * 高德API在中国访问更稳定
  */
 async function queryCityFromAmap(lat, lon) {
-  const AMAP_KEY = 'ab2d12c583618aa0959c3dcbd7709f1d';
-  
+  const AMAP_KEY = window.AMAP_KEY || '';
+
   if (!AMAP_KEY || AMAP_KEY === 'YOUR_AMAP_KEY_HERE') {
     return null;
   }
@@ -190,15 +190,6 @@ async function detectRegionAsync(lat, lon) {
   return '其他地区';
 }
 
-/**
- * 旧版同步函数 - 保留兼容性
- * @deprecated 请使用 detectRegionAsync
- */
-async function queryCityFromOSM(lat, lon) {
-  // 直接调用新的异步函数
-  return await detectRegionAsync(lat, lon);
-}
-
 async function getRegionTotalRoadDistance(regionName) {
   if (regionName === '其他地区') return 10000;
   
@@ -246,15 +237,22 @@ function isPointInRegion(lat, lon, regionName) {
   return inRegion;
 }
 
+/**
+ * 同步区域检测（仅使用本地边界框匹配）
+ * @deprecated 对于需要异步逆地理编码的场景，请使用 detectRegionAsync
+ * @param {number} lat - 纬度
+ * @param {number} lon - 经度
+ * @returns {string} 区域名称
+ */
 function detectRegion(lat, lon) {
   if (!roadData || !roadData.regions) {
     console.log(`未加载道路数据，使用默认区域: ${currentRegion}`);
     return currentRegion;
   }
-  
+
   let bestMatch = null;
   let smallestArea = Infinity;
-  
+
   for (const [regionName, regionData] of Object.entries(roadData.regions)) {
     if (isPointInRegion(lat, lon, regionName)) {
       const bounds = regionData.bounds;
@@ -265,10 +263,9 @@ function detectRegion(lat, lon) {
       }
     }
   }
-  
+
   if (bestMatch) return bestMatch;
-  
-  queryCityFromOSM(lat, lon);
+
   return '其他地区';
 }
 
@@ -523,30 +520,86 @@ async function calculateLightingRate(uniqueDistance, regionName) {
 
 // ============ 综合统计函数 ============
 
+// 统计缓存：避免每次切换城市都全量遍历 GPS 点
+let _statsCache = {
+  fingerprint: '',
+  allRegions: [],
+  regionStats: {}  // '青岛' -> { unique_distance_km, total_road_km, lighting_rate }
+};
+
+function _getTracksFingerprint(tracks) {
+  if (!tracks || tracks.length === 0) return '0';
+  const last = tracks[tracks.length - 1];
+  return `${tracks.length}:${last.fit_url || last.track_id || ''}`;
+}
+
+function invalidateStatsCache() {
+  _statsCache.fingerprint = '';
+  _statsCache.allRegions = [];
+  _statsCache.regionStats = {};
+}
+
 async function calculateAllStats(tracks, targetRegion = null) {
   if (!roadData) await loadRoadData();
-  
-  const allRegions = await detectAllRegions(tracks);
-  
-  for (const region of allRegions) {
-    region.total_road_km = await getRegionTotalRoadDistance(region.name);
+
+  const fingerprint = _getTracksFingerprint(tracks);
+
+  // 指纹未变，尝试从缓存获取目标区域统计
+  if (fingerprint === _statsCache.fingerprint && fingerprint !== '0') {
+    const activeRegion = targetRegion || _statsCache.allRegions[0]?.name || currentRegion;
+    currentRegion = activeRegion;
+    const cachedRegion = _statsCache.regionStats[activeRegion];
+
+    if (cachedRegion) {
+      return {
+        region: activeRegion,
+        regions: _statsCache.allRegions,
+        unique_distance_km: cachedRegion.uniqueDistance,
+        total_road_km: cachedRegion.totalRoadKm,
+        lighting_rate: cachedRegion.lightingRate,
+        this_week_uploads: countThisWeekUploads(tracks),
+        this_week_km: calculateThisWeekDistance(tracks),
+        total_tracks: tracks.length
+      };
+    }
   }
-  
+
+  // 指纹变化或缓存未命中，执行全量计算
+  if (fingerprint !== _statsCache.fingerprint) {
+    _statsCache.fingerprint = fingerprint;
+    _statsCache.allRegions = await detectAllRegions(tracks);
+
+    for (const region of _statsCache.allRegions) {
+      region.total_road_km = await getRegionTotalRoadDistance(region.name);
+    }
+
+    _statsCache.regionStats = {};
+  }
+
+  const allRegions = _statsCache.allRegions;
   const primaryRegion = allRegions[0]?.name || currentRegion;
   const activeRegion = targetRegion || primaryRegion;
   currentRegion = activeRegion;
-  
+
   let uniqueDistance = calculateUniqueDistanceByOrder(tracks, activeRegion);
-  
+
   if (uniqueDistance === 0 && tracks.length > 0) {
     uniqueDistance = tracks.reduce((sum, track) => sum + (track.total_distance_km || 0), 0);
   }
-  
+
   const totalRoadDistance = await getRegionTotalRoadDistance(activeRegion);
   const lightingRate = await calculateLightingRate(uniqueDistance, activeRegion);
+
+  // 写入缓存
+  _statsCache.regionStats[activeRegion] = {
+    uniqueDistance,
+    totalRoadKm: totalRoadDistance,
+    lightingRate
+  };
+
   const thisWeekUploads = countThisWeekUploads(tracks);
   const thisWeekDistance = calculateThisWeekDistance(tracks);
-  
+
   return {
     region: activeRegion,
     regions: allRegions,
@@ -576,5 +629,6 @@ window.calculateAllStats = calculateAllStats;
 window.getRegionTotalRoadDistance = getRegionTotalRoadDistance;
 window.getCurrentRegion = () => currentRegion;
 window.setCurrentRegion = (region) => currentRegion = region;
+window.invalidateStatsCache = invalidateStatsCache;
 
 console.log('统计计算模块已加载');

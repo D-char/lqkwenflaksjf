@@ -45,38 +45,47 @@ function formatDistance(meters) {
  * 渲染骑行记录列表
  * @param {Array} records - 骑行记录数组
  */
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function renderRecords(records) {
   const listEl = document.getElementById('records-list');
-  
+  listEl.innerHTML = '';
+
   if (!records || records.length === 0) {
     listEl.innerHTML = '<div class="empty-message">暂无骑行记录</div>';
     return;
   }
-  
-  listEl.innerHTML = records.map(record => `
-    <div class="record-item">
-      <div class="record-icon">🚴</div>
-      <div class="record-info">
-        <div class="record-date">${formatDate(record.startRidingTime)}</div>
-        <div class="record-details">
-          <span class="record-distance">${formatDistance(record.totalDistance)} km</span>
-          <span class="record-divider">|</span>
-          <span class="record-duration">${formatDuration(record.totalTime)}</span>
-        </div>
-      </div>
-      <div class="record-stats">
-        <div class="record-cal">${Math.round(record.cal)} 卡</div>
-        <div class="record-speed">${record.avgSpeed ? record.avgSpeed.toFixed(1) : '--'} km/h</div>
-      </div>
-    </div>
-  `).join('');
+
+  records.forEach(record => {
+    const item = document.createElement('div');
+    item.className = 'record-item';
+    item.innerHTML =
+      '<div class="record-icon">🚴</div>' +
+      '<div class="record-info">' +
+        '<div class="record-date">' + escapeHtml(formatDate(record.startRidingTime)) + '</div>' +
+        '<div class="record-details">' +
+          '<span class="record-distance">' + escapeHtml(formatDistance(record.totalDistance)) + ' km</span>' +
+          '<span class="record-divider">|</span>' +
+          '<span class="record-duration">' + escapeHtml(formatDuration(record.totalTime)) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="record-stats">' +
+        '<div class="record-cal">' + Math.round(record.cal || 0) + ' 卡</div>' +
+        '<div class="record-speed">' + (record.avgSpeed ? record.avgSpeed.toFixed(1) : '--') + ' km/h</div>' +
+      '</div>';
+    listEl.appendChild(item);
+  });
 }
 
 /**
  * 更新统计数据
  * @param {Array} records - 骑行记录数组
  */
-function updateStats(records) {
+function updateRecordsStats(records) {
   if (!records || records.length === 0) {
     document.getElementById('record-count').textContent = '0 条记录';
     document.getElementById('total-distance').textContent = '0';
@@ -133,7 +142,7 @@ async function loadRecords() {
     const result = await getAllCyclingRecords();
     const records = result.data || [];
     renderRecords(records);
-    updateStats(records);
+    updateRecordsStats(records);
     
   } catch (error) {
     console.error('加载骑行记录失败:', error);
